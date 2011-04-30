@@ -28,6 +28,12 @@ free_player(Player * me)
 	free(me);
 }
 
+Entity *
+player_entity(Player * me)
+{
+	return me->body;
+}
+
 void
 player_fetch_direction(Player * me, InputState * is)
 {
@@ -53,22 +59,22 @@ player_fetch_direction(Player * me, InputState * is)
 		dy = 1;
 	}
 
-	entity_set_direction((Entity *) me, dx, dy);
+	entity_set_direction(me->body, dx, dy);
 
 	if (dx == -1)
 	{
-		set_animation((Entity *) me, (char *) "walk_left_shotgun");
+		set_animation(me->body, (char *) "walk_left_shotgun");
 	}
 	else if (dx == 1)
 	{
-		set_animation((Entity *) me, (char *) "walk_right_shotgun");
+		set_animation(me->body, (char *) "walk_right_shotgun");
 	}
 	else if (dy == -1)
 	{
-		set_animation((Entity *) me, (char *) "walk_up_shotgun");
+		set_animation(me->body, (char *) "walk_up_shotgun");
 	}
 	else if (dy == 1)
 	{
-		set_animation((Entity *) me, (char *) "walk_down_shotgun");
+		set_animation(me->body, (char *) "walk_down_shotgun");
 	}
 }

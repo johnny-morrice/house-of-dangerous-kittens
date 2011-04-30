@@ -1,5 +1,6 @@
 #include "directory.h"
 #include "zone.h"
+#include "fatal.h"
 
 #include <string.h>
 #include <glib.h>
@@ -18,6 +19,11 @@ directory_entries(const char * path)
 	files = g_array_new(FALSE, FALSE, sizeof(char *));
 
 	folder = g_dir_open(path, 0, &error);
+
+	if (!folder)
+	{
+		fatal("Could not find a folder\n");
+	}
 
 	temp = g_dir_read_name(folder);
 

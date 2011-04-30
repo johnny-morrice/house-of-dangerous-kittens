@@ -4,6 +4,7 @@
 #include "directory.h"
 #include "draw.h"
 #include "timetrack.h"
+#include "fatal.h"
 
 #include <SDL/SDL.h>
 #include <glib.h>
@@ -95,7 +96,15 @@ entity_move(Entity * thing, Level world, TimeTracker * time)
 void
 entity_draw(Entity * thing, SDL_Surface * canvas)
 {
-	draw((SDL_Surface *) g_tree_lookup(thing->animations, thing->current_animation), canvas, thing->x, thing->y);
+	SDL_Surface * current = (SDL_Surface *) g_tree_lookup(thing->animations, thing->current_animation);
+	if (current)
+	{
+		draw(current, canvas, thing->x, thing->y);
+	}
+	else
+	{
+		fatal("Could not find animation\n");
+	}
 }
 
 // Helper strcat function

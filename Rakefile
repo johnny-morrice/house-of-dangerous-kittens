@@ -5,7 +5,7 @@ ENGINE = ["src/player.c", "src/screen.c",
 	"src/control.c", "src/zone.c",
 	"src/input.c", "src/sprite.c",
 	"src/draw.c", "src/directory.c",
-	"src/entity.c"]
+	"src/entity.c", "src/fatal.c"]
 
 def compile out, flags, *paths
 	sh "g++ -o #{out} #{flags} -Wall `pkg-config --cflags --libs gobject-2.0` -lSDL -Iinclude #{ENGINE.join " "} #{paths.join " "}"
