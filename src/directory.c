@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include <glib.h>
+#include <stdio.h>
 
 GArray *
 directory_entries(const char * path)
@@ -22,7 +23,8 @@ directory_entries(const char * path)
 
 	if (!folder)
 	{
-		fatal("Could not find a folder\n");
+		fprintf(stderr, "Could not find directory: '%s'\n", path);
+		die();
 	}
 
 	temp = g_dir_read_name(folder);

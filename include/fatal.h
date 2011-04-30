@@ -3,6 +3,6 @@
 #define __FATAL__
 
 // DIE DIE DIE DIE DIE
-void fatal(const char * msg);
+void die(); 
 
 #endif

@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 void
-fatal(const char * msg)
+die()
 {
-	fprintf(stderr, "FATAL ERROR:\n%s", msg);
+	fprintf(stderr, "DIE DIE DIE DIE DIE\n");
 	exit(EXIT_FAILURE);
 }

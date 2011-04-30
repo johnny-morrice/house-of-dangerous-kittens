@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <stdio.h>
 
 #include "zone.h"
@@ -11,7 +10,8 @@ zone(size_t size)
 	
 	if (!space)
 	{
-		fatal("Out of memory\n");
+		fprintf(stderr, "Out of memory\n");
+		die();
 	}
 
 	return space;

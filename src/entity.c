@@ -7,6 +7,7 @@
 #include "fatal.h"
 
 #include <SDL/SDL.h>
+#include <stdio.h>
 #include <glib.h>
 #include <string.h>
 #include <math.h>
@@ -103,7 +104,8 @@ entity_draw(Entity * thing, SDL_Surface * canvas)
 	}
 	else
 	{
-		fatal("Could not find animation\n");
+		fprintf(stderr, "Could not find animation '%s'\n", thing->current_animation);
+		die();
 	}
 }
 
