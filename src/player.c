@@ -15,7 +15,7 @@ new_player()
 {
 	Player * me = (Player *) zone(sizeof(Player));
 	Entity * body = load_entity("data/sprites/player/");
-	entity_set_speed(body, 1);
+	entity_set_speed(body, 100);
 	entity_set_direction(body, 0, 0);
 	me->body = body;
 	return me;

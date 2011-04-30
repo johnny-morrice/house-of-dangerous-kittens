@@ -30,7 +30,6 @@ struct Entity
 	float y;
 	float dx;
 	float dy;
-	// How many squares does the entity travel in one second?
 	float speed;
 
 };
