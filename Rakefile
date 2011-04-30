@@ -3,7 +3,9 @@ require "fileutils"
 ENGINE = ["src/player.c", "src/screen.c",
 	"src/level.c", "src/timetrack.c",
 	"src/control.c", "src/zone.c",
-	"src/input.c", "src/sprite.c", "src/draw.c"]
+	"src/input.c", "src/sprite.c",
+	"src/draw.c", "src/directory.c",
+	"src/entity.c"]
 
 def compile out, flags, *paths
 	sh "g++ -o #{out} #{flags} `pkg-config --cflags --libs gobject-2.0` -lSDL -Iinclude #{ENGINE.join " "} #{paths.join " "}"

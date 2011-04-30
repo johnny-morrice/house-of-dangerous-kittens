@@ -5,20 +5,15 @@
 #include <SDL/SDL.h>
 #include <glib.h>
 
-// An animation is an array of SDL_Surfaces
-typedef struct Animation Animation;
 
 // An entity is table of strings associated with animations
 typedef struct Entity Entity; 
 
-// Load an animation from a directory
-Animation * load_animation(const char * path);
-
-Entity * new_entity();
-void add_animation(Entity * creature, char * name, Animation * action);
+Entity * load_entity(const char * path);
+void free_entity(Entity * thing);
 void set_animation(Entity * creature, char * name);
 void next_frame(Entity * creature, char * name);
-void draw_entity(Entity * thing, SDL_Surface * canvas, char x, char, y);
+void draw_entity(Entity * thing, SDL_Surface * canvas, char x, char y);
 
 
 #endif
