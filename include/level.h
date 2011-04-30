@@ -4,12 +4,18 @@
 
 #include <SDL/SDL.h>
 
-typedef char ** Level; 
+#include "screen.h"
 
-const unsigned int level_width = 32;
-const unsigned int level_height = 24;
+typedef struct Square Square;
 
-const unsigned char carpet = 'o';
+typedef Square ** Level; 
+
+const unsigned char square_size = 32; 
+const unsigned char level_width = screen_width / square_size;
+const unsigned char level_height = screen_height / square_size;
+
+const unsigned char square_carpet = 'c';
+const unsigned char square_empty = ' ';
 
 Level new_level();
 
@@ -18,6 +24,7 @@ void level_set_square(Level level, char x, char y, char type);
 
 void free_level(Level level);
 
+// Draw the level onto the canvas
 void level_draw(Level level, SDL_Surface * canvas);
 
 #endif

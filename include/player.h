@@ -4,6 +4,7 @@
 
 #include <SDL/SDL.h>
 
+#include "input.h"
 #include "timetrack.h"
 #include "level.h"
 

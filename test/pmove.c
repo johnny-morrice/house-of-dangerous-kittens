@@ -24,7 +24,7 @@ main(int argc, char ** argv)
 	{
 		for (j = 0; j < 10; j ++)
 		{
-			level_set_square(level, i, j, carpet);
+			level_set_square(level, i, j, square_carpet);
 		}
 	}
 
