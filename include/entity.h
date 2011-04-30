@@ -18,6 +18,7 @@ Entity * new_entity();
 void add_animation(Entity * creature, char * name, Animation * action);
 void set_animation(Entity * creature, char * name);
 void next_frame(Entity * creature, char * name);
+void draw_entity(Entity * thing, SDL_Surface * canvas, char x, char, y);
 
 
 #endif

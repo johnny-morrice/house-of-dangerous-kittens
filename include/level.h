@@ -5,12 +5,13 @@
 #include <SDL/SDL.h>
 
 #include "screen.h"
+#include "draw.h"
 
 typedef struct Square Square;
 
 typedef Square ** Level; 
 
-const unsigned char square_size = 32; 
+
 const unsigned char level_width = screen_width / square_size;
 const unsigned char level_height = screen_height / square_size;
 

@@ -3,6 +3,8 @@
 #include "sprite.h"
 #include "player.h"
 #include "control.h"
+#include "entity.h"
+#include "draw.h"
 
 #include <SDL/SDL.h>
 #include <stdlib.h>
@@ -75,16 +77,13 @@ level_draw(Level world, SDL_Surface * canvas)
 {
 	char i, j;
 	Square sq;
-	SDL_Rect offset;
 
 	for (i = 0; i < level_width; i++)
 	{
 		for (j = 0; j < level_height; j++)
 		{
 			sq = world[i][j];
-			offset.x = i * square_size;
-			offset.y = j * square_size;
-			SDL_BlitSurface(sq.sprite, NULL, canvas, &offset);
+			draw(sq.sprite, canvas, i, j);
 		}
 	}
 }

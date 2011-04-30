@@ -27,7 +27,13 @@ char * zonecat(char * buffer, char * str)
 	return strcat(root_rel, path);
 }
 
-Animation *
+void
+draw_entity(Entity * thing, SDL_Surface * canvas, char x, char y)
+{
+	draw(g_tree_lookup(thing->animations, thing->current_animation), canvas, x, y);
+}
+
+	Animation *
 load_animation(const char * path)
 {
 	GDir folder;
@@ -44,7 +50,7 @@ load_animation(const char * path)
 	folder = g_dir_open(path);
 
 	file = g_dir_read_name(folder);
-	
+
 	while (file)
 	{
 		g_array_append_val(files, file);
@@ -68,7 +74,7 @@ load_animation(const char * path)
 
 }
 
-Entity *
+	Entity *
 new_entity()
 {
 	Entity thing = (Entity *) zone(sizeof(Entity));
@@ -77,19 +83,19 @@ new_entity()
 	thing->current_frame = 0;
 }
 
-void
+	void
 add_animation(Entity * creature, char * name, Animation * action)
 {
 	g_tree_insert(creature->animations, name, g_slist_reverse(action));
 }
 
-void
+	void
 set_animation(Entity * thing, char * name)
 {
 	thing->current_animation = name;
 }
 
-void
+	void
 next_frame(Entity * thing)
 {
 	Animation * movie = g_tree_lookup(thing->animations, thing->current_animation)
