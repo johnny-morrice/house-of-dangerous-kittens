@@ -3,15 +3,16 @@
 #include "sprite.h"
 #include "directory.h"
 #include "draw.h"
-#include "time.h"
+#include "timetrack.h"
 
 #include <SDL/SDL.h>
 #include <glib.h>
 #include <string.h>
+#include <math.h>
 
 struct Animation
 {
-	char count;
+	unsigned int count;
 	SDL_Surface ** frames;
 };
 
@@ -22,7 +23,7 @@ struct Entity
 {
 	GTree * animations;
 	char * current_animation;
-	char current_frame;
+	unsigned int current_frame;
 	float x;
 	float y;
 	float dx;
@@ -33,6 +34,28 @@ struct Entity
 };
 
 void
+entity_set_speed(Entity * thing, float speed)
+{
+	thing->speed = speed;
+}
+
+void
+entity_set_direction(Entity * thing, float dx, float dy)
+{
+	float mag = sqrt((dx * dx) + (dy * dy));
+	if (mag > 0)
+	{
+		thing->dx = dx / mag;
+		thing->dy = dy / mag;
+	}
+	else
+	{
+		thing->dx = 0;
+		thing->dy = 0;
+	}
+}
+
+void
 entity_set_position(Entity * thing, float x, float y)
 {
 	thing->x = x;
@@ -40,18 +63,16 @@ entity_set_position(Entity * thing, float x, float y)
 }
 
 void
-entity_move(Entity * thing, Level world, TimeTracker time)
+entity_move(Entity * thing, Level world, TimeTracker * time)
 {
-	float normaldx, normaldy;
 	float msdx, msdy;
 	float x, y, newx, newy;
-	int i;
+	unsigned int i;
 
 	x = thing->x;
 	y = thing->y;
-	normalize(&normaldx, &normaldy, thing->dx, thing->dy);
-	msdx = normaldx * thing->speed / 1000;
-	msdy = normaldy * thing->speed / 1000;
+	msdx = thing->dx * thing->speed / 1000;
+	msdy = thing->dy * thing->speed / 1000;
 
 	for (i = 0; i < frame_ms(time); i++)
 	{
@@ -72,7 +93,7 @@ entity_move(Entity * thing, Level world, TimeTracker time)
 }
 
 void
-draw_entity(Entity * thing, SDL_Surface * canvas)
+entity_draw(Entity * thing, SDL_Surface * canvas)
 {
 	draw((SDL_Surface *) g_tree_lookup(thing->animations, thing->current_animation), canvas, thing->x, thing->y);
 }
@@ -89,7 +110,7 @@ char * zonecat(char * part, char * rest)
 Animation *
 load_animation(const char * path)
 {
-	char i;
+	unsigned int i;
 
 	GArray * files;
 	char * sprite_path;
@@ -128,12 +149,13 @@ new_entity()
 	thing->current_animation = (char *) zone(sizeof(char) * 100);
 	thing->current_frame = 0;
 	set_animation(thing, (char *) "default");
+	return thing;
 }
 
 void
 free_animation(Animation * movie)
 {
-	char i;
+	unsigned int i;
 
 	for (i = 0; i < movie->count; i++)
 	{
@@ -172,6 +194,7 @@ void
 set_animation(Entity * thing, char * name)
 {
 	strcpy(thing->current_animation, name);
+	thing->current_frame = 0;
 }
 
 void
@@ -197,7 +220,7 @@ load_entity(const char * path)
 
 	char * animation_path;
 
-	int i;
+	unsigned int i;
 
 	Entity * thing = new_entity();
 

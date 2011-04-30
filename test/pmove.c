@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 
+#include "entity.h"
 #include "screen.h"
 #include "input.h"
 #include "control.h"

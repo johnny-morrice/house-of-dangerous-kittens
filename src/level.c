@@ -6,6 +6,8 @@
 #include "entity.h"
 #include "draw.h"
 
+#include <math.h>
+#include <glib.h>
 #include <SDL/SDL.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -18,7 +20,7 @@ struct Square
 
 Level new_level()
 {
-	char i, j;
+	int i, j;
 	Level rows;
 	Square * col;
 
@@ -44,7 +46,7 @@ Level new_level()
 void
 free_level(Level rows)
 {
-	char i;
+	int i;
 
 	for (i = 0; i < level_width; i++)
 	{
@@ -55,7 +57,7 @@ free_level(Level rows)
 }
 
 void
-level_set_square(Level world, char x, char y, char type)
+level_set_square(Level world, int x, int y, char type)
 {
 	SDL_Surface * sprite = NULL;
 
@@ -75,7 +77,7 @@ level_set_square(Level world, char x, char y, char type)
 void
 level_draw(Level world, SDL_Surface * canvas)
 {
-	char i, j;
+	int i, j;
 	Square sq;
 
 	for (i = 0; i < level_width; i++)
@@ -85,5 +87,31 @@ level_draw(Level world, SDL_Surface * canvas)
 			sq = world[i][j];
 			draw(sq.sprite, canvas, i, j);
 		}
+	}
+}
+
+gboolean
+walkable(char type)
+{
+	return type == 'c';
+}
+
+gboolean
+in_bounds(Level world, float x, float y)
+{
+	int rx, ry;
+	char type;
+
+	rx = (char) floor(x);
+	ry = (char) floor(y);
+
+	if (rx >= 0 && ry >= 0 && rx < level_width && ry < level_height)
+	{
+		type = world[rx][ry].type;
+		return walkable(type);
+	}
+	else
+	{
+		return FALSE;
 	}
 }

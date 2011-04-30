@@ -38,7 +38,7 @@ directory_entries(const char * path)
 void
 free_directory_entries(GArray * files)
 {
-	int i;
+	unsigned int i;
 
 	for (i = 0; i < files->len; i ++)
 	{

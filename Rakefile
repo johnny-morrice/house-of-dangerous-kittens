@@ -8,7 +8,7 @@ ENGINE = ["src/player.c", "src/screen.c",
 	"src/entity.c"]
 
 def compile out, flags, *paths
-	sh "g++ -o #{out} #{flags} `pkg-config --cflags --libs gobject-2.0` -lSDL -Iinclude #{ENGINE.join " "} #{paths.join " "}"
+	sh "g++ -o #{out} #{flags} -Wall `pkg-config --cflags --libs gobject-2.0` -lSDL -Iinclude #{ENGINE.join " "} #{paths.join " "}"
 end
 
 def debug out, *paths
