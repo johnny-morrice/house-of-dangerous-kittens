@@ -63,7 +63,7 @@ level_set_square(Level world, char x, char y, char type)
 	
 	if (type == 'c')
 	{
-		sprite = load_sprite("level/carpet.bmp");
+		sprite = load_sprite("data/sprites/level/carpet.bmp");
 	}
 
 	pos->sprite = sprite;
