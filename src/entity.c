@@ -97,10 +97,20 @@ entity_move(Entity * thing, Level world, TimeTracker * time)
 void
 entity_draw(Entity * thing, SDL_Surface * canvas)
 {
-	SDL_Surface * current = (SDL_Surface *) g_tree_lookup(thing->animations, thing->current_animation);
-	if (current)
+	SDL_Surface * current;
+	Animation * movie = (Animation *) g_tree_lookup(thing->animations, thing->current_animation);
+	if (movie)
 	{
-		draw(current, canvas, thing->x, thing->y);
+		if (movie->count > 0)
+		{
+			current = movie->frames[thing->current_frame];
+			draw(current, canvas, thing->x, thing->y);
+		}
+		else
+		{
+			fprintf(stderr, "No frames for animation '%s'\n", thing->current_animation);
+			die();
+		}
 	}
 	else
 	{

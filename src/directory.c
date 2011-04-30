@@ -31,11 +31,10 @@ directory_entries(const char * path)
 
 	while (temp)
 	{
-		temp = g_dir_read_name(folder);
 		file = (char *) zone(sizeof(char) * strlen(temp));
 		strcpy(file, temp);
 		g_array_append_val(files, file);
-
+		temp = g_dir_read_name(folder);
 	}
 
 	g_dir_close(folder);

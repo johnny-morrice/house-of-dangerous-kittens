@@ -6,6 +6,6 @@
 void
 die()
 {
-	fprintf(stderr, "DIE DIE DIE DIE DIE\n");
+	fprintf(stderr, "Fatal error!\n");
 	exit(EXIT_FAILURE);
 }
