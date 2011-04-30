@@ -5,7 +5,7 @@
 #include <SDL/SDL.h>
 
 // Size of each tile in pixels
-const unsigned char square_size = 32; 
+const unsigned char square_size = 64; 
 
 void
 draw(SDL_Surface * thing, SDL_Surface * canvas, char x, char y);
