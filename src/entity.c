@@ -238,8 +238,10 @@ load_entity(const char * path)
 	GArray * files;
 	
 	char * animation_name;
+	char * animation_file_name;
 
 	char * animation_path;
+	char * unterminated;
 
 	unsigned int i;
 
@@ -249,10 +251,17 @@ load_entity(const char * path)
 
 	for (i = 0; i < files->len; i++)
 	{
-		animation_name = g_array_index(files, char *, i);
-		animation_path = zonecat((char *) path, animation_name);
-		g_tree_insert(thing->animations, animation_name, load_animation(animation_path)); 
+		animation_file_name = g_array_index(files, char *, i);
+		animation_name = (char *) zone(sizeof(char) * strlen(animation_file_name));
+		strcpy(animation_name, animation_file_name);
+		unterminated = zonecat((char *) path, animation_name);
+		animation_path = zonecat(unterminated, (char *) "/");
+		g_tree_insert(thing->animations, animation_name, load_animation(animation_path));
+		free(unterminated);
+		free(animation_path);
 	}
+
+	free_directory_entries(files);
 
 	return thing;
 }

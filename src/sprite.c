@@ -1,6 +1,7 @@
 #include "sprite.h"
 
 #include <SDL/SDL.h>
+#include <SDL_image.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,15 +11,15 @@ load_sprite(const char * path)
 	SDL_Surface * unoptimized;
 	SDL_Surface * optimized;
 
-	unoptimized = SDL_LoadBMP(path);
+	unoptimized = IMG_Load(path);
 
 	if (! unoptimized)
 	{
-		fprintf(stderr, "Could not load bitmap\n.");
+		fprintf(stderr, "Could not load image '%s'\n.", path);
 		exit(EXIT_FAILURE);
 	}
 
-	optimized = SDL_DisplayFormat(unoptimized);
+	optimized = SDL_DisplayFormatAlpha(unoptimized);
 
 	SDL_FreeSurface(unoptimized);
 
