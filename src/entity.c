@@ -70,13 +70,16 @@ entity_move(Entity * thing, Level world, TimeTracker * time)
 	float msdx, msdy;
 	float x, y, newx, newy;
 	unsigned int i;
+	unsigned int taken;
+
+	taken = frame_ms(time);
 
 	x = thing->x;
 	y = thing->y;
 	msdx = thing->dx * thing->speed / 1000;
 	msdy = thing->dy * thing->speed / 1000;
 
-	for (i = 0; i < frame_ms(time); i++)
+	for (i = 0; i < taken; i++)
 	{
 		newx = x + msdx;
 		newy = y + msdy;

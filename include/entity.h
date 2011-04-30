@@ -15,7 +15,7 @@ typedef struct Entity Entity;
 Entity * load_entity(const char * path);
 void free_entity(Entity * thing);
 void set_animation(Entity * creature, char * name);
-void next_frame(Entity * creature, char * name);
+void next_frame(Entity * creature);
 void entity_draw(Entity * thing, SDL_Surface * canvas);
 
 void entity_move(Entity * thing, Level level, TimeTracker * time);

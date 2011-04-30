@@ -13,11 +13,11 @@ typedef struct Square Square;
 typedef Square ** Level; 
 
 
-const unsigned char level_width = screen_width / square_size;
-const unsigned char level_height = screen_height / square_size;
+#define level_width (screen_width / square_size)
+#define level_height (screen_height / square_size)
 
-const unsigned char square_carpet = 'c';
-const unsigned char square_empty = ' ';
+#define square_carpet 'c'
+#define square_empty ' '
 
 Level new_level();
 
