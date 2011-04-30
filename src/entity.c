@@ -3,6 +3,7 @@
 #include "sprite.h"
 #include "directory.h"
 #include "draw.h"
+#include "time.h"
 
 #include <SDL/SDL.h>
 #include <glib.h>
@@ -22,12 +23,58 @@ struct Entity
 	GTree * animations;
 	char * current_animation;
 	char current_frame;
+	float x;
+	float y;
+	float dx;
+	float dy;
+	// How many squares does the entity travel in one second?
+	float speed;
+
 };
 
 void
-draw_entity(Entity * thing, SDL_Surface * canvas, char x, char y)
+entity_set_position(Entity * thing, float x, float y)
 {
-	draw((SDL_Surface *) g_tree_lookup(thing->animations, thing->current_animation), canvas, x, y);
+	thing->x = x;
+	thing->y = y;
+}
+
+void
+entity_move(Entity * thing, Level world, TimeTracker time)
+{
+	float normaldx, normaldy;
+	float msdx, msdy;
+	float x, y, newx, newy;
+	int i;
+
+	x = thing->x;
+	y = thing->y;
+	normalize(&normaldx, &normaldy, thing->dx, thing->dy);
+	msdx = normaldx * thing->speed / 1000;
+	msdy = normaldy * thing->speed / 1000;
+
+	for (i = 0; i < frame_ms(time); i++)
+	{
+		newx = x + msdx;
+		newy = y + msdy;
+		if (in_bounds(world, newx, newy))
+		{
+			x = newx;
+			y = newy;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	entity_set_position(thing, x, y);
+}
+
+void
+draw_entity(Entity * thing, SDL_Surface * canvas)
+{
+	draw((SDL_Surface *) g_tree_lookup(thing->animations, thing->current_animation), canvas, thing->x, thing->y);
 }
 
 // Helper strcat function

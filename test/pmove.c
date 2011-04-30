@@ -28,15 +28,15 @@ main(int argc, char ** argv)
 		}
 	}
 
-	player_set_position(player, 5, 5);
+	entity_set_position((Entity *) player, 5, 5);
 
 	while (running(halter))
 	{
 		update_input(is);
 		player_fetch_direction(player, is);
-		player_move(player, level, time);
+		entity_move((Entity *) player, level, time);
 		level_draw(level, screen);
-		player_draw(player, screen);
+		entity_draw((Entity *) player, screen);
 		SDL_Flip(screen);
 
 		check_exit(halter, is);
