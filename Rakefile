@@ -1,7 +1,7 @@
 require "fileutils"
 
 def compile out, flags, *paths
-	sh "gcc -o #{out} #{flags} -lSDL -Iinclude #{paths.join " "}"
+	sh "g++ -o #{out} #{flags} `pkg-config --cflags --libs gobject-2.0` -lSDL -Iinclude #{paths.join " "}"
 end
 
 def debug out, *paths
@@ -19,6 +19,6 @@ end
 
 desc "Test player movement"
 task :pmove => [:clean, "work"] do
-	debug "work/pmove", "test/pmove.c", "src/movement.c", "src/sdl.c"
+	debug "work/pmove", "test/pmove.c", "src/player.c", "src/screen.c", "src/level.c", "src/timetrack.c", "src/control.c", "src/zone.c", "src/input.c"
 	sh "work/pmove"
 end
