@@ -8,7 +8,7 @@
 const unsigned char square_size = 64; 
 
 void
-draw(SDL_Surface * thing, SDL_Surface * canvas, char x, char y);
+draw(SDL_Surface * thing, SDL_Surface * canvas, float x, float y);
 
 
 #endif
