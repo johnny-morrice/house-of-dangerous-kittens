@@ -12,7 +12,7 @@
 #include <string.h>
 #include <math.h>
 
-#define ANIMATION_FPS 5
+#define ANIMATION_FPS 3
 
 struct Animation
 {
@@ -79,7 +79,7 @@ entity_set_position(Entity * thing, float x, float y)
 }
 
 void
-entity_move(Entity * thing, Level world, TimeTracker * time)
+entity_move(Entity * thing, Level world, TimeTracker * time, Entity ** others)
 {
 	float adjustdx, adjustdy;
 	float x, y;
@@ -87,14 +87,13 @@ entity_move(Entity * thing, Level world, TimeTracker * time)
 	adjustdx = thing->dx * thing->speed / fps(time);
 	adjustdy = thing->dy * thing->speed / fps(time);
 
-
 	if (! (isnan(adjustdx) || isnan(adjustdy)))
 	{
 
 		x = thing->x + adjustdx;
 		y = thing->y + adjustdy;
 
-		if (in_bounds(world, x, y))
+		if (in_bounds(world, x, y) && !collision(thing, others))
 		{
 			entity_set_position(thing, x, y);
 		}
@@ -118,7 +117,7 @@ entity_draw(Entity * thing, SDL_Surface * canvas, Camera * cam)
 			ticks = SDL_GetTicks();
 
 			// Check to see if we should switch to next frame
-			if (((ticks - thing->last_change) / 1000) > (1 / ANIMATION_FPS))
+			if (((float) (ticks - thing->last_change) / 1000.0) > (float) (1.0 / ANIMATION_FPS))
 			{
 				thing->last_change = ticks;
 				next_frame(thing);
@@ -219,6 +218,8 @@ allocate_entity()
 	thing->current_frame = 0;
 	thing->dx = 0;
 	thing->dy = 0;
+	thing->x = 0;
+	thing->y = 0;
 	set_animation(thing, (char *) "default");
 	return thing;
 
@@ -358,6 +359,6 @@ clone_entity(Entity * thing)
 {
 	Entity * clone = allocate_entity();
 	clone->animations = thing->animations;
-
+	clone->speed = thing->speed;
 	return clone;
 }
