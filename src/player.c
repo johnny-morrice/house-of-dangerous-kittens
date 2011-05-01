@@ -122,7 +122,9 @@ player_set_direction(Player * me, InputState * is, Camera * cam)
 	if (key_down(is, SDLK_s) || key_down(is, SDLK_DOWN))
 	{
 		dy = 1;
-	}	
+	}
+
+	entity_set_direction(me->body, dx, dy);
 
 	if (dx != 0 || dy != 0)
 	{

@@ -5,6 +5,7 @@
 #include "control.h"
 #include "entity.h"
 #include "draw.h"
+#include "tiles.h"
 
 #include <math.h>
 #include <glib.h>
@@ -57,7 +58,7 @@ free_level(Level rows)
 }
 
 void
-level_set_square(Level world, int x, int y, char type)
+level_set_square(Level world, TileManager * tiles, int x, int y, char type)
 {
 	SDL_Surface * sprite = NULL;
 
@@ -67,7 +68,7 @@ level_set_square(Level world, int x, int y, char type)
 	
 	if (type == 'c')
 	{
-		sprite = load_sprite("data/sprites/level/carpet.png");
+		sprite = tile_carpet(tiles);
 	}
 
 	pos->sprite = sprite;

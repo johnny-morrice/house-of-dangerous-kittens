@@ -8,6 +8,7 @@
 #include "player.h"
 #include "timetrack.h"
 #include "level.h"
+#include "tiles.h"
 
 int
 main(int argc, char ** argv)
@@ -22,12 +23,13 @@ main(int argc, char ** argv)
 	Level level = new_level();
 	TimeTracker * time = new_time_tracker();
 	Camera * cam = new_camera();
+	TileManager * tiles = load_tiles();
 
 	for (i = 0; i < 10; i++)
 	{
 		for (j = 0; j < 10; j ++)
 		{
-			level_set_square(level, i, j, square_carpet);
+			level_set_square(level, tiles, i, j, square_carpet);
 		}
 	}
 
@@ -53,6 +55,7 @@ main(int argc, char ** argv)
 	free_player(player);
 	free_level(level);
 	free_input(is);
+	free_tiles(tiles);
 
 	SDL_Quit();
 

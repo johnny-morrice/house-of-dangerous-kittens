@@ -7,6 +7,7 @@
 
 #include "screen.h"
 #include "draw.h"
+#include "tiles.h"
 
 typedef struct Square Square;
 
@@ -22,7 +23,7 @@ typedef Square ** Level;
 Level new_level();
 
 // Set the tile at this square
-void level_set_square(Level level, int x, int y, char type);
+void level_set_square(Level level, TileManager * tiles, int x, int y, char type);
 
 void free_level(Level level);
 
