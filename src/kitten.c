@@ -55,11 +55,13 @@ load_kittens(Entity * player, Level world, TimeTracker * time, EntitySet * other
 Entity *
 clone_kitten(KittenManager * litter, float x, float y)
 {
-	Entity * kitty = clone_entity(litter->mother);
+	Entity * body = clone_entity(litter->mother);
 
-	entity_set_position(kitty, x, y);
+	Kitten * kitty = (Kitten *) entity_user_data(body);
+	kitty->body = body;
+	entity_set_position(body, x, y);
 
-	return kitty;
+	return body;
 }
 
 void

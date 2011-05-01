@@ -30,7 +30,7 @@ main(int argc, char ** argv)
 	Level world = new_level();
 	TimeTracker * time = new_time_tracker();
 	TileManager * tiles = load_tiles();
-	KittenManager * litter = load_kittens(player, world, time, entities);
+	KittenManager * litter = load_kittens(body, world, time, entities);
 	Entity * kitten = clone_kitten(litter, 6, 6);
 
 	register_entity(entities, kitten);
