@@ -77,5 +77,9 @@ player_fetch_direction(Player * me, InputState * is)
 		{
 			set_animation(me->body, (char *) "walk_down_shotgun");
 		}
+		else if (dy == 0 && dx == 0)
+		{
+			set_animation(me->body, (char *) "default");
+		}
 	}
 }
