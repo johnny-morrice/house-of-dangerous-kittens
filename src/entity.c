@@ -142,7 +142,7 @@ entity_draw(Entity * thing, SDL_Surface * canvas, Camera * cam)
 char * zonecat(char * part, char * rest)
 {
 	char * buffer;
-	buffer = (char *) zone(sizeof(char) * (strlen(part) + strlen(rest)));
+	buffer = (char *) zone(sizeof(char) * (strlen(part) + strlen(rest) + 1));
 	strcpy(buffer, part);
 	return strcat(buffer, rest);
 }
@@ -212,13 +212,23 @@ gstrcmp(const void * s1, const void * s2)
 }
 
 Entity *
-new_entity()
+allocate_entity()
 {
 	Entity * thing = (Entity *) zone(sizeof(Entity));
-	thing->animations = g_tree_new(&gstrcmp);
 	thing->current_animation = (char *) zone(sizeof(char) * 100);
 	thing->current_frame = 0;
+	thing->dx = 0;
+	thing->dy = 0;
 	set_animation(thing, (char *) "default");
+	return thing;
+
+}
+
+Entity *
+new_entity()
+{
+	Entity * thing = allocate_entity();
+	thing->animations = g_tree_new(&gstrcmp);
 	return thing;
 }
 
@@ -246,12 +256,18 @@ free_entity_animation(gpointer name, gpointer movie, gpointer vcrap)
 }
 
 void
+free_cloned_entity(Entity * thing)
+{
+	free(thing->current_animation);
+	free(thing);
+}
+
+void
 free_entity(Entity * thing)
 {
 	g_tree_foreach(thing->animations, &free_entity_animation, NULL);
 	g_tree_destroy(thing->animations);
-	free(thing->current_animation);
-	free(thing);
+	free_cloned_entity(thing);
 }
 
 void
@@ -307,7 +323,7 @@ load_entity(const char * path)
 	for (i = 0; i < files->len; i++)
 	{
 		animation_file_name = g_array_index(files, char *, i);
-		animation_name = (char *) zone(sizeof(char) * strlen(animation_file_name));
+		animation_name = (char *) zone(sizeof(char) * strlen(animation_file_name) + 1);
 		strcpy(animation_name, animation_file_name);
 		unterminated = zonecat((char *) path, animation_name);
 		animation_path = zonecat(unterminated, (char *) "/");
@@ -334,4 +350,14 @@ entity_position(Entity * me, float * x, float * y)
 {
 	*x = me->x;
 	*y = me->y;
+}
+
+// Clone an entity
+Entity *
+clone_entity(Entity * thing)
+{
+	Entity * clone = allocate_entity();
+	clone->animations = thing->animations;
+
+	return clone;
 }

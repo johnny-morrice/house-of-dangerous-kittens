@@ -27,6 +27,11 @@ void entity_set_speed(Entity * thing, float d);
 
 void entity_position(Entity * thing, float * x, float * y);
 
+// Clone an entity
+Entity * clone_entity(Entity * thing);
+// Free a cloned entity
+void free_cloned_entity(Entity * clone);
+
 // Centre camera on entity
 void entity_centre(Entity * me, Camera * cam);
 

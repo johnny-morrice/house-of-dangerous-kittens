@@ -3,15 +3,9 @@
 #include "zone.h"
 #include "input.h"
 #include "draw.h"
+#include "look.h"
 
 #include <SDL/SDL.h>
-#include <glib.h>
-#include <math.h>
-
-#define LEFT 0
-#define RIGHT 1
-#define UP 2
-#define DOWN 3
 
 struct Player
 {
@@ -52,12 +46,10 @@ player_set_direction(Player * me, InputState * is, Camera * cam)
 
 	float fake_lookx, fake_looky;
 	float lookx, looky;
-	float dir;
-	gboolean dir_hoz;
+	unsigned int dir;
 
 	float dx = 0;
 	float dy = 0;
-
 
 	// Get the mouse position
 	mouse_position(is, &mousex, &mousey);
@@ -69,39 +61,7 @@ player_set_direction(Player * me, InputState * is, Camera * cam)
 
 	entity_position(me->body, &playerx, &playery);
 
-	// Are we going horizontally or vertically?
-	if (abs(playerx - lookx) > abs(playery - looky))
-	{
-		dir_hoz = TRUE;
-	}
-	else
-	{
-		dir_hoz = FALSE;
-	}
-
-	if (dir_hoz)
-	{
-		if (lookx > playerx)
-		{
-			dir = RIGHT;
-		}
-		else
-		{
-			dir = LEFT;
-		}
-	}
-	else
-	{
-		if (looky > playery)
-		{
-			dir = DOWN;
-		}
-		else
-		{
-			dir = UP;
-		}
-	}
-
+	dir = look(playerx, playery, lookx, looky);
 
 	// Set the direction of the player with regards to key presses
 	if (key_down(is, SDLK_a) || key_down(is, SDLK_LEFT))
