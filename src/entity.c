@@ -147,6 +147,13 @@ char * zonecat(char * part, char * rest)
 	return strcat(buffer, rest);
 }
 
+// Compare two paths
+gint
+pathcmp(gconstpointer p1, gconstpointer p2)
+{
+	return strcmp((char *) p1, (char *) p2);
+}
+
 Animation *
 load_animation(const char * path)
 {
@@ -158,6 +165,8 @@ load_animation(const char * path)
 	Animation * movie = (Animation *) zone(sizeof(Animation));
 
 	files = directory_entries(path);
+
+	g_array_sort(files, &pathcmp);
 
 	movie->frames = (SDL_Surface **) zone(sizeof(SDL_Surface *) * files->len);
 	movie->count = files->len;
