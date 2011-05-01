@@ -15,6 +15,8 @@ struct Player
 	Camera * cam;
 	InputState * is;
 	EntitySet * others;
+//	HUD * display;
+//	Health * health;
 };
 
 void
@@ -95,9 +97,7 @@ player_user_input_response(gpointer mep)
 	if (key_down(is, SDLK_a) || key_down(is, SDLK_LEFT))
 	{
 		dx = -1;
-	}
-
-	if (key_down(is, SDLK_d) || key_down(is, SDLK_RIGHT))
+	} else if (key_down(is, SDLK_d) || key_down(is, SDLK_RIGHT))
 	{
 		dx = 1;
 	}
@@ -105,9 +105,7 @@ player_user_input_response(gpointer mep)
 	if (key_down(is, SDLK_w) || key_down(is, SDLK_UP))
 	{
 		dy = -1;
-	}
-
-	if (key_down(is, SDLK_s) || key_down(is, SDLK_DOWN))
+	} else if (key_down(is, SDLK_s) || key_down(is, SDLK_DOWN))
 	{
 		dy = 1;
 	}

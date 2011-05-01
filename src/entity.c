@@ -170,24 +170,42 @@ collision(Entity * thing, float x, float y, EntitySet * others)
 	return hit.hit;
 }
 
+// Can you walk there?
+gboolean
+can_walk(float x, float y, Entity * thing, Level world, EntitySet * others)
+{
+	return in_bounds(world, x, y) && !collision(thing, x, y, others);
+}
+
+
 void
 entity_move(Entity * thing, Level world, TimeTracker * time, EntitySet * others)
 {
 	float adjustdx, adjustdy;
-	float x, y;
+	float x, y, nx, ny;
 
 	adjustdx = thing->dx * thing->speed / fps(time);
 	adjustdy = thing->dy * thing->speed / fps(time);
 
 	if (! (isnan(adjustdx) || isnan(adjustdy)))
 	{
+		x = thing->x;
+		y = thing->y;
 
-		x = thing->x + adjustdx;
-		y = thing->y + adjustdy;
+		nx = x + adjustdx;
+		ny = y + adjustdy;
 
-		if (in_bounds(world, x, y) && !collision(thing, x, y, others))
+		if (can_walk(nx, ny, thing, world, others))
 		{
-			entity_set_position(thing, x, y);
+			entity_set_position(thing, nx, ny);
+		}
+		else if (can_walk(x, ny, thing, world, others))
+		{
+			entity_set_position(thing, x, ny);
+		}
+		else if (can_walk(nx, y, thing, world, others))
+		{
+			entity_set_position(thing, nx, y);
 		}
 	}
 }
