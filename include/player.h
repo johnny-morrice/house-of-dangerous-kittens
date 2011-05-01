@@ -14,7 +14,7 @@
 typedef struct Player Player;
 
 // Create a new player, register the players entity with the set
-Player * new_player(EntitySet * others, Camera * cam, InputState * is);
+Player * new_player(EntitySet * others, Camera * cam, InputState * is, Level world);
 
 // Respond to user input
 void player_user_input_response(gpointer player);

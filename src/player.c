@@ -15,6 +15,7 @@ struct Player
 	Camera * cam;
 	InputState * is;
 	EntitySet * others;
+	Level world;
 //	HUD * display;
 //	Health * health;
 };
@@ -27,7 +28,7 @@ player_destructor(Entity * me, gpointer dat)
 }
 
 Player *
-new_player(EntitySet * others, Camera * cam, InputState * is)
+new_player(EntitySet * others, Camera * cam, InputState * is, Level world)
 {
 	Player * player = (Player *) zone(sizeof(Player));
 	Entity * body = load_entity("data/sprites/player/", player, &player_user_input_response, &player_destructor);
@@ -36,6 +37,7 @@ new_player(EntitySet * others, Camera * cam, InputState * is)
 	player->others = others;
 	player->cam = cam;
 	player->is = is;
+	player->world = world;
 
 	entity_set_speed(body, 2);
 	entity_set_direction(body, 0, 0);
@@ -57,6 +59,7 @@ player_user_input_response(gpointer mep)
 	InputState * is;
 	Camera * cam;
 	EntitySet * others;
+	Level world;
 
 	unsigned int mousex;
 	unsigned int mousey;
@@ -66,6 +69,8 @@ player_user_input_response(gpointer mep)
 	float fake_lookx, fake_looky;
 	float lookx, looky;
 	unsigned int dir;
+
+	float x, y;
 
 	float dx = 0;
 	float dy = 0;
@@ -78,6 +83,7 @@ player_user_input_response(gpointer mep)
 	is = me->is;
 	cam = me->cam;
 	others = me->others;
+	world = me->world;
 
 	shoot = mouse_press(is); 
 
@@ -115,12 +121,16 @@ player_user_input_response(gpointer mep)
 	// Try to shoot a KITTY!
 	if (shoot)
 	{
-
-		target = collision(me->body, lookx, looky, others);
-
-		if (target)
+		entity_position(me->body, &x, &y);
+		
+		if (can_see(world, x, y, lookx, looky))
 		{
-			entity_destroy(target);
+			target = collision(me->body, lookx, looky, others);
+
+			if (target)
+			{
+				entity_destroy(target);
+			}
 		}
 
 

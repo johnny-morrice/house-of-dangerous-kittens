@@ -22,12 +22,12 @@ main(int argc, char ** argv)
 	InputState * is = new_input_state();
 	Control * halter = new_control();
 	Camera * cam = new_camera();
+	Level world = new_level();
 
 	EntitySet * entities = new_entity_set();
-
-	Player * player = new_player(entities, cam, is);
+	Player * player = new_player(entities, cam, is, world);
 	Entity * body = player_entity(player);
-	Level world = new_level();
+
 	TimeTracker * time = new_time_tracker();
 	TileManager * tiles = load_tiles();
 	KittenManager * litter = load_kittens(body, world, time, entities);
