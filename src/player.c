@@ -4,6 +4,7 @@
 #include "input.h"
 #include "draw.h"
 #include "look.h"
+#include "kitten.h"
 
 #include <SDL/SDL.h>
 
@@ -53,6 +54,8 @@ player_user_input_response(Player * me, InputState * is, Camera * cam)
 
 	gboolean shoot;
 
+	Kitten * target;
+
 	shoot = mouse_press(is); 
 
 	// Get the mouse position
@@ -90,8 +93,18 @@ player_user_input_response(Player * me, InputState * is, Camera * cam)
 
 	entity_set_direction(me->body, dx, dy);
 
+	// Try to shoot a KITTY!
 	if (shoot)
 	{
+
+		target = collision(me->body, lookx, looky, others);
+
+		if (target)
+		{
+			// We can kill the kitty by freeing it
+			free_kitty(target);
+		}
+
 
 		if (dx != 0 || dy != 0)
 		{

@@ -12,7 +12,7 @@
 
 typedef struct KittenManager KittenManager;
 
-typedef struct Kitten Kitten;
+typedef Entity Kitten;
 
 // Create a kitten
 Kitten *

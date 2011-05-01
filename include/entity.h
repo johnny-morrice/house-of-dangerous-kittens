@@ -39,4 +39,6 @@ GSequence * entity_sequence();
 
 void register_entity(Entity * thing, GSequence * others);
 
+Entity * collision(Entity * thing, float x, float y, GSequence * others);
+
 #endif

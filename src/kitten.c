@@ -13,11 +13,6 @@ struct KittenManager
 	Entity * mother;
 };
 
-struct Kitten
-{
-	Entity * body;
-};
-
 KittenManager *
 load_kittens()
 {
@@ -33,11 +28,9 @@ load_kittens()
 Kitten *
 clone_kitten(KittenManager * litter, float x, float y)
 {
-	Kitten * kitty = (Kitten *) zone(sizeof(Kitten));
-	Entity * body = clone_entity(litter->mother);
-	kitty->body = body;
+	Kitten * kitty = clone_entity(litter->mother);
 
-	entity_set_position(body, x, y);
+	entity_set_position(kitty, x, y);
 
 	return kitty;
 }
@@ -45,8 +38,7 @@ clone_kitten(KittenManager * litter, float x, float y)
 void
 free_kitten(Kitten * kitty)
 {
-	free_cloned_entity(kitty->body);
-	free(kitty);
+	free_cloned_entity(kitty);
 }
 
 void
@@ -59,13 +51,13 @@ free_kittens(KittenManager * litter)
 void
 kitten_draw(Kitten * kitty, SDL_Surface * canvas, Camera * cam)
 {
-	entity_draw(kitty->body, canvas, cam);
+	entity_draw(kitty, canvas, cam);
 }
 
 void
 register_kitten(Kitten * kitty, GSequence * others)
 {
-	register_entity(kitty->body, others);
+	register_entity(kitty, others);
 }
 
 void
@@ -75,11 +67,8 @@ kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time, GSeque
 	float px, py;
 	float dx, dy;
 	unsigned int dir;
-	Entity * body;
 
-	body = kitty->body;
-
-	entity_position(body, &x, &y);
+	entity_position(kitty, &x, &y);
 	entity_position(player_entity(me), &px, &py);
 
 	if (can_see(world, x, y, px, py))
@@ -88,25 +77,25 @@ kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time, GSeque
 
 		if (dir == LEFT)
 		{
-			set_animation(body, "left");
+			set_animation(kitty, "left");
 		}
 		else if (dir == RIGHT)
 		{
-			set_animation(body, "right");
+			set_animation(kitty, "right");
 		}
 		else if (dir == UP)
 		{
-			set_animation(body, "up");
+			set_animation(kitty, "up");
 		}
 		else if (dir == DOWN)
 		{
-			set_animation(body, "down");
+			set_animation(kitty, "down");
 		}
 	}
 
 	dx = px - x;
 	dy = py - y;
 
-	entity_set_direction(body, dx, dy);
-	entity_move(body, world, time, others);
+	entity_set_direction(kitty, dx, dy);
+	entity_move(kitty, world, time, others);
 }

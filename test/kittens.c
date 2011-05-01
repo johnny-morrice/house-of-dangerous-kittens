@@ -51,7 +51,7 @@ main(int argc, char ** argv)
 
 		entity_centre(body, cam);
 
-		player_user_input_response(player, is, cam);
+		player_user_input_response(player, is, cam, others);
 
 		entity_move(body, level, time, others);
 

@@ -3,6 +3,7 @@
 #define __PLAYER__
 
 #include <SDL/SDL.h>
+#include <glib.h>
 
 #include "input.h"
 #include "entity.h"
@@ -17,7 +18,7 @@ Player * new_player();
 void free_player(Player * player);
 
 // Respond to user input
-void player_user_input_response(Player * player, InputState * is, Camera * cam);
+void player_user_input_response(Player * player, InputState * is, Camera * cam, GSequence * others);
 
 Entity * player_entity(Player * player);
 
