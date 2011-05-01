@@ -56,10 +56,7 @@ main(int argc, char ** argv)
 		level_set_square(world, tiles, 5, i, square_carpet);
 	}
 
-
-
-
-	entity_set_position(body, 0, 0);
+	entity_set_position(body, 4, 3);
 
 	while (running(halter))
 	{
