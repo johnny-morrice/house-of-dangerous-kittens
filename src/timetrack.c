@@ -3,7 +3,7 @@
 
 #include <SDL/SDL.h>
 
-#define TRACKING 1000;
+#define TRACKING 1000
 
 struct TimeTracker
 {
@@ -17,7 +17,8 @@ new_time_tracker()
 {
 	TimeTracker * time = (TimeTracker *) zone(sizeof(TimeTracker));
 	time->frames = 0;
-	time->fps = 1;
+	time->fps = 100;
+
 	return time;
 }
 

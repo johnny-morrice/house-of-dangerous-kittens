@@ -91,25 +91,28 @@ level_draw(Level world, SDL_Surface * canvas)
 }
 
 gboolean
-walkable(char type)
+walkable_square(Level world, float x, float y)
 {
-	return type == 'c';
+	unsigned int rx, ry;
+
+	rx = floor(x);
+	ry = floor(y);
+
+	return world[rx][ry].type == 'c';
+}
+
+gboolean
+walkable(Level world, float x, float y)
+{
+	return walkable_square(world, x, y) && walkable_square(world, x + 1, y) && walkable_square(world, x, y + 1);
 }
 
 gboolean
 in_bounds(Level world, float x, float y)
 {
-	int rx, ry;
-	char type;
-
-	rx = (char) floor(x);
-	ry = (char) floor(y);
-
-	if (rx >= 0 && ry >= 0 && rx < level_width - 1 && ry < level_height - 1)
-
+	if (x >= 0 && y >= 0 && x < level_width - 1 && y < level_height - 1)
 	{
-		type = world[rx][ry].type;
-		return walkable(type);
+		return walkable(world, x, y);
 	}
 	else
 	{

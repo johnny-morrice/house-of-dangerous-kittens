@@ -12,6 +12,8 @@
 #include <string.h>
 #include <math.h>
 
+#define ANIMATION_FPS 25
+
 struct Animation
 {
 	unsigned int count;
@@ -31,7 +33,7 @@ struct Entity
 	float dx;
 	float dy;
 	float speed;
-
+	unsigned int last_change;
 };
 
 void
@@ -102,6 +104,8 @@ entity_move(Entity * thing, Level world, TimeTracker * time)
 void
 entity_draw(Entity * thing, SDL_Surface * canvas)
 {
+	unsigned int ticks;
+
 	SDL_Surface * current;
 	Animation * movie = (Animation *) g_tree_lookup(thing->animations, thing->current_animation);
 	if (movie)
@@ -110,6 +114,16 @@ entity_draw(Entity * thing, SDL_Surface * canvas)
 		{
 			current = movie->frames[thing->current_frame];
 			draw(current, canvas, thing->x, thing->y);
+
+			ticks = SDL_GetTicks();
+
+			// Check to see if we should switch to next frame
+			if (((ticks - thing->last_change) / 1000) > (1 / ANIMATION_FPS))
+			{
+				thing->last_change = ticks;
+				next_frame(thing);
+			}
+			
 		}
 		else
 		{
@@ -221,6 +235,7 @@ set_animation(Entity * thing, char * name)
 {
 	strcpy(thing->current_animation, name);
 	thing->current_frame = 0;
+	thing->last_change = SDL_GetTicks();
 }
 
 void
