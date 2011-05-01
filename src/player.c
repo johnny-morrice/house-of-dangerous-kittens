@@ -97,38 +97,38 @@ player_user_input_response(Player * me, InputState * is, Camera * cam)
 		{
 			if (dir == LEFT)
 			{
-				set_animation(me->body, (char *) "walk_left_shoot");
+				set_animation(me->body, (char *) "shoot_walk_left");
 			}
 			else if (dir == RIGHT)
 			{
-				set_animation(me->body, (char *) "walk_right_shoot");
+				set_animation(me->body, (char *) "shoot_walk_right");
 			}
 			else if (dir == UP)
 			{
-				set_animation(me->body, (char *) "walk_up_shoot");
+				set_animation(me->body, (char *) "shoot_walk_up");
 			}
 			else if (dir == DOWN)
 			{
-				set_animation(me->body, (char *) "walk_down_shoot");
+				set_animation(me->body, (char *) "shoot_walk_down");
 			}
 		}
 		else
 		{
 			if (dir == LEFT)
 			{
-				set_animation(me->body, (char *) "idle_left_shoot");
+				set_animation(me->body, (char *) "shoot_idle_left");
 			}
 			else if (dir == RIGHT)
 			{
-				set_animation(me->body, (char *) "idle_right_shoot");
+				set_animation(me->body, (char *) "shoot_idle_right");
 			}
 			else if (dir == UP)
 			{
-				set_animation(me->body, (char *) "idle_up_shoot");
+				set_animation(me->body, (char *) "shoot_idle_up");
 			}
 			else if (dir == DOWN)
 			{
-				set_animation(me->body, (char *) "idle_down_shoot");
+				set_animation(me->body, (char *) "shoot_idle_down");
 			}
 
 		}
