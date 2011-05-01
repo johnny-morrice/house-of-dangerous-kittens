@@ -50,7 +50,9 @@ main(int argc, char ** argv)
 		update_input(is);
 
 		entity_centre(body, cam);
-		player_set_direction(player, is, cam);
+
+		player_user_input_response(player, is, cam);
+
 		entity_move(body, level, time, others);
 
 		kitten_move(kitten, player, level, time, others);

@@ -33,7 +33,6 @@ struct Entity
 	float dx;
 	float dy;
 	float speed;
-	GSequence * seq;
 	GSequenceIter * iter;
 	unsigned int last_change;
 };
@@ -80,7 +79,7 @@ entity_set_position(Entity * thing, float x, float y)
 	thing->y = y;
 }
 
-gboolean
+Entity *
 collide(Entity * one, float x, float y, Entity * another)
 {
 
@@ -103,7 +102,14 @@ collide(Entity * one, float x, float y, Entity * another)
 		rx = lx + 1;
 		ty = y;
 		by = ty + 1;
-		return !(alx >= rx || arx <= lx || aby <= ty || aty >= by);
+		if (!(alx >= rx || arx <= lx || aby <= ty || aty >= by))
+		{
+			return another;
+		}
+		else
+		{
+			return NULL;
+		}
 
 	}
 }
@@ -112,7 +118,7 @@ struct Hit
 {
 	Entity * me;
 	float targetx, targety;
-	gboolean hit;
+	Entity * hit;
 };
 
 void
@@ -126,14 +132,14 @@ seq_collide(gpointer thp, gpointer hp)
 	}
 }
 
-gboolean
+Entity *
 collision(Entity * thing, float x, float y, GSequence * others)
 {
 	struct Hit hit;
 	hit.me = thing;
 	hit.targetx = x;
 	hit.targety = y;
-	hit.hit = FALSE;
+	hit.hit = NULL; 
 
 	g_sequence_foreach(others, &seq_collide, &hit);
 
@@ -322,7 +328,7 @@ free_entity_animation(gpointer name, gpointer movie, gpointer vcrap)
 void
 free_cloned_entity(Entity * thing)
 {
-	if (thing->iter && thing->iter != g_sequence_get_end_iter(thing->seq))
+	if (thing->iter) 
 	{
 		g_sequence_remove(thing->iter);
 	}
@@ -440,7 +446,6 @@ entity_sequence()
 void
 register_entity(Entity * thing, GSequence * others)
 {
-	thing->seq = others;
 	thing->iter = g_sequence_append(others, thing);
 }
 

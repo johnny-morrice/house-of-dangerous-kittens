@@ -37,7 +37,7 @@ player_entity(Player * me)
 }
 
 void
-player_set_direction(Player * me, InputState * is, Camera * cam)
+player_user_input_response(Player * me, InputState * is, Camera * cam)
 {	
 	unsigned int mousex;
 	unsigned int mousey;
@@ -50,6 +50,10 @@ player_set_direction(Player * me, InputState * is, Camera * cam)
 
 	float dx = 0;
 	float dy = 0;
+
+	gboolean shoot;
+
+	shoot = mouse_press(is); 
 
 	// Get the mouse position
 	mouse_position(is, &mousex, &mousey);
@@ -86,43 +90,91 @@ player_set_direction(Player * me, InputState * is, Camera * cam)
 
 	entity_set_direction(me->body, dx, dy);
 
-	if (dx != 0 || dy != 0)
+	if (shoot)
 	{
-		if (dir == LEFT)
+
+		if (dx != 0 || dy != 0)
 		{
-			set_animation(me->body, (char *) "walk_left_shotgun");
+			if (dir == LEFT)
+			{
+				set_animation(me->body, (char *) "walk_left_shoot");
+			}
+			else if (dir == RIGHT)
+			{
+				set_animation(me->body, (char *) "walk_right_shoot");
+			}
+			else if (dir == UP)
+			{
+				set_animation(me->body, (char *) "walk_up_shoot");
+			}
+			else if (dir == DOWN)
+			{
+				set_animation(me->body, (char *) "walk_down_shoot");
+			}
 		}
-		else if (dir == RIGHT)
+		else
 		{
-			set_animation(me->body, (char *) "walk_right_shotgun");
-		}
-		else if (dir == UP)
-		{
-			set_animation(me->body, (char *) "walk_up_shotgun");
-		}
-		else if (dir == DOWN)
-		{
-			set_animation(me->body, (char *) "walk_down_shotgun");
+			if (dir == LEFT)
+			{
+				set_animation(me->body, (char *) "idle_left_shoot");
+			}
+			else if (dir == RIGHT)
+			{
+				set_animation(me->body, (char *) "idle_right_shoot");
+			}
+			else if (dir == UP)
+			{
+				set_animation(me->body, (char *) "idle_up_shoot");
+			}
+			else if (dir == DOWN)
+			{
+				set_animation(me->body, (char *) "idle_down_shoot");
+			}
+
 		}
 	}
 	else
 	{
-		if (dir == LEFT)
+		if (dx != 0 || dy != 0)
 		{
-			set_animation(me->body, (char *) "idle_left_shotgun");
+			if (dir == LEFT)
+			{
+				set_animation(me->body, (char *) "walk_left");
+			}
+			else if (dir == RIGHT)
+			{
+				set_animation(me->body, (char *) "walk_right");
+			}
+			else if (dir == UP)
+			{
+				set_animation(me->body, (char *) "walk_up");
+			}
+			else if (dir == DOWN)
+			{
+				set_animation(me->body, (char *) "walk_down");
+			}
 		}
-		else if (dir == RIGHT)
+		else
 		{
-			set_animation(me->body, (char *) "idle_right_shotgun");
-		}
-		else if (dir == UP)
-		{
-			set_animation(me->body, (char *) "idle_up_shotgun");
-		}
-		else if (dir == DOWN)
-		{
-			set_animation(me->body, (char *) "idle_down_shotgun");
+			if (dir == LEFT)
+			{
+				set_animation(me->body, (char *) "idle_left");
+			}
+			else if (dir == RIGHT)
+			{
+				set_animation(me->body, (char *) "idle_right");
+			}
+			else if (dir == UP)
+			{
+				set_animation(me->body, (char *) "idle_up");
+			}
+			else if (dir == DOWN)
+			{
+				set_animation(me->body, (char *) "idle_down");
+			}
+
 		}
 
 	}
+
 }

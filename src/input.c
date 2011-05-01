@@ -10,6 +10,8 @@ struct InputState
 	unsigned int mousex;
 	unsigned int mousey;
 	char quit_event;
+	gboolean mouse_press;
+
 };
 
 InputState *
@@ -80,6 +82,15 @@ update_input(InputState * is)
 			is->mousex = event.motion.x;
 			is->mousey = event.motion.y;
 		}
+		// There is a bug here where you can press both buttons and then release one and have the shooting stop.
+		else if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			is->mouse_press = TRUE;
+		}
+		else if (event.type == SDL_MOUSEBUTTONUP)
+		{
+			is->mouse_press = FALSE;
+		}
 		another = SDL_PollEvent(&event);
 	}
 }
@@ -89,4 +100,10 @@ mouse_position(InputState * is, unsigned int * x, unsigned int * y)
 {
 	*x = is->mousex;
 	*y = is->mousey;
+}
+
+gboolean
+mouse_press(InputState * is)
+{
+	return is->mouse_press;
 }

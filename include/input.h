@@ -3,6 +3,8 @@
 #define __INPUT__
 
 #include <SDL/SDL.h>
+#include <glib.h>
+
 #include "draw.h"
 
 typedef struct InputState InputState;
@@ -21,5 +23,7 @@ void mouse_position(InputState * is, unsigned int * x, unsigned int * y);
 char quit_happened(InputState * is);
 
 void free_input(InputState * is);
+
+gboolean mouse_press(InputState * is);
 
 #endif
