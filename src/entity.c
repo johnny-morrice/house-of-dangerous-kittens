@@ -33,6 +33,7 @@ struct Entity
 	float dx;
 	float dy;
 	float speed;
+	GSequenceIter * iter;
 	unsigned int last_change;
 };
 
@@ -78,8 +79,68 @@ entity_set_position(Entity * thing, float x, float y)
 	thing->y = y;
 }
 
+gboolean
+collide(Entity * one, float x, float y, Entity * another)
+{
+
+	float alx, arx,
+	      aty, aby,
+	      lx, rx,
+	      ty, by;
+
+	if (one == another)
+	{
+		return FALSE;
+	}
+	else
+	{
+		alx = another->x;
+		arx = alx + 1;
+		aty = another->y;
+		aby = aty + 1;
+		lx = x;
+		rx = lx + 1;
+		ty = y;
+		by = ty + 1;
+		return !(alx >= rx || arx <= lx || aby <= ty || aty >= by);
+
+	}
+}
+
+struct Hit
+{
+	Entity * me;
+	float targetx, targety;
+	gboolean hit;
+};
+
 void
-entity_move(Entity * thing, Level world, TimeTracker * time, Entity ** others)
+seq_collide(gpointer thp, gpointer hp)
+{
+	struct Hit * hit = (struct Hit *) hp;
+	Entity * thing = thp;
+	if (!hit->hit)
+	{
+		hit->hit = collide(hit->me, hit->targetx, hit->targety, thing);
+	}
+}
+
+gboolean
+collision(Entity * thing, float x, float y, GSequence * others)
+{
+	struct Hit hit;
+	hit.me = thing;
+	hit.targetx = x;
+	hit.targety = y;
+	hit.hit = FALSE;
+
+	g_sequence_foreach(others, &seq_collide, &hit);
+
+	return hit.hit;
+}
+
+void
+entity_move(Entity * thing, Level world, TimeTracker * time, GSequence * others)
 {
 	float adjustdx, adjustdy;
 	float x, y;
@@ -93,7 +154,7 @@ entity_move(Entity * thing, Level world, TimeTracker * time, Entity ** others)
 		x = thing->x + adjustdx;
 		y = thing->y + adjustdy;
 
-		if (in_bounds(world, x, y) && !collision(thing, others))
+		if (in_bounds(world, x, y) && !collision(thing, x, y, others))
 		{
 			entity_set_position(thing, x, y);
 		}
@@ -220,6 +281,7 @@ allocate_entity()
 	thing->dy = 0;
 	thing->x = 0;
 	thing->y = 0;
+	thing->iter = NULL;
 	set_animation(thing, (char *) "default");
 	return thing;
 
@@ -259,6 +321,10 @@ free_entity_animation(gpointer name, gpointer movie, gpointer vcrap)
 void
 free_cloned_entity(Entity * thing)
 {
+	if (thing->iter)
+	{
+		g_sequence_remove(thing->iter);
+	}
 	free(thing->current_animation);
 	free(thing);
 }
@@ -362,3 +428,18 @@ clone_entity(Entity * thing)
 	clone->speed = thing->speed;
 	return clone;
 }
+
+GSequence *
+entity_sequence()
+{
+	return g_sequence_new(NULL);
+}
+
+// Register an entity in this array
+void
+register_entity(Entity * thing, GSequence * others)
+{
+	thing->iter = g_sequence_append(others, thing);
+}
+
+

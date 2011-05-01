@@ -7,6 +7,7 @@
 #include "draw.h"
 #include "timetrack.h"
 
+#include <glib.h>
 #include <SDL/SDL.h>
 
 typedef struct KittenManager KittenManager;
@@ -31,11 +32,13 @@ free_kittens(KittenManager * litter);
 
 // Move the kitten toward the player
 void
-kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time);
+kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time, GSequence * others);
 
 // Draw the kitten
 void
 kitten_draw(Kitten * kitty, SDL_Surface * canvas, Camera * cam);
 
+void
+register_kitten(Kitten * kitty, GSequence * others);
 
 #endif

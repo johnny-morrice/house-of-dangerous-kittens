@@ -28,6 +28,10 @@ main(int argc, char ** argv)
 	KittenManager * litter = load_kittens();
 	Kitten * kitten = clone_kitten(litter, 6, 6);
 
+	GSequence * others = entity_sequence(); 
+	register_kitten(kitten, others);
+	register_entity(body, others);
+
 	for (i = 0; i < 10; i++)
 	{
 		for (j = 0; j < 10; j ++)
@@ -44,9 +48,9 @@ main(int argc, char ** argv)
 		update_input(is);
 		entity_centre(body, cam);
 		player_set_direction(player, is, cam);
-		entity_move(body, level, time);
+		entity_move(body, level, time, others);
 
-		kitten_move(kitten, player, level, time);
+		kitten_move(kitten, player, level, time, others);
 
 		level_draw(level, screen, cam);
 		entity_draw(body, screen, cam);
@@ -58,6 +62,7 @@ main(int argc, char ** argv)
 		frame_done(time);
 	}
 
+	g_sequence_free(others);
 	free(cam);
 	free(halter);
 	free_player(player);

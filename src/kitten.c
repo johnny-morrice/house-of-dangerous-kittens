@@ -63,7 +63,13 @@ kitten_draw(Kitten * kitty, SDL_Surface * canvas, Camera * cam)
 }
 
 void
-kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time)
+register_kitten(Kitten * kitty, GSequence * others)
+{
+	register_entity(kitty->body, others);
+}
+
+void
+kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time, GSequence * others)
 {
 	float x, y;
 	float px, py;
@@ -102,5 +108,5 @@ kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time)
 	dy = py - y;
 
 	entity_set_direction(body, dx, dy);
-	entity_move(body, world, time);
+	entity_move(body, world, time, others);
 }

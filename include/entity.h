@@ -19,7 +19,7 @@ void set_animation(Entity * creature, char * name);
 void next_frame(Entity * creature);
 void entity_draw(Entity * thing, SDL_Surface * canvas, Camera * cam);
 
-void entity_move(Entity * thing, Level level, TimeTracker * time);
+void entity_move(Entity * thing, Level level, TimeTracker * time, GSequence * others);
 void entity_set_position(Entity * thing, float x, float y);
 // Return true if there was a change of direction
 gboolean entity_set_direction(Entity * thing, float dx, float dy);
@@ -34,5 +34,9 @@ void free_cloned_entity(Entity * clone);
 
 // Centre camera on entity
 void entity_centre(Entity * me, Camera * cam);
+
+GSequence * entity_sequence();
+
+void register_entity(Entity * thing, GSequence * others);
 
 #endif
