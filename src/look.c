@@ -68,7 +68,7 @@ raytrace(Level world, GSList * seen, float x, float y, float theta)
 	dx = cos(theta);
 	dy = sin(theta);
 
-	while (in_bounds(world, x, y))
+	while (point_in_bounds(world, x, y))
 	{
 		seen = g_slist_prepend(seen, new_coord(x, y));
 		x += dx;

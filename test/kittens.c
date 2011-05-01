@@ -15,7 +15,7 @@
 int
 main(int argc, char ** argv)
 {
-	char i, j;
+	unsigned int i;
 
 	SDL_Surface * screen = init_sdl();
 	SDL_Surface * cursor = load_cursor();
@@ -31,19 +31,35 @@ main(int argc, char ** argv)
 	TimeTracker * time = new_time_tracker();
 	TileManager * tiles = load_tiles();
 	KittenManager * litter = load_kittens(body, world, time, entities);
-	Entity * kitten = clone_kitten(litter, 6, 6);
+	Entity * kitten = clone_kitten(litter, 0, 3);
+
+	// We're testing the AI, easier to see slowly
+	entity_set_speed(kitten, 0.1);
 
 	register_entity(entities, kitten);
 
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < 4; i++)
 	{
-		for (j = 0; j < 10; j ++)
-		{
-			level_set_square(world, tiles, i, j, square_carpet);
-		}
+		level_set_square(world, tiles, 0, i, square_carpet);
+		level_set_square(world, tiles, 1, i, square_carpet);
 	}
 
-	entity_set_position(body, 5, 5);
+	for (i = 0; i < 6; i++)
+	{
+		level_set_square(world, tiles, i, 0, square_carpet);
+		level_set_square(world, tiles, i, 1, square_carpet);
+	}
+
+	for (i = 0; i < 4; i++)
+	{
+		level_set_square(world, tiles, 4, i, square_carpet);
+		level_set_square(world, tiles, 5, i, square_carpet);
+	}
+
+
+
+
+	entity_set_position(body, 0, 0);
 
 	while (running(halter))
 	{

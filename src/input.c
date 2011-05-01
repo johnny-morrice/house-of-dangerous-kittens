@@ -72,12 +72,10 @@ update_input(InputState * is)
 		else if (event.type == SDL_KEYUP)
 		{
 			is->down = g_slist_remove(is->down, GINT_TO_POINTER(event.key.keysym.sym));
-			printf("Key up: %d\n", event.key.keysym.sym);
 		}
 		else if (event.type == SDL_KEYDOWN)
 		{
 			is->down = g_slist_prepend(is->down, GINT_TO_POINTER(event.key.keysym.sym));
-			printf("Key down: %d\n", event.key.keysym.sym);
 		}
 		else if (event.type == SDL_MOUSEMOTION)
 		{

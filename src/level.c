@@ -92,31 +92,30 @@ level_draw(Level world, SDL_Surface * canvas, Camera * cam)
 }
 
 gboolean
-walkable_square(Level world, float x, float y)
+point_in_bounds(Level world, float x, float y)
 {
-	unsigned int rx, ry;
+	int fx, fy;
 
-	rx = floor(x);
-	ry = floor(y);
+	gboolean walkable;
 
-	return world[rx][ry].type == 'c';
-}
+	fx = floor(x);
+	fy = floor(y);
 
-gboolean
-walkable(Level world, float x, float y)
-{
-	return walkable_square(world, x, y) && walkable_square(world, x + 1, y) && walkable_square(world, x, y + 1);
-}
-
-gboolean
-in_bounds(Level world, float x, float y)
-{
-	if (x >= 0 && y >= 0 && x < level_width - 1 && y < level_height - 1)
+	if (fx >= 0 && fy >= 0 && fx < level_width - 1 && fy < level_height - 1)
 	{
-		return walkable(world, x, y);
+
+		walkable = world[fx][fy].type == 'c';
+
+		return walkable;
 	}
 	else
 	{
 		return FALSE;
 	}
+}
+
+gboolean
+in_bounds(Level world, float x, float y)
+{
+	return point_in_bounds(world, x, y) && point_in_bounds(world, x + 1, y) && point_in_bounds(world, x, y + 1) && point_in_bounds(world, x + 1, y + 1);
 }

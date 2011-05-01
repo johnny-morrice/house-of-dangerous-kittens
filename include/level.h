@@ -30,6 +30,10 @@ void free_level(Level level);
 // Draw the level onto the canvas
 void level_draw(Level level, SDL_Surface * canvas, Camera * cam);
 
+// Is a point at this position in bounds
+gboolean point_in_bounds(Level level, float x, float y);
+
+// Is a square with top left at this position in bounds?
 gboolean in_bounds(Level level, float x, float y);
 
 #endif

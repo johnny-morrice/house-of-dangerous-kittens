@@ -5,6 +5,7 @@
 #include "draw.h"
 #include "timetrack.h"
 #include "fatal.h"
+#include "collide.h"
 
 #include <SDL/SDL.h>
 #include <stdio.h>
@@ -103,41 +104,6 @@ entity_set_position(Entity * thing, float x, float y)
 	thing->y = y;
 }
 
-Entity *
-collide(Entity * one, float x, float y, Entity * another)
-{
-
-	float alx, arx,
-	      aty, aby,
-	      lx, rx,
-	      ty, by;
-
-	if (one == another)
-	{
-		return FALSE;
-	}
-	else
-	{
-		alx = another->x;
-		arx = alx + 1;
-		aty = another->y;
-		aby = aty + 1;
-		lx = x;
-		rx = lx + 1;
-		ty = y;
-		by = ty + 1;
-		if (!(alx >= rx || arx <= lx || aby <= ty || aty >= by))
-		{
-			return another;
-		}
-		else
-		{
-			return NULL;
-		}
-
-	}
-}
-
 struct Hit
 {
 	Entity * me;
@@ -150,9 +116,12 @@ seq_collide(gpointer thp, gpointer hp)
 {
 	struct Hit * hit = (struct Hit *) hp;
 	Entity * thing = thp;
-	if (!hit->hit)
+	if (!(hit->hit || hit->me == thing))
 	{
-		hit->hit = collide(hit->me, hit->targetx, hit->targety, thing);
+		if (collide(hit->targetx, hit->targety, thing->x, thing->y))
+		{
+			hit->hit = thing;
+		}
 	}
 }
 
@@ -174,7 +143,12 @@ collision(Entity * thing, float x, float y, EntitySet * others)
 gboolean
 can_walk(float x, float y, Entity * thing, Level world, EntitySet * others)
 {
-	return in_bounds(world, x, y) && !collision(thing, x, y, others);
+	gboolean bounds = in_bounds(world, x, y);
+	gboolean stuff = !collision(thing, x, y, others);
+
+//	printf("(%f,%f) bounds? %d\n", x, y, bounds);
+//	printf("(%f,%f) collision? %d\n", x, y, stuff);
+	return bounds && stuff;
 }
 
 
@@ -187,7 +161,7 @@ entity_move(Entity * thing, Level world, TimeTracker * time, EntitySet * others)
 	adjustdx = thing->dx * thing->speed / fps(time);
 	adjustdy = thing->dy * thing->speed / fps(time);
 
-	if (! (isnan(adjustdx) || isnan(adjustdy)))
+	if (! (isnan(adjustdx) || isnan(adjustdy) || (adjustdx == 0 && adjustdy == 0)))
 	{
 		x = thing->x;
 		y = thing->y;
