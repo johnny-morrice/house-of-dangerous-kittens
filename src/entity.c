@@ -33,6 +33,7 @@ struct Entity
 	float dx;
 	float dy;
 	float speed;
+	GSequence * seq;
 	GSequenceIter * iter;
 	unsigned int last_change;
 };
@@ -321,7 +322,7 @@ free_entity_animation(gpointer name, gpointer movie, gpointer vcrap)
 void
 free_cloned_entity(Entity * thing)
 {
-	if (thing->iter)
+	if (thing->iter && thing->iter != g_sequence_get_end_iter(thing->seq))
 	{
 		g_sequence_remove(thing->iter);
 	}
@@ -439,6 +440,7 @@ entity_sequence()
 void
 register_entity(Entity * thing, GSequence * others)
 {
+	thing->seq = others;
 	thing->iter = g_sequence_append(others, thing);
 }
 

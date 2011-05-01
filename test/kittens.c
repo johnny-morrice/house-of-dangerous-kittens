@@ -10,6 +10,7 @@
 #include "level.h"
 #include "tiles.h"
 #include "kitten.h"
+#include "cursor.h"
 
 int
 main(int argc, char ** argv)
@@ -17,6 +18,7 @@ main(int argc, char ** argv)
 	char i, j;
 
 	SDL_Surface * screen = init_sdl();
+	SDL_Surface * cursor = load_cursor();
 	InputState * is = new_input_state();
 	Control * halter = new_control();
 	Player * player = new_player();
@@ -46,6 +48,7 @@ main(int argc, char ** argv)
 	{
 		SDL_FillRect(screen, NULL, 0);
 		update_input(is);
+
 		entity_centre(body, cam);
 		player_set_direction(player, is, cam);
 		entity_move(body, level, time, others);
@@ -55,6 +58,9 @@ main(int argc, char ** argv)
 		level_draw(level, screen, cam);
 		entity_draw(body, screen, cam);
 		kitten_draw(kitten, screen, cam);
+
+		draw_cursor(is, cursor, screen);
+
 
 		SDL_Flip(screen);
 

@@ -7,7 +7,7 @@ ENGINE = ["src/player.c", "src/screen.c",
 	"src/draw.c", "src/directory.c",
 	"src/entity.c", "src/fatal.c",
 	"src/tiles.c", "src/kitten.c",
-	"src/look.c"]
+	"src/look.c", "src/cursor.c"]
 
 def compile out, flags, *paths
 	sh "gcc -o #{out} #{flags} -Wall `pkg-config --cflags --libs gobject-2.0` `pkg-config --cflags --libs sdl` -lSDL_image -Iinclude #{ENGINE.join " "} #{paths.join " "}"
