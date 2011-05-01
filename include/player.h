@@ -16,7 +16,8 @@ Player * new_player();
 
 void free_player(Player * player);
 
-void player_fetch_direction(Player * player, InputState * is);
+// Set the player's direction, with regard to the position of the mouse
+void player_set_direction(Player * player, InputState * is, Camera * cam);
 
 Entity * player_entity(Player * player);
 

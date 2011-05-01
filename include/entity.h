@@ -25,6 +25,8 @@ void entity_set_position(Entity * thing, float x, float y);
 gboolean entity_set_direction(Entity * thing, float dx, float dy);
 void entity_set_speed(Entity * thing, float d);
 
+void entity_position(Entity * thing, float * x, float * y);
+
 // Centre camera on entity
 void entity_centre(Entity * me, Camera * cam);
 

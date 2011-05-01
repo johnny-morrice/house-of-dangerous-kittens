@@ -301,3 +301,11 @@ entity_centre(Entity * me, Camera * cam)
 {
 	camera_centre(cam, me->x, me->y);
 }
+
+// Get the position of an entity
+void
+entity_position(Entity * me, float * x, float * y)
+{
+	*x = me->x;
+	*y = me->y;
+}

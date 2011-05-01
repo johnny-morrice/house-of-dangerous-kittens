@@ -34,10 +34,24 @@ camera_centre(Camera * cam, float x, float y)
 }
 
 void
+camera_inverse_transform(Camera * cam, float x, float y, float * tx, float * ty)
+{
+	*tx = x - cam->xoffset;
+	*ty = y - cam->yoffset;
+}
+
+
+void
+camera_transform(Camera * cam, float x, float y, float * tx, float * ty)
+{
+	*tx = x + cam->xoffset;
+	*ty = y + cam->yoffset;
+}
+
+void
 draw(SDL_Surface * sprite, SDL_Surface * canvas, Camera * cam, float x, float y)
 {
 	SDL_Rect offset;
-	offset.x = x * square_size + cam->xoffset;
-	offset.y = y * square_size + cam->yoffset;
+	camera_transform(cam, x * square_size, y * square_size, &offset.x, &offset.y);
 	SDL_BlitSurface(sprite, NULL, canvas, &offset);
 }

@@ -7,6 +7,8 @@
 struct InputState
 {
 	GSList * down;
+	unsigned int mousex;
+	unsigned int mousey;
 	char quit_event;
 };
 
@@ -73,6 +75,18 @@ update_input(InputState * is)
 		{
 			is->down = g_slist_prepend(is->down, GINT_TO_POINTER(event.key.keysym.sym));
 		}
+		else if (event.type = SDL_MOUSEMOTION)
+		{
+			is->mousex = event.motion.x;
+			is->mousey = event.motion.y;
+		}
 		another = SDL_PollEvent(&event);
 	}
+}
+
+void
+mouse_position(InputState * is, unsigned int * x, unsigned int * y)
+{
+	*x = is->mousex;
+	*y = is->mousey;
 }
