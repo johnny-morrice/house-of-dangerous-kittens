@@ -12,7 +12,7 @@
 #include <string.h>
 #include <math.h>
 
-#define ANIMATION_FPS 25
+#define ANIMATION_FPS 2
 
 struct Animation
 {
