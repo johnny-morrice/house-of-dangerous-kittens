@@ -18,8 +18,10 @@ main(int argc, char ** argv)
 	InputState * is = new_input_state();
 	Control * halter = new_control();
 	Player * player = new_player();
+	Entity * body = player_entity(player);
 	Level level = new_level();
 	TimeTracker * time = new_time_tracker();
+	Camera * cam = new_camera();
 
 	for (i = 0; i < 10; i++)
 	{
@@ -29,21 +31,24 @@ main(int argc, char ** argv)
 		}
 	}
 
-	entity_set_position(player_entity(player), 5, 5);
+	entity_set_position(body, 5, 5);
 
 	while (running(halter))
 	{
+		SDL_FillRect(screen, NULL, 0);
 		update_input(is);
+		entity_centre(body, cam);
 		player_fetch_direction(player, is);
-		entity_move(player_entity(player), level, time);
-		level_draw(level, screen);
-		entity_draw(player_entity(player), screen);
+		entity_move(body, level, time);
+		level_draw(level, screen, cam);
+		entity_draw(body, screen, cam);
 		SDL_Flip(screen);
 
 		check_exit(halter, is);
 		frame_done(time);
 	}
 
+	free(cam);
 	free(halter);
 	free_player(player);
 	free_level(level);

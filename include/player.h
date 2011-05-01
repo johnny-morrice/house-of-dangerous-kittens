@@ -8,6 +8,7 @@
 #include "entity.h"
 #include "timetrack.h"
 #include "level.h"
+#include "draw.h"
 
 typedef struct Player Player;
 

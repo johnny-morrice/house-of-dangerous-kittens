@@ -12,7 +12,7 @@
 #include <string.h>
 #include <math.h>
 
-#define ANIMATION_FPS 10
+#define ANIMATION_FPS 5
 
 struct Animation
 {
@@ -102,7 +102,7 @@ entity_move(Entity * thing, Level world, TimeTracker * time)
 }
 
 void
-entity_draw(Entity * thing, SDL_Surface * canvas)
+entity_draw(Entity * thing, SDL_Surface * canvas, Camera * cam)
 {
 	unsigned int ticks;
 
@@ -113,7 +113,7 @@ entity_draw(Entity * thing, SDL_Surface * canvas)
 		if (movie->count > 0)
 		{
 			current = movie->frames[thing->current_frame];
-			draw(current, canvas, thing->x, thing->y);
+			draw(current, canvas, cam, thing->x, thing->y);
 
 			ticks = SDL_GetTicks();
 
@@ -151,7 +151,7 @@ char * zonecat(char * part, char * rest)
 gint
 pathcmp(gconstpointer p1, gconstpointer p2)
 {
-	return strcmp((char *) p1, (char *) p2);
+	return (gint) strcmp((char *) p1, (char *) p2);
 }
 
 Animation *
@@ -293,4 +293,11 @@ load_entity(const char * path)
 	free_directory_entries(files);
 
 	return thing;
+}
+
+// Centre the camera on an entity
+void
+entity_centre(Entity * me, Camera * cam)
+{
+	camera_centre(cam, me->x, me->y);
 }

@@ -3,7 +3,7 @@
 
 #include <SDL/SDL.h>
 
-#define TRACKING 1000
+#define TRACKING 100
 
 struct TimeTracker
 {

@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "zone.h"
 #include "input.h"
+#include "draw.h"
 
 #include <SDL/SDL.h>
 

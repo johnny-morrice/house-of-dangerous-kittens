@@ -75,7 +75,7 @@ level_set_square(Level world, int x, int y, char type)
 }
 
 void
-level_draw(Level world, SDL_Surface * canvas)
+level_draw(Level world, SDL_Surface * canvas, Camera * cam)
 {
 	int i, j;
 	Square sq;
@@ -85,7 +85,7 @@ level_draw(Level world, SDL_Surface * canvas)
 		for (j = 0; j < level_height; j++)
 		{
 			sq = world[i][j];
-			draw(sq.sprite, canvas, i, j);
+			draw(sq.sprite, canvas, cam, i, j);
 		}
 	}
 }

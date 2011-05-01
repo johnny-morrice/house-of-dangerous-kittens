@@ -21,7 +21,7 @@ end
 
 desc "Clean tree"
 task :clean do
-	FileUtils.rm_r "work"
+	FileUtils.rm_rf "work"
 end
 
 desc "Test player movement"

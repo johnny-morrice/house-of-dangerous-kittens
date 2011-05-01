@@ -8,5 +8,12 @@ SDL_Surface *
 init_sdl()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	return SDL_SetVideoMode(screen_width, screen_height, 32, SDL_SWSURFACE);
+	return SDL_SetVideoMode(screen_width, screen_height, 32, SDL_HWSURFACE);
 }
+
+// Create new surface
+//SDL_Surface *
+//new_canvas()
+//{
+//	return SDL_CreateRGBSurface(SDL_HWSURFACE, screen_width, screen_height, 32, 0 0 0, 0);
+//}

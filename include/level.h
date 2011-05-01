@@ -27,7 +27,7 @@ void level_set_square(Level level, int x, int y, char type);
 void free_level(Level level);
 
 // Draw the level onto the canvas
-void level_draw(Level level, SDL_Surface * canvas);
+void level_draw(Level level, SDL_Surface * canvas, Camera * cam);
 
 gboolean in_bounds(Level level, float x, float y);
 

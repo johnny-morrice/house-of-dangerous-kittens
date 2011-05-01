@@ -9,4 +9,7 @@
 
 SDL_Surface * init_sdl();
 
+// Create a new surface
+// SDL_Surface * new_canvas();
+
 #endif
