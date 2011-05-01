@@ -3,16 +3,21 @@
 
 #include <SDL/SDL.h>
 
+#define TRACKING 1000;
+
 struct TimeTracker
 {
-	unsigned int last_frame;
+	unsigned int first_time;
+	unsigned int frames;
+	unsigned int fps;
 };
 
 TimeTracker *
 new_time_tracker()
 {
 	TimeTracker * time = (TimeTracker *) zone(sizeof(TimeTracker));
-	frame_done(time);
+	time->frames = 0;
+	time->fps = 1;
 	return time;
 }
 
@@ -20,13 +25,19 @@ new_time_tracker()
 void
 frame_done(TimeTracker * time)
 {
-	time->last_frame = SDL_GetTicks();
+	unsigned int ticks = SDL_GetTicks();
+	time->frames ++;
+	if (ticks - time->first_time > 1000)
+	{
+		time->first_time = ticks;
+		time->fps = time->frames;
+		time->frames = 0;
+	}
 }
 
-// How long has it taken to render this frame?
+// Get the fps
 unsigned int
-frame_ms(TimeTracker * time)
+fps(TimeTracker * time)
 {
-	return SDL_GetTicks() - time->last_frame;
+	return time->fps;
 }
-

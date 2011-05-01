@@ -66,34 +66,25 @@ entity_set_position(Entity * thing, float x, float y)
 void
 entity_move(Entity * thing, Level world, TimeTracker * time)
 {
-	float msdx, msdy;
-	float x, y, newx, newy;
-	unsigned int i;
-	unsigned int taken;
+	float adjustdx, adjustdy;
+	float x, y;
 
-	taken = frame_ms(time);
+	adjustdx = thing->dx / fps(time);
+	adjustdy = thing->dy / fps(time);
 
-	x = thing->x;
-	y = thing->y;
-	msdx = thing->dx * thing->speed / 1000;
-	msdy = thing->dy * thing->speed / 1000;
+	printf("fps: %d\n", fps(time));
 
-	for (i = 0; i < taken; i++)
+	if (! (isnan(adjustdx) || isnan(adjustdy)))
 	{
-		newx = x + msdx;
-		newy = y + msdy;
-		if (in_bounds(world, newx, newy))
+
+		x = thing->x + adjustdx;
+		y = thing->y + adjustdy;
+
+		if (in_bounds(world, x, y))
 		{
-			x = newx;
-			y = newy;
-		}
-		else
-		{
-			break;
+			entity_set_position(thing, x, y);
 		}
 	}
-
-	entity_set_position(thing, x, y);
 }
 
 void
