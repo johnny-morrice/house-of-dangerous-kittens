@@ -40,19 +40,32 @@ entity_set_speed(Entity * thing, float speed)
 	thing->speed = speed;
 }
 
-void
+gboolean
 entity_set_direction(Entity * thing, float dx, float dy)
 {
+	float adx, ady;
 	float mag = sqrt((dx * dx) + (dy * dy));
+
 	if (mag > 0)
 	{
-		thing->dx = dx / mag;
-		thing->dy = dy / mag;
+		adx = dx / mag;
+		ady = dy / mag;
 	}
 	else
 	{
-		thing->dx = 0;
-		thing->dy = 0;
+		adx = 0;
+		adx = 0;
+	}
+
+	if (thing->dx != adx || thing->dy != ady)
+	{
+		thing->dx = adx;
+		thing->dy = ady;
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
 	}
 }
 
@@ -69,10 +82,9 @@ entity_move(Entity * thing, Level world, TimeTracker * time)
 	float adjustdx, adjustdy;
 	float x, y;
 
-	adjustdx = thing->dx / fps(time);
-	adjustdy = thing->dy / fps(time);
+	adjustdx = thing->dx * thing->speed / fps(time);
+	adjustdy = thing->dy * thing->speed / fps(time);
 
-	printf("fps: %d\n", fps(time));
 
 	if (! (isnan(adjustdx) || isnan(adjustdy)))
 	{

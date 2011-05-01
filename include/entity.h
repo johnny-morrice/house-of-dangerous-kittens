@@ -20,7 +20,8 @@ void entity_draw(Entity * thing, SDL_Surface * canvas);
 
 void entity_move(Entity * thing, Level level, TimeTracker * time);
 void entity_set_position(Entity * thing, float x, float y);
-void entity_set_direction(Entity * thing, float dx, float dy);
+// Return true if there was a change of direction
+gboolean entity_set_direction(Entity * thing, float dx, float dy);
 void entity_set_speed(Entity * thing, float d);
 
 #endif
