@@ -11,6 +11,8 @@ load_sprite(const char * path)
 	SDL_Surface * unoptimized;
 	SDL_Surface * optimized;
 
+	printf("Loading sprite %s\n", path);
+
 	unoptimized = IMG_Load(path);
 
 	if (! unoptimized)

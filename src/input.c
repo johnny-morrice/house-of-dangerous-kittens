@@ -75,7 +75,7 @@ update_input(InputState * is)
 		{
 			is->down = g_slist_prepend(is->down, GINT_TO_POINTER(event.key.keysym.sym));
 		}
-		else if (event.type = SDL_MOUSEMOTION)
+		else if (event.type == SDL_MOUSEMOTION)
 		{
 			is->mousex = event.motion.x;
 			is->mousey = event.motion.y;

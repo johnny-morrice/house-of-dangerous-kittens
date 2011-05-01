@@ -43,7 +43,7 @@ player_entity(Player * me)
 }
 
 void
-player_fetch_direction(Player * me, InputState * is, Camera * cam)
+player_set_direction(Player * me, InputState * is, Camera * cam)
 {	
 	unsigned int mousex;
 	unsigned int mousey;
@@ -98,7 +98,7 @@ player_fetch_direction(Player * me, InputState * is, Camera * cam)
 		}
 		else
 		{
-			dir = UP
+			dir = UP;
 		}
 	}
 
@@ -122,7 +122,7 @@ player_fetch_direction(Player * me, InputState * is, Camera * cam)
 	if (key_down(is, SDLK_s) || key_down(is, SDLK_DOWN))
 	{
 		dy = 1;
-	}
+	}	
 
 	if (dx != 0 || dy != 0)
 	{

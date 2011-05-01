@@ -38,7 +38,7 @@ main(int argc, char ** argv)
 		SDL_FillRect(screen, NULL, 0);
 		update_input(is);
 		entity_centre(body, cam);
-		player_fetch_direction(player, is);
+		player_set_direction(player, is, cam);
 		entity_move(body, level, time);
 		level_draw(level, screen, cam);
 		entity_draw(body, screen, cam);

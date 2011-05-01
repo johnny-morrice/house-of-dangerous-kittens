@@ -52,6 +52,10 @@ void
 draw(SDL_Surface * sprite, SDL_Surface * canvas, Camera * cam, float x, float y)
 {
 	SDL_Rect offset;
-	camera_transform(cam, x * square_size, y * square_size, &offset.x, &offset.y);
+	float realx, realy;
+
+	camera_transform(cam, x * square_size, y * square_size, &realx, &realy);
+	offset.x = realx;
+	offset.y = realy;
 	SDL_BlitSurface(sprite, NULL, canvas, &offset);
 }

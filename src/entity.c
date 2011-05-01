@@ -148,10 +148,29 @@ char * zonecat(char * part, char * rest)
 }
 
 // Compare two paths
+// strcmp wasn't working here for some reason
 gint
 pathcmp(gconstpointer p1, gconstpointer p2)
 {
-	return (gint) strcmp((char *) p1, (char *) p2);
+	char * s1 = * (char * const *) p1;
+	char * s2 = * (char * const *) p2;
+
+	int cmp;
+
+	if (s1[0] < s2[0])
+	{
+		cmp = -1;
+	}
+	else if (s1[0] > s2[0])
+	{
+		cmp = 1;
+	}
+	else
+	{
+		cmp = 0;
+	}
+
+	return (gint) cmp;
 }
 
 Animation *
@@ -163,6 +182,8 @@ load_animation(const char * path)
 	char * sprite_path;
 
 	Animation * movie = (Animation *) zone(sizeof(Animation));
+
+	printf("Loading animation %s\n", path);
 
 	files = directory_entries(path);
 
@@ -242,9 +263,12 @@ add_animation(Entity * creature, char * name, Animation * action)
 void
 set_animation(Entity * thing, char * name)
 {
-	strcpy(thing->current_animation, name);
-	thing->current_frame = 0;
-	thing->last_change = SDL_GetTicks();
+	if (strcmp(thing->current_animation, name) != 0)
+	{
+		strcpy(thing->current_animation, name);
+		thing->current_frame = 0;
+		thing->last_change = SDL_GetTicks();
+	}
 }
 
 void
@@ -275,6 +299,8 @@ load_entity(const char * path)
 	unsigned int i;
 
 	Entity * thing = new_entity();
+
+	printf("Loading entity %s\n", path);
 
 	files = directory_entries(path);
 
