@@ -1,5 +1,4 @@
 #include "kitten.h"
-#include "player.h"
 #include "entity.h"
 #include "zone.h"
 #include "look.h"
@@ -11,24 +10,52 @@
 struct KittenManager
 {
 	Entity * mother;
+	Kitten * child;
 };
 
+struct Kitten
+{
+	Entity * body;
+	Entity * player;
+	Level world;
+	TimeTracker * time;
+	EntitySet * others;
+
+};
+
+void
+kitten_destructor(Entity * thing, gpointer kittyp)
+{
+	free_cloned_entity(thing);
+}
+
 KittenManager *
-load_kittens()
+load_kittens(Entity * player, Level world, TimeTracker * time, EntitySet * others)
 {
 	KittenManager * litter = (KittenManager *) zone(sizeof(KittenManager));
-	Entity * mother = load_entity("data/sprites/kitten/");
+
+	Kitten * kitty = (Kitten *) zone(sizeof(Kitten));
+
+	Entity * mother = load_entity("data/sprites/kitten/", kitty, &kitten_move, &kitten_destructor);
+
+	kitty->body = mother;
+	kitty->player = player;
+	kitty->world = world;
+	kitty->time = time;
+	kitty->others = others;
+
 	litter->mother = mother;
+	litter->child = kitty;
 
 	entity_set_speed(mother, 4);
 
 	return litter;
 }
 
-Kitten *
+Entity *
 clone_kitten(KittenManager * litter, float x, float y)
 {
-	Kitten * kitty = clone_entity(litter->mother);
+	Entity * kitty = clone_entity(litter->mother);
 
 	entity_set_position(kitty, x, y);
 
@@ -36,40 +63,43 @@ clone_kitten(KittenManager * litter, float x, float y)
 }
 
 void
-free_kitten(Kitten * kitty)
-{
-	free_cloned_entity(kitty);
-}
-
-void
 free_kittens(KittenManager * litter)
 {
 	free_entity(litter->mother);
+	free(litter->child);
 	free(litter);
 }
 
 void
 kitten_draw(Kitten * kitty, SDL_Surface * canvas, Camera * cam)
 {
-	entity_draw(kitty, canvas, cam);
+	entity_draw(kitty->body, canvas, cam);
 }
 
 void
-register_kitten(Kitten * kitty, GSequence * others)
+kitten_move(gpointer kittyp)
 {
-	register_entity(kitty, others);
-}
+	Kitten * kitty;
+	Entity * player;
+	Level world;
+	TimeTracker * time;
+	EntitySet * others;
 
-void
-kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time, GSequence * others)
-{
 	float x, y;
 	float px, py;
 	float dx, dy;
 	unsigned int dir;
+	Entity * body;
 
-	entity_position(kitty, &x, &y);
-	entity_position(player_entity(me), &px, &py);
+	kitty = (Kitten *) kittyp;
+	player = kitty->player;
+	world = kitty->world;
+	time = kitty->time;
+	others = kitty->others;
+	body = kitty->body;
+
+	entity_position(body, &x, &y);
+	entity_position(player, &px, &py);
 
 	if (can_see(world, x, y, px, py))
 	{
@@ -77,25 +107,25 @@ kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time, GSeque
 
 		if (dir == LEFT)
 		{
-			set_animation(kitty, "left");
+			set_animation(body, "left");
 		}
 		else if (dir == RIGHT)
 		{
-			set_animation(kitty, "right");
+			set_animation(body, "right");
 		}
 		else if (dir == UP)
 		{
-			set_animation(kitty, "up");
+			set_animation(body, "up");
 		}
 		else if (dir == DOWN)
 		{
-			set_animation(kitty, "down");
+			set_animation(body, "down");
 		}
 	}
 
 	dx = px - x;
 	dy = py - y;
 
-	entity_set_direction(kitty, dx, dy);
-	entity_move(kitty, world, time, others);
+	entity_set_direction(body, dx, dy);
+	entity_move(body, world, time, others);
 }

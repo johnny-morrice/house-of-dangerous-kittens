@@ -33,9 +33,33 @@ struct Entity
 	float dx;
 	float dy;
 	float speed;
-	GSequenceIter * iter;
+	EntitySet * set;
 	unsigned int last_change;
+	void (*interact)(gpointer);
+	gpointer userdata;
+	void (*destructor)(Entity *, gpointer);
 };
+
+// Allow the callbacks to operate on the thing
+void
+entity_interact(Entity * thing)
+{
+	(*(thing->interact))(entity_user_data(thing));
+}
+
+
+// Destroy the thing with the user's destructor
+void
+entity_destructor(Entity * thing)
+{
+	(*(thing->destructor))(thing, thing->userdata);
+}
+
+gpointer
+entity_user_data(Entity * thing)
+{
+	return thing->userdata;
+}
 
 void
 entity_set_speed(Entity * thing, float speed)
@@ -133,7 +157,7 @@ seq_collide(gpointer thp, gpointer hp)
 }
 
 Entity *
-collision(Entity * thing, float x, float y, GSequence * others)
+collision(Entity * thing, float x, float y, EntitySet * others)
 {
 	struct Hit hit;
 	hit.me = thing;
@@ -141,13 +165,13 @@ collision(Entity * thing, float x, float y, GSequence * others)
 	hit.targety = y;
 	hit.hit = NULL; 
 
-	g_sequence_foreach(others, &seq_collide, &hit);
+	g_slist_foreach(entity_list(others), &seq_collide, &hit);
 
 	return hit.hit;
 }
 
 void
-entity_move(Entity * thing, Level world, TimeTracker * time, GSequence * others)
+entity_move(Entity * thing, Level world, TimeTracker * time, EntitySet * others)
 {
 	float adjustdx, adjustdy;
 	float x, y;
@@ -279,25 +303,32 @@ gstrcmp(const void * s1, const void * s2)
 }
 
 Entity *
-allocate_entity()
+allocate_entity(gpointer userdata,
+		void (*interact)(gpointer),
+		void (*destructor)(Entity *, gpointer))
 {
 	Entity * thing = (Entity *) zone(sizeof(Entity));
+	thing->userdata = userdata;
+	thing->interact = interact;
+	thing->destructor = destructor;
 	thing->current_animation = (char *) zone(sizeof(char) * 100);
 	thing->current_frame = 0;
 	thing->dx = 0;
 	thing->dy = 0;
 	thing->x = 0;
 	thing->y = 0;
-	thing->iter = NULL;
+	thing->set = NULL;
 	set_animation(thing, (char *) "default");
 	return thing;
 
 }
 
 Entity *
-new_entity()
+new_entity(gpointer userdata,
+		void (*interact)(gpointer),
+		void (*destructor)(Entity *, gpointer))
 {
-	Entity * thing = allocate_entity();
+	Entity * thing = allocate_entity(userdata, interact, destructor);
 	thing->animations = g_tree_new(&gstrcmp);
 	return thing;
 }
@@ -328,12 +359,18 @@ free_entity_animation(gpointer name, gpointer movie, gpointer vcrap)
 void
 free_cloned_entity(Entity * thing)
 {
-	if (thing->iter) 
-	{
-		g_sequence_remove(thing->iter);
-	}
 	free(thing->current_animation);
 	free(thing);
+}
+
+void
+entity_destroy(Entity * thing)
+{
+	if (thing->set)
+	{
+		remove_entity(thing->set, thing);
+	}
+	entity_destructor(thing);
 }
 
 void
@@ -376,7 +413,10 @@ next_frame(Entity * thing)
 }
 
 Entity *
-load_entity(const char * path)
+load_entity(const char * path,
+		gpointer user_data,
+		void (*interact)(gpointer),
+		void (*free_data)(Entity *, gpointer))
 {
 	GArray * files;
 	
@@ -388,7 +428,7 @@ load_entity(const char * path)
 
 	unsigned int i;
 
-	Entity * thing = new_entity();
+	Entity * thing = new_entity(user_data, interact, free_data);
 
 	printf("Loading entity %s\n", path);
 
@@ -430,23 +470,17 @@ entity_position(Entity * me, float * x, float * y)
 Entity *
 clone_entity(Entity * thing)
 {
-	Entity * clone = allocate_entity();
+	Entity * clone = allocate_entity(thing->userdata, thing->interact, thing->destructor);
 	clone->animations = thing->animations;
 	clone->speed = thing->speed;
 	return clone;
 }
 
-GSequence *
-entity_sequence()
-{
-	return g_sequence_new(NULL);
-}
-
-// Register an entity in this array
+// Note that this entity is in the set
 void
-register_entity(Entity * thing, GSequence * others)
+entity_assign(Entity * thing, EntitySet * others)
 {
-	thing->iter = g_sequence_append(others, thing);
+	thing->set = others;
 }
 
 

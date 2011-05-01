@@ -12,33 +12,22 @@
 
 typedef struct KittenManager KittenManager;
 
-typedef Entity Kitten;
+typedef struct Kitten Kitten;
 
 // Create a kitten
-Kitten *
+Entity *
 clone_kitten(KittenManager * litter, float x, float y);
 
 // Load the kittens from the sprites
 KittenManager *
 load_kittens();
 
-// Free a kitten
-void
-free_kitten(Kitten * kitty);
-
-// Free the litter (must free kittens separately)
+// Free the litter
 void
 free_kittens(KittenManager * litter);
 
 // Move the kitten toward the player
 void
-kitten_move(Kitten * kitty, Player * me, Level world, TimeTracker * time, GSequence * others);
-
-// Draw the kitten
-void
-kitten_draw(Kitten * kitty, SDL_Surface * canvas, Camera * cam);
-
-void
-register_kitten(Kitten * kitty, GSequence * others);
+kitten_move(gpointer kitty);
 
 #endif

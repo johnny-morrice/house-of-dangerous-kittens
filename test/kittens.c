@@ -21,24 +21,25 @@ main(int argc, char ** argv)
 	SDL_Surface * cursor = load_cursor();
 	InputState * is = new_input_state();
 	Control * halter = new_control();
-	Player * player = new_player();
-	Entity * body = player_entity(player);
-	Level level = new_level();
-	TimeTracker * time = new_time_tracker();
 	Camera * cam = new_camera();
-	TileManager * tiles = load_tiles();
-	KittenManager * litter = load_kittens();
-	Kitten * kitten = clone_kitten(litter, 6, 6);
 
-	GSequence * others = entity_sequence(); 
-	register_kitten(kitten, others);
-	register_entity(body, others);
+	EntitySet * entities = new_entity_set();
+
+	Player * player = new_player(entities, cam, is);
+	Entity * body = player_entity(player);
+	Level world = new_level();
+	TimeTracker * time = new_time_tracker();
+	TileManager * tiles = load_tiles();
+	KittenManager * litter = load_kittens(player, world, time, entities);
+	Entity * kitten = clone_kitten(litter, 6, 6);
+
+	register_entity(entities, kitten);
 
 	for (i = 0; i < 10; i++)
 	{
 		for (j = 0; j < 10; j ++)
 		{
-			level_set_square(level, tiles, i, j, square_carpet);
+			level_set_square(world, tiles, i, j, square_carpet);
 		}
 	}
 
@@ -47,38 +48,35 @@ main(int argc, char ** argv)
 	while (running(halter))
 	{
 		SDL_FillRect(screen, NULL, 0);
+
 		update_input(is);
 
 		entity_centre(body, cam);
 
-		player_user_input_response(player, is, cam, others);
+		entities_interact(entities);
 
-		entity_move(body, level, time, others);
+		entities_move(entities, world, time);
 
-		kitten_move(kitten, player, level, time, others);
+		level_draw(world, screen, cam);
 
-		level_draw(level, screen, cam);
-		entity_draw(body, screen, cam);
-		kitten_draw(kitten, screen, cam);
+		entities_draw(entities, screen, cam);
 
 		draw_cursor(is, cursor, screen);
-
 
 		SDL_Flip(screen);
 
 		check_exit(halter, is);
+
 		frame_done(time);
 	}
 
-	g_sequence_free(others);
+	free_entity_set(entities);
 	free(cam);
 	free(halter);
-	free_player(player);
-	free_level(level);
+	free_level(world);
 	free_input(is);
 	free_tiles(tiles);
 	free_kittens(litter);
-	free_kitten(kitten);
 
 	SDL_Quit();
 

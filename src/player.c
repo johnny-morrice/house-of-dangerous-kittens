@@ -7,28 +7,39 @@
 #include "kitten.h"
 
 #include <SDL/SDL.h>
+#include <glib.h>
 
 struct Player
 {
 	Entity * body;
+	Camera * cam;
+	InputState * is;
+	EntitySet * others;
 };
 
-Player *
-new_player()
+void
+player_destructor(Entity * me, gpointer dat)
 {
-	Player * me = (Player *) zone(sizeof(Player));
-	Entity * body = load_entity("data/sprites/player/");
-	entity_set_speed(body, 2);
-	entity_set_direction(body, 0, 0);
-	me->body = body;
-	return me;
+	free_entity(me);
+	free(dat);
 }
 
-void
-free_player(Player * me)
+Player *
+new_player(EntitySet * others, Camera * cam, InputState * is)
 {
-	free_entity(me->body);
-	free(me);
+	Player * player = (Player *) zone(sizeof(Player));
+	Entity * body = load_entity("data/sprites/player/", player, &player_user_input_response, &player_destructor);
+
+	player->body = body;
+	player->others = others;
+	player->cam = cam;
+	player->is = is;
+
+	entity_set_speed(body, 2);
+	entity_set_direction(body, 0, 0);
+	register_entity(others, body);
+
+	return player;
 }
 
 Entity *
@@ -38,8 +49,13 @@ player_entity(Player * me)
 }
 
 void
-player_user_input_response(Player * me, InputState * is, Camera * cam)
+player_user_input_response(gpointer mep)
 {	
+	Player * me;
+	InputState * is;
+	Camera * cam;
+	EntitySet * others;
+
 	unsigned int mousex;
 	unsigned int mousey;
 
@@ -54,7 +70,12 @@ player_user_input_response(Player * me, InputState * is, Camera * cam)
 
 	gboolean shoot;
 
-	Kitten * target;
+	Entity * target;
+
+	me = (Player *) mep;
+	is = me->is;
+	cam = me->cam;
+	others = me->others;
 
 	shoot = mouse_press(is); 
 
@@ -101,8 +122,7 @@ player_user_input_response(Player * me, InputState * is, Camera * cam)
 
 		if (target)
 		{
-			// We can kill the kitty by freeing it
-			free_kitty(target);
+			entity_destroy(target);
 		}
 
 
