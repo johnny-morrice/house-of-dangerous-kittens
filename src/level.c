@@ -105,7 +105,8 @@ in_bounds(Level world, float x, float y)
 	rx = (char) floor(x);
 	ry = (char) floor(y);
 
-	if (rx >= 0 && ry >= 0 && rx < level_width && ry < level_height)
+	if (rx >= 0 && ry >= 0 && rx < level_width - 1 && ry < level_height - 1)
+
 	{
 		type = world[rx][ry].type;
 		return walkable(type);
