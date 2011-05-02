@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <glib.h>
 
-#define text_gap 70
+#define text_gap 40
 
 struct HUD
 {
@@ -193,7 +193,7 @@ hud_draw(HUD * display, SDL_Surface * screen)
 
 	draw_digits(display, health_digits, screen, &dst);
 
-	dst.x = screen_width / 3;
+	dst.x = screen_width / 2;
 
 	SDL_BlitSurface(display->s, NULL, screen, &dst);
 
