@@ -146,7 +146,6 @@ void
 hud_draw(HUD * display, SDL_Surface * screen)
 {
 	SDL_Rect dst;
-	SDL_Rect dead_dst;
 
 	unsigned int health;
 	unsigned int frames;
@@ -182,7 +181,7 @@ hud_draw(HUD * display, SDL_Surface * screen)
 	{
 		dst.x = 0;
 		dst.y = text_gap;
-		SDL_BlitSurface(display->dead, NULL, screen, &dead_dst);
+		SDL_BlitSurface(display->dead, NULL, screen, &dst);
 	}
 
 	dst.x = 0;

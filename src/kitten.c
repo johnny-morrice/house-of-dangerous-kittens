@@ -119,7 +119,7 @@ spawn_kitten(KittenManager * litter, gboolean ** seen_grid)
 		}
 	}
 
-	clone_kitten(litter, chosen[0], chosen[1]);
+	clone_kitten(litter, (float) chosen[0], (float) chosen[1]);
 
 	free_available(available);
 }
@@ -129,13 +129,13 @@ spawn_more_kittens(KittenManager * litter, gboolean ** seen)
 {
 	unsigned int i;
 
-	if (litter->kitten_count < 50 && expired(litter->spawn_timer))
+	if (litter->kitten_count < 30 && expired(litter->spawn_timer))
 	{
 		for (i = 0; i < 10; i++)
 		{
 			spawn_kitten(litter, seen);
 		}
-		
+
 	}
 }
 
@@ -198,11 +198,15 @@ clone_kitten(KittenManager * litter, float x, float y)
 	kitty->others = mam->others;
 	kitty->body = body;
 	kitty->attack_timer = new_expirer(ATTACK_FREQUENCY);
-	kitty->count_ptr = mam->count_ptr;
+	kitty->count_ptr = &(litter->kitten_count);
+
+	litter->kitten_count ++;
 
 	entity_set_user_data(body, kitty);
 
 	entity_set_position(body, x, y);
+
+	register_entity(mam->others, body);
 
 	return body;
 }
