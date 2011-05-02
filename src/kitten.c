@@ -5,11 +5,15 @@
 #include "timetrack.h"
 #include "collide.h"
 #include "player.h"
+#include "audio.h"
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 #include <glib.h>
 
 #define ATTACK_FREQUENCY 20
+
+#define CLAW_FREQUENCY 5
 
 #define SPAWN_FREQUENCY 1
 
@@ -30,7 +34,8 @@ struct Kitten
 	EntitySet * others;
 	Expirer * attack_timer;
 	unsigned int * count_ptr;
-
+	Mix_Chunk * claw;
+	Expirer * claw_timer;
 };
 
 void
@@ -142,6 +147,7 @@ spawn_more_kittens(KittenManager * litter, gboolean ** seen)
 void
 free_kitten(Kitten * kitty)
 {
+	free(kitty->claw_timer);
 	free(kitty->attack_timer);
 	free(kitty);
 }
@@ -173,6 +179,7 @@ load_kittens(Entity * player, Level world, TimeTracker * time, EntitySet * other
 	kitty->time = time;
 	kitty->others = others;
 	kitty->count_ptr = &litter->kitten_count;
+	kitty->claw = Mix_LoadWAV("data/wav/claw.wav");
 
 	litter->mother = mother;
 	litter->child = kitty;
@@ -198,6 +205,8 @@ clone_kitten(KittenManager * litter, float x, float y)
 	kitty->others = mam->others;
 	kitty->body = body;
 	kitty->attack_timer = new_expirer(ATTACK_FREQUENCY);
+	kitty->claw_timer = new_expirer(CLAW_FREQUENCY);
+	kitty->claw = mam->claw;
 	kitty->count_ptr = &(litter->kitten_count);
 
 	litter->kitten_count ++;
@@ -215,6 +224,7 @@ void
 free_kittens(KittenManager * litter)
 {
 	free_entity(litter->mother);
+	Mix_FreeChunk(litter->child->claw);
 	free(litter->child);
 	free(litter);
 }
@@ -272,6 +282,11 @@ kitten_move(gpointer kittyp)
 
 	if (collision(body, x + dx, y + dy, others) == player)
 	{
+		if (expired(kitty->claw_timer))
+		{
+			play_wav(kitty->claw);
+		}
+
 		if (expired(kitty->attack_timer))
 		{
 			dude = entity_user_data(player);
