@@ -1,5 +1,7 @@
 Copyright 2011 John Morrice
 
+Contact: spoon@killersmurf.com
+
 House of Dangerous Kittens
 
 A survival horror game
