@@ -18,6 +18,7 @@ struct HUD
 	SDL_Surface * f;
 	SDL_Surface * p;
 	SDL_Surface * s;
+	SDL_Surface * dead;
 	Player * player;
 	TimeTracker * time;
 };
@@ -43,6 +44,8 @@ new_hud(Player * player, TimeTracker * time)
 
 	display->time = time;
 
+	display->dead = load_sprite("data/sprites/dead.png");
+
 	display->heart = load_sprite("data/sprites/health.png");
 	display->player = player;
 
@@ -62,6 +65,7 @@ free_hud(HUD * display)
 	SDL_FreeSurface(display->f);
 	SDL_FreeSurface(display->p);
 	SDL_FreeSurface(display->s);
+	SDL_FreeSurface(display->dead);
 }
 
 GSList *
@@ -130,6 +134,7 @@ void
 hud_draw(HUD * display, SDL_Surface * screen)
 {
 	SDL_Rect dst;
+	SDL_Rect dead_dst;
 
 	unsigned int health;
 	unsigned int frames;
@@ -145,6 +150,13 @@ hud_draw(HUD * display, SDL_Surface * screen)
 
 	dst.x = 0;
 	dst.y = screen_height - text_gap;
+
+	if (health == 0)
+	{
+		dead_dst.x = 0;
+		dead_dst.y = 0;
+		SDL_BlitSurface(display->dead, NULL, screen, &dead_dst); 
+	}
 
 	SDL_BlitSurface(display->heart, NULL, screen, &dst);
 	dst.x += text_gap;
