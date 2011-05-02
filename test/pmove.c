@@ -1,3 +1,5 @@
+// This old test is broken
+
 #include <stdlib.h>
 #include <SDL/SDL.h>
 

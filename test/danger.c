@@ -1,5 +1,3 @@
-// This old test is broken :(
-
 #include <stdlib.h>
 #include <SDL/SDL.h>
 
@@ -13,6 +11,7 @@
 #include "tiles.h"
 #include "kitten.h"
 #include "cursor.h"
+#include "hud.h"
 
 int
 main(int argc, char ** argv)
@@ -28,19 +27,17 @@ main(int argc, char ** argv)
 
 	EntitySet * entities = new_entity_set();
 	Player * player = new_player(entities, cam, is, world);
+
+	HUD * display = new_hud(health_ptr(player));
+
 	Entity * body = player_entity(player);
 
 	TimeTracker * time = new_time_tracker();
 	TileManager * tiles = load_tiles();
 	KittenManager * litter = load_kittens(body, world, time, entities);
 	Entity * kitten = clone_kitten(litter, 0, 3);
-	Entity * kitten2 = clone_kitten(litter, 1, 3);
-
-	// We're testing the AI, easier to see slowly
-	entity_set_speed(kitten, 0.1);
 
 	register_entity(entities, kitten);
-	register_entity(entities, kitten2);
 
 	for (i = 0; i < 4; i++)
 	{
@@ -80,6 +77,8 @@ main(int argc, char ** argv)
 
 		draw_cursor(is, cursor, screen);
 
+		hud_draw(display, screen);
+
 		SDL_Flip(screen);
 
 		check_exit(halter, is);
@@ -96,6 +95,7 @@ main(int argc, char ** argv)
 	free_input(is);
 	free_tiles(tiles);
 	free_kittens(litter);
+	free_hud(display);
 
 	SDL_FreeSurface(cursor);
 

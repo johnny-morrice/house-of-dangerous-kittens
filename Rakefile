@@ -8,7 +8,8 @@ ENGINE = ["src/player.c", "src/screen.c",
 	"src/entity.c", "src/fatal.c",
 	"src/tiles.c", "src/kitten.c",
 	"src/look.c", "src/cursor.c",
-	"src/entity_set.c", "src/collide.c"]
+	"src/entity_set.c", "src/collide.c",
+	"src/hud.c"]
 
 def compile out, flags, *paths
 	sh "gcc -o #{out} #{flags} -Wall `pkg-config --cflags --libs gobject-2.0` `pkg-config --cflags --libs sdl` -lSDL_image -Iinclude #{ENGINE.join " "} #{paths.join " "}"
@@ -41,4 +42,14 @@ end
 desc "Test kitten path-finding"
 task :kitten => [:build_kitten] do
 	sh "work/kitten"
+end
+
+desc "Build dangerous kitten test"
+task :build_danger => [:clean, "work"] do
+	debug "work/danger", "test/danger.c"
+end
+
+desc "Test dangerous kittens"
+task :danger => [:build_danger] do
+	sh "work/danger"
 end

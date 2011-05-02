@@ -16,9 +16,21 @@ struct Player
 	InputState * is;
 	EntitySet * others;
 	Level world;
-//	HUD * display;
-//	Health * health;
+	int health;
 };
+
+int *
+health_ptr(Player * me)
+{
+	return &(me->health);
+}
+
+
+void
+player_hurt(Player * me)
+{
+	me->health = me->health - 1;
+}
 
 void
 player_destructor(Entity * me, gpointer dat)
@@ -38,6 +50,7 @@ new_player(EntitySet * others, Camera * cam, InputState * is, Level world)
 	player->cam = cam;
 	player->is = is;
 	player->world = world;
+	player->health = 100;
 
 	entity_set_speed(body, 2);
 	entity_set_direction(body, 0, 0);

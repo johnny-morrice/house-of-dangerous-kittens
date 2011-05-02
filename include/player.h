@@ -15,10 +15,17 @@ typedef struct Player Player;
 
 // Create a new player, register the players entity with the set
 Player * new_player(EntitySet * others, Camera * cam, InputState * is, Level world);
-
 // Respond to user input
 void player_user_input_response(gpointer player);
 
 Entity * player_entity(Player * player);
+
+// Hurt the player
+void
+player_hurt(Player * me);
+
+// The player's health pointer
+int *
+health_ptr(Player * me);
 
 #endif
