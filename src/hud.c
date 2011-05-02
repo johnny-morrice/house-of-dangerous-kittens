@@ -33,6 +33,8 @@ new_hud(int * healthp)
 	display->heart = load_sprite("data/sprites/health.png");
 	display->minus = load_sprite("data/sprites/digits/minus.png");
 	display->healthp = healthp;
+
+	return display;
 }
 
 void

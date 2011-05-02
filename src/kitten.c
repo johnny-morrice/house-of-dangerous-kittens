@@ -3,6 +3,8 @@
 #include "zone.h"
 #include "look.h"
 #include "timetrack.h"
+#include "collide.h"
+#include "player.h"
 
 #include <SDL/SDL.h>
 #include <glib.h>
@@ -102,6 +104,8 @@ kitten_move(gpointer kittyp)
 	unsigned int dir;
 	Entity * body;
 
+	Player * dude;
+
 	kitty = (Kitten *) kittyp;
 	player = kitty->player;
 	world = kitty->world;
@@ -112,34 +116,42 @@ kitten_move(gpointer kittyp)
 	entity_position(body, &x, &y);
 	entity_position(player, &px, &py);
 
+	dir = look(x, y, px, py);
 
 	if (can_see(world, x, y, px, py))
 	{
-		dir = look(x, y, px, py);
-
-		if (dir == LEFT)
-		{
-			set_animation(body, "left");
-		}
-		else if (dir == RIGHT)
-		{
-			set_animation(body, "right");
-		}
-		else if (dir == UP)
-		{
-			set_animation(body, "up");
-		}
-		else if (dir == DOWN)
-		{
-			set_animation(body, "down");
-		}
-
+		
 		dx = px - x;
 		dy = py - y;
 
 		entity_set_direction(body, dx, dy);
 		entity_move(body, world, time, others);
 
+		// NEED TO FIX THIS BIT!
+		if (collide(x + dx, y + dy, px, py))
+		{
+			printf("trying to hurt player\n");
+			dude = entity_user_data(player);
+			player_hurt(dude);
+		}
 	}
+	else if (dir == LEFT)
+	{
+		set_animation(body, "left");
+	}
+	else if (dir == RIGHT)
+	{
+		set_animation(body, "right");
+	}
+	else if (dir == UP)
+	{
+		set_animation(body, "up");
+	}
+	else if (dir == DOWN)
+	{
+		set_animation(body, "down");
+	}
+
+
 
 }

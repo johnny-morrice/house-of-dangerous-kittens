@@ -42,19 +42,20 @@ quit_happened(InputState * is)
 }
 
 // Is this key down?
-char
+gboolean
 key_down(InputState * is, SDLKey key)
 {
 	gpointer present;
 	
 	present = g_slist_find(is->down, GINT_TO_POINTER(key));
+	// Convert from pointer to boolean
 	if (present)
 	{
-		return GPOINTER_TO_INT(present);
+		return TRUE;
 	}
 	else
 	{
-		return 0;
+		return FALSE;
 	}
 }
 
