@@ -24,15 +24,16 @@ main(int argc, char ** argv)
 	Control * halter = new_control();
 	Camera * cam = new_camera();
 	Level world = new_level();
+	TimeTracker * time = new_time_tracker();
+
 
 	EntitySet * entities = new_entity_set();
 	Player * player = new_player(entities, cam, is, world);
 
-	HUD * display = new_hud(player);
+	HUD * display = new_hud(player, time);
 
 	Entity * body = player_entity(player);
 
-	TimeTracker * time = new_time_tracker();
 	TileManager * tiles = load_tiles();
 	KittenManager * litter = load_kittens(body, world, time, entities);
 	Entity * kitten = clone_kitten(litter, 0, 3);

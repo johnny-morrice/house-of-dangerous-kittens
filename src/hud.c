@@ -3,6 +3,7 @@
 #include "zone.h"
 #include "screen.h"
 #include "player.h"
+#include "timetrack.h"
 
 #include <SDL/SDL.h>
 #include <stdlib.h>
@@ -14,11 +15,15 @@ struct HUD
 {
 	SDL_Surface * digits[10];
 	SDL_Surface * heart;
+	SDL_Surface * f;
+	SDL_Surface * p;
+	SDL_Surface * s;
 	Player * player;
+	TimeTracker * time;
 };
 
 HUD *
-new_hud(Player * player)
+new_hud(Player * player, TimeTracker * time)
 {
 	HUD * display = (HUD *) zone(sizeof(HUD));
 	display->digits[0] = load_sprite("data/sprites/digits/0.png");
@@ -31,6 +36,13 @@ new_hud(Player * player)
 	display->digits[7] = load_sprite("data/sprites/digits/7.png");
 	display->digits[8] = load_sprite("data/sprites/digits/8.png");
 	display->digits[9] = load_sprite("data/sprites/digits/9.png");
+
+	display->f = load_sprite("data/sprites/letters/f.png");
+	display->p = load_sprite("data/sprites/letters/p.png");
+	display->s = load_sprite("data/sprites/letters/s.png");
+
+	display->time = time;
+
 	display->heart = load_sprite("data/sprites/health.png");
 	display->player = player;
 
@@ -47,6 +59,9 @@ free_hud(HUD * display)
 		SDL_FreeSurface(display->digits[i]);
 	}
 	SDL_FreeSurface(display->heart);
+	SDL_FreeSurface(display->f);
+	SDL_FreeSurface(display->p);
+	SDL_FreeSurface(display->s);
 }
 
 GSList *
@@ -98,8 +113,6 @@ draw_digit(gpointer digitp, gpointer drawp)
 
 	HUD * display = draw->display;
 
-	printf("drawing digit: %d\n", digit);
-
 	SDL_BlitSurface(display->digits[digit], NULL, screen, dst);
 	dst->x += text_gap;
 
@@ -124,12 +137,16 @@ hud_draw(HUD * display, SDL_Surface * screen)
 	SDL_Rect dst;
 
 	unsigned int health;
+	unsigned int frames;
 
 	GSList * health_digits;
+	GSList * fps_digits;
 
 	health = player_health(display->player);
+	frames = fps(display->time);
 
 	health_digits = to_digits(health);
+	fps_digits = to_digits(frames);
 
 	dst.x = 0;
 	dst.y = screen_height - text_gap;
@@ -139,5 +156,19 @@ hud_draw(HUD * display, SDL_Surface * screen)
 
 	draw_digits(display, health_digits, screen, &dst);
 
+	dst.x = screen_width / 2; 
+
+	SDL_BlitSurface(display->f, NULL, screen, &dst);
+	dst.x += text_gap;
+
+	SDL_BlitSurface(display->p, NULL, screen, &dst);
+	dst.x += text_gap;
+
+	SDL_BlitSurface(display->s, NULL, screen, &dst);
+	dst.x += text_gap;
+
+	draw_digits(display, fps_digits, screen, &dst);
+
 	g_slist_free(health_digits);
+	g_slist_free(fps_digits);
 }
