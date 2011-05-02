@@ -2,7 +2,7 @@
 
 #define __LOOK__
 
-#include "glib.h"
+#include <glib.h>
 
 #include "level.h"
 
@@ -16,13 +16,14 @@
 // and are looking at (lx, ly)?
 unsigned int look(float x, float y, float lx, float ly);
 
-// Return a list of cells that we can see
-GSList *
-line_of_sight(Level world, float x, float y);
+gboolean ** new_seen_grid();
+
+void free_seen_grid(gboolean ** seen);
+
+// Note where we can see 
+void line_of_sight(Level world, gboolean ** seen, float x, float y);
 
 // Standing at (x,y), can you see (px, py)?
 gboolean can_see(Level world, float x, float y, float px, float py);
-
-void free_seen(GSList * seen);
 
 #endif

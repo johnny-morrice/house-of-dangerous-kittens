@@ -118,40 +118,28 @@ load_level(Level world, TileManager * tiles, const char * path)
 
 }
 
-struct LevelDraw
-{
-	Level world;
-	SDL_Surface * canvas;
-	Camera * cam;
-};
-
-void
-draw_square(gpointer coordp, gpointer ldp)
-{
-	struct LevelDraw * leveldraw = (struct LevelDraw *) ldp;
-	float * coord = (float *) coordp;
-	Level world = leveldraw->world;
-	SDL_Surface * canvas = leveldraw->canvas;
-	Camera * cam = leveldraw->cam;
-
-	unsigned int x, y;
-
-	x = floor(coord[0]);
-	y = floor(coord[1]);
-
-	draw(world[x][y].sprite, canvas, cam, x, y);
-}
 // Draw parts of the level that can be seen on to the canvas
 void
-level_draw(Level world, SDL_Surface * canvas, Camera * cam, GSList * seen)
+level_draw(Level world, SDL_Surface * canvas, Camera * cam, gboolean ** seen)
 {
-	struct LevelDraw leveldraw;
+	unsigned int i;
+	unsigned int j;
+	gboolean * row;
 
-	leveldraw.world = world;
-	leveldraw.canvas = canvas;
-	leveldraw.cam = cam;
+	for (i = 0; i < level_width; i++)
+	{
+		row = seen[i];
 
-	g_slist_foreach(seen, &draw_square, &leveldraw);
+		for (j = 0; j < level_height; j++)
+		{
+			if (row[j])
+			{
+				draw(world[i][j].sprite, canvas, cam, i, j);
+			}
+		}
+
+	}
+
 }
 
 gboolean
@@ -168,7 +156,7 @@ point_in_bounds(Level world, float x, float y)
 	fx = floor(x);
 	fy = floor(y);
 
-	if (fx >= 0 && fy >= 0 && fx < level_width - 1 && fy < level_height - 1)
+	if (fx >= 0 && fy >= 0 && fx <= level_width - 1 && fy <= level_height - 1)
 	{
 
 		return walkable_type(world[fx][fy].type);

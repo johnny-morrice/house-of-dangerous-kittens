@@ -31,7 +31,7 @@ main(int argc, char ** argv)
 	Entity * body;
 	TileManager * tiles;
 	KittenManager * litter;
-	GSList * seen;
+	gboolean ** seen;
 
 	float px, py;
 
@@ -46,6 +46,8 @@ main(int argc, char ** argv)
 
 	tiles = load_tiles();
 
+	seen = new_seen_grid();
+
 	while (running(halter))
 	{
 		world = new_level();
@@ -58,13 +60,13 @@ main(int argc, char ** argv)
 
 		litter = load_kittens(body, world, time, entities);
 
-
 		load_level(world, tiles, "data/level.txt");
 
 		play(halter);
 
 		while (running(halter) && playing(halter))
 		{
+
 			SDL_FillRect(screen, NULL, 0);
 
 			update_input(is);
@@ -77,7 +79,9 @@ main(int argc, char ** argv)
 
 			entity_position(body, &px, &py);
 
-			seen = line_of_sight(world, px, py);
+			line_of_sight(world, seen, px, py);
+
+			spawn_more_kittens(litter, seen);
 
 			level_draw(world, screen, cam, seen);
 
@@ -93,7 +97,6 @@ main(int argc, char ** argv)
 
 			frame_done(time);
 
-			free_seen(seen);
 		}
 
 		free_entity_set(entities);
@@ -104,6 +107,8 @@ main(int argc, char ** argv)
 
 		free_kittens(litter);
 	}
+
+	free_seen_grid(seen);
 
 	free(cam);
 

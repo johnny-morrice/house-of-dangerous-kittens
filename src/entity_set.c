@@ -4,6 +4,7 @@
 
 #include <glib.h>
 #include <SDL/SDL.h>
+#include "math.h"
 
 struct EntitySet
 {
@@ -77,50 +78,33 @@ struct DrawData
 {
 	SDL_Surface * canvas;
 	Camera * cam;
-	GSList * seen;
+	gboolean ** seen;
 };
-
-struct SeeCheck
-{
-	Entity * thing;
-	gboolean can;
-};
-
-void
-see_checkf(gpointer coordp, gpointer seep)
-{
-	struct SeeCheck * see_check = (struct SeeCheck *) seep;
-	float * coord = (float *) coordp;
-	float x, y;
-
-	entity_position(see_check->thing, &x, &y);
-
-	if (!see_check->can)
-	{
-		see_check->can = collide(coord[0], coord[1], x, y);
-	}
-}
 
 void
 entity_drawf(gpointer entityp, gpointer drawp)
 {
-	struct SeeCheck see_check;
+	float x, y;
+
+	unsigned int i;
+	unsigned int j;
+
 	struct DrawData * drawdat = (struct DrawData *) drawp;
 	Entity * thing = (Entity *) entityp;
 
-	see_check.thing = thing;
-	see_check.can = FALSE;
+	entity_position(thing, &x, &y);
 
-	g_slist_foreach(drawdat->seen, &see_checkf, &see_check);
+	i = floor(x);
+	j = floor(y);
 
-	if (see_check.can)
+	if ((drawdat->seen)[i][j])
 	{
 		entity_draw(thing, drawdat->canvas, drawdat->cam);
 	}
 }
 
 void
-entities_draw(EntitySet * entities, SDL_Surface * canvas, Camera * cam, GSList * seen)
+entities_draw(EntitySet * entities, SDL_Surface * canvas, Camera * cam, gboolean ** seen)
 {
 	struct DrawData drawdat;
 	drawdat.canvas = canvas;

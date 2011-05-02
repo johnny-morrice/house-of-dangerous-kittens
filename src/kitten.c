@@ -11,10 +11,14 @@
 
 #define ATTACK_FREQUENCY 20
 
+#define SPAWN_FREQUENCY 1
+
 struct KittenManager
 {
 	Entity * mother;
 	Kitten * child;
+	Expirer * spawn_timer;
+	unsigned int kitten_count;
 };
 
 struct Kitten
@@ -25,8 +29,115 @@ struct Kitten
 	TimeTracker * time;
 	EntitySet * others;
 	Expirer * attack_timer;
+	unsigned int * count_ptr;
 
 };
+
+void
+free_available(GArray * available)
+{
+	unsigned int i;
+
+	for (i = 0; i < available->len; i++)
+	{
+		free(g_array_index(available, unsigned int *, i));
+	}
+
+	g_array_free(available, TRUE);
+}
+
+GArray *
+available_squares(Level world, EntitySet * others)
+{
+	unsigned int i;
+	unsigned int j;
+	float fi, fj;
+	GArray * available;
+
+	unsigned int * coord;
+
+	available = g_array_new(FALSE, FALSE, sizeof(unsigned int *)); 
+
+	for (i = 0; i < level_width; i++)
+	{
+		for (j = 0; j < level_height; j++)
+		{
+			fi = (float) i;
+			fj = (float) j;
+			if (in_bounds(world, fi, fj) && NULL == collision(NULL, fi, fj, others))
+			{
+				coord = (unsigned int *) zone(sizeof(int) * 2);
+				coord[0] = i;
+				coord[1] = j;
+				g_array_append_val(available, coord);
+			}
+		}
+	}
+
+	return available;
+}
+
+// Return random int between 0 and max
+unsigned int
+random_uint(unsigned int max)
+{
+	unsigned int choice;
+	GRand * rng = g_rand_new();
+
+	choice = g_rand_int_range(rng, 0, max);
+
+	g_rand_free(rng);
+	return choice;
+}
+
+void
+spawn_kitten(KittenManager * litter, gboolean ** seen_grid)
+{
+	GArray * available;
+	EntitySet * others;
+	Level world;
+
+	unsigned int ri;
+
+	unsigned int * pending;
+	unsigned int * chosen;
+
+	others = litter->child->others;
+	world = litter->child->world;
+
+	available = available_squares(world, others);
+
+	chosen = NULL;
+
+	while (chosen == NULL)
+	{
+		ri = random_uint(available->len);
+		pending = g_array_index(available, unsigned int *, ri);
+		if (!seen_grid[pending[0]][pending[1]])
+		{
+			chosen = pending;
+		}
+	}
+
+	clone_kitten(litter, chosen[0], chosen[1]);
+
+	free_available(available);
+}
+
+void
+spawn_more_kittens(KittenManager * litter, gboolean ** seen)
+{
+	unsigned int i;
+
+	if (litter->kitten_count < 50 && expired(litter->spawn_timer))
+	{
+		for (i = 0; i < 10; i++)
+		{
+			spawn_kitten(litter, seen);
+		}
+		
+	}
+}
 
 void
 free_kitten(Kitten * kitty)
@@ -42,6 +153,7 @@ kitten_destructor(Entity * thing, gpointer kittyp)
 
 	free_cloned_entity(thing);
 
+	*(kitty->count_ptr) = *(kitty->count_ptr) - 1;
 	free_kitten(kitty);
 
 }
@@ -60,9 +172,12 @@ load_kittens(Entity * player, Level world, TimeTracker * time, EntitySet * other
 	kitty->world = world;
 	kitty->time = time;
 	kitty->others = others;
+	kitty->count_ptr = &litter->kitten_count;
 
 	litter->mother = mother;
 	litter->child = kitty;
+	litter->kitten_count = 0;
+	litter->spawn_timer = new_expirer(SPAWN_FREQUENCY);
 
 	entity_set_speed(mother, 6);
 
@@ -82,7 +197,8 @@ clone_kitten(KittenManager * litter, float x, float y)
 	kitty->time = mam->time;
 	kitty->others = mam->others;
 	kitty->body = body;
-	kitty->attack_timer = new_expirer(ATTACK_FREQUENCY); 
+	kitty->attack_timer = new_expirer(ATTACK_FREQUENCY);
+	kitty->count_ptr = mam->count_ptr;
 
 	entity_set_user_data(body, kitty);
 
