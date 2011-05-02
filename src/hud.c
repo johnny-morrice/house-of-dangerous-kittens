@@ -82,7 +82,6 @@ to_digits(unsigned int num)
 		while (num > 0)
 		{
 			next = num % 10;
-			printf("digit was %d\n", next);
 			num = (num - next) / 10;
 			digits = g_slist_prepend(digits, GINT_TO_POINTER(next));
 		}
@@ -125,8 +124,6 @@ draw_digits(HUD * display, GSList * digits, SDL_Surface * screen, SDL_Rect * dst
 	draw.display = display;
 	draw.screen = screen;
 	draw.dst = dst;
-
-	printf("drawing digits\n");
 
 	g_slist_foreach(digits, draw_digit, &draw);
 }
