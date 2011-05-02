@@ -30,4 +30,7 @@ player_hurt(Player * me);
 unsigned int
 player_health(Player * me);
 
+unsigned int
+player_score(Player * me);
+
 #endif

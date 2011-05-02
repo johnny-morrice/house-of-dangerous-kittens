@@ -18,6 +18,10 @@ struct HUD
 	SDL_Surface * f;
 	SDL_Surface * p;
 	SDL_Surface * s;
+	SDL_Surface * c;
+	SDL_Surface * o;
+	SDL_Surface * r;
+	SDL_Surface * e;
 	SDL_Surface * dead;
 	Player * player;
 	TimeTracker * time;
@@ -41,6 +45,10 @@ new_hud(Player * player, TimeTracker * time)
 	display->f = load_sprite("data/sprites/letters/f.png");
 	display->p = load_sprite("data/sprites/letters/p.png");
 	display->s = load_sprite("data/sprites/letters/s.png");
+	display->c = load_sprite("data/sprites/letters/c.png");
+	display->o = load_sprite("data/sprites/letters/o.png");
+	display->r = load_sprite("data/sprites/letters/r.png");
+	display->e = load_sprite("data/sprites/letters/e.png");
 
 	display->time = time;
 
@@ -65,6 +73,10 @@ free_hud(HUD * display)
 	SDL_FreeSurface(display->f);
 	SDL_FreeSurface(display->p);
 	SDL_FreeSurface(display->s);
+	SDL_FreeSurface(display->c);
+	SDL_FreeSurface(display->o);
+	SDL_FreeSurface(display->r);
+	SDL_FreeSurface(display->e);
 	SDL_FreeSurface(display->dead);
 }
 
@@ -138,32 +150,22 @@ hud_draw(HUD * display, SDL_Surface * screen)
 
 	unsigned int health;
 	unsigned int frames;
+	unsigned int score;
 
 	GSList * health_digits;
 	GSList * fps_digits;
+	GSList * score_digits;
 
 	health = player_health(display->player);
+	score = player_score(display->player);
 	frames = fps(display->time);
 
 	health_digits = to_digits(health);
 	fps_digits = to_digits(frames);
+	score_digits = to_digits(score);
 
 	dst.x = 0;
-	dst.y = screen_height - text_gap;
-
-	if (health == 0)
-	{
-		dead_dst.x = 0;
-		dead_dst.y = 0;
-		SDL_BlitSurface(display->dead, NULL, screen, &dead_dst); 
-	}
-
-	SDL_BlitSurface(display->heart, NULL, screen, &dst);
-	dst.x += text_gap;
-
-	draw_digits(display, health_digits, screen, &dst);
-
-	dst.x = screen_width / 3; 
+	dst.y = 0;
 
 	SDL_BlitSurface(display->f, NULL, screen, &dst);
 	dst.x += text_gap;
@@ -172,10 +174,50 @@ hud_draw(HUD * display, SDL_Surface * screen)
 	dst.x += text_gap;
 
 	SDL_BlitSurface(display->s, NULL, screen, &dst);
-	dst.x += text_gap;
+	dst.x += text_gap * 2;
 
 	draw_digits(display, fps_digits, screen, &dst);
 
+	if (health == 0)
+	{
+		dst.x = 0;
+		dst.y = text_gap;
+		SDL_BlitSurface(display->dead, NULL, screen, &dead_dst);
+	}
+
+	dst.x = 0;
+	dst.y = screen_height - text_gap;
+
+	SDL_BlitSurface(display->heart, NULL, screen, &dst);
+	dst.x += text_gap;
+
+	draw_digits(display, health_digits, screen, &dst);
+
+	dst.x = screen_width / 3;
+
+	SDL_BlitSurface(display->s, NULL, screen, &dst);
+
+	dst.x += text_gap;
+
+	SDL_BlitSurface(display->c, NULL, screen, &dst);
+
+	dst.x += text_gap;
+
+	SDL_BlitSurface(display->o, NULL, screen, &dst);
+
+	dst.x += text_gap;
+
+	SDL_BlitSurface(display->r, NULL, screen, &dst);
+
+	dst.x += text_gap;
+
+	SDL_BlitSurface(display->e, NULL, screen, &dst);
+
+	dst.x += text_gap * 2;
+
+	draw_digits(display, score_digits, screen, &dst);
+
 	g_slist_free(health_digits);
 	g_slist_free(fps_digits);
+	g_slist_free(score_digits);
 }

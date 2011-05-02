@@ -18,7 +18,14 @@ struct Player
 	Level world;
 	Control * halter;
 	unsigned int health;
+	unsigned int score;
 };
+
+unsigned int
+player_score(Player * me)
+{
+	return me->score;
+}
 
 unsigned int
 player_health(Player * me)
@@ -60,6 +67,7 @@ new_player(EntitySet * others, Camera * cam, InputState * is, Level world, Contr
 	player->world = world;
 	player->health = 100;
 	player->halter = halter;
+	player->score = 0;
 
 	entity_set_speed(body, 2);
 	entity_set_direction(body, 0, 0);
@@ -151,6 +159,7 @@ alive(Player * me)
 			if (target)
 			{
 				entity_destroy(target);
+				me->score ++;
 			}
 		}
 
