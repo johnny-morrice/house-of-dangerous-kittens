@@ -9,6 +9,8 @@
 #include <SDL/SDL.h>
 #include <glib.h>
 
+#define ATTACK_FREQUENCY 20
+
 struct KittenManager
 {
 	Entity * mother;
@@ -22,13 +24,26 @@ struct Kitten
 	Level world;
 	TimeTracker * time;
 	EntitySet * others;
+	Expirer * attack_timer;
 
 };
 
 void
+free_kitten(Kitten * kitty)
+{
+	free(kitty->attack_timer);
+	free(kitty);
+}
+
+void
 kitten_destructor(Entity * thing, gpointer kittyp)
 {
+	Kitten * kitty = (Kitten *) kittyp;
+
 	free_cloned_entity(thing);
+
+	free_kitten(kitty);
+
 }
 
 KittenManager *
@@ -67,6 +82,7 @@ clone_kitten(KittenManager * litter, float x, float y)
 	kitty->time = mam->time;
 	kitty->others = mam->others;
 	kitty->body = body;
+	kitty->attack_timer = new_expirer(ATTACK_FREQUENCY); 
 
 	entity_set_user_data(body, kitty);
 
@@ -89,6 +105,8 @@ kitten_draw(Kitten * kitty, SDL_Surface * canvas, Camera * cam)
 	entity_draw(kitty->body, canvas, cam);
 }
 
+// This is the kitten's callback,
+// all its actions take place here
 void
 kitten_move(gpointer kittyp)
 {
@@ -101,7 +119,9 @@ kitten_move(gpointer kittyp)
 	float x, y;
 	float px, py;
 	float dx, dy;
+
 	unsigned int dir;
+	
 	Entity * body;
 
 	Player * dude;
@@ -126,10 +146,13 @@ kitten_move(gpointer kittyp)
 
 		entity_set_direction(body, dx, dy);
 		entity_move(body, world, time, others);
+	}
 
-		entity_get_direction(body, &dx, &dy);
+	entity_get_direction(body, &dx, &dy);
 
-		if (collision(body, x + dx, y + dy, others) == player)
+	if (collision(body, x + dx, y + dy, others) == player)
+	{
+		if (expired(kitty->attack_timer))
 		{
 			dude = entity_user_data(player);
 			player_hurt(dude);

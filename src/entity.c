@@ -6,6 +6,7 @@
 #include "timetrack.h"
 #include "fatal.h"
 #include "collide.h"
+#include "timetrack.h"
 
 #include <SDL/SDL.h>
 #include <stdio.h>
@@ -35,7 +36,7 @@ struct Entity
 	float dy;
 	float speed;
 	EntitySet * set;
-	unsigned int last_change;
+	Expirer * animation_timer;
 	void (*interact)(gpointer);
 	gpointer userdata;
 	void (*destructor)(Entity *, gpointer);
@@ -209,9 +210,8 @@ entity_draw(Entity * thing, SDL_Surface * canvas, Camera * cam)
 			ticks = SDL_GetTicks();
 
 			// Check to see if we should switch to next frame
-			if (((float) (ticks - thing->last_change) / 1000.0) > (float) (1.0 / ANIMATION_FPS))
+			if (expired(thing->animation_timer))
 			{
-				thing->last_change = ticks;
 				next_frame(thing);
 			}
 			
@@ -307,7 +307,6 @@ set_animation_raw(Entity * thing, char * name)
 {
 	strcpy(thing->current_animation, name);
 	thing->current_frame = 0;
-	thing->last_change = SDL_GetTicks();
 }
 
 Entity *
@@ -326,6 +325,7 @@ allocate_entity(gpointer userdata,
 	thing->x = 0;
 	thing->y = 0;
 	thing->set = NULL;
+	thing->animation_timer = new_expirer(ANIMATION_FPS);
 	set_animation_raw(thing, (char *) "default");
 	return thing;
 
@@ -367,6 +367,7 @@ free_entity_animation(gpointer name, gpointer movie, gpointer vcrap)
 void
 free_cloned_entity(Entity * thing)
 {
+	free(thing->animation_timer);
 	free(thing->current_animation);
 	free(thing);
 }

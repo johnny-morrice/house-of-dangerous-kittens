@@ -71,8 +71,6 @@ to_digits(unsigned int num)
 
 	unsigned int next;
 
-	printf("Digits:\n");
-
 	if (num == 0)
 	{
 		digits = g_slist_prepend(digits, GINT_TO_POINTER(0));
@@ -153,7 +151,7 @@ hud_draw(HUD * display, SDL_Surface * screen)
 
 	draw_digits(display, health_digits, screen, &dst);
 
-	dst.x = screen_width / 2; 
+	dst.x = screen_width / 3; 
 
 	SDL_BlitSurface(display->f, NULL, screen, &dst);
 	dst.x += text_gap;

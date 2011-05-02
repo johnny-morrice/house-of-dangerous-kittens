@@ -2,7 +2,15 @@
 
 #define __TIMETRACK__
 
+#include <glib.h>
+
 typedef struct TimeTracker TimeTracker;
+
+typedef struct Expirer Expirer;
+
+Expirer * new_expirer(unsigned int freq);
+
+gboolean expired(Expirer * timer);
 
 TimeTracker * new_time_tracker();
 
