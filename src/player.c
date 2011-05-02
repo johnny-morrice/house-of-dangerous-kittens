@@ -16,6 +16,7 @@ struct Player
 	InputState * is;
 	EntitySet * others;
 	Level world;
+	Control * halter;
 	unsigned int health;
 };
 
@@ -47,7 +48,7 @@ player_destructor(Entity * me, gpointer dat)
 }
 
 Player *
-new_player(EntitySet * others, Camera * cam, InputState * is, Level world)
+new_player(EntitySet * others, Camera * cam, InputState * is, Level world, Control * halter)
 {
 	Player * player = (Player *) zone(sizeof(Player));
 	Entity * body = load_entity("data/sprites/player/", player, &player_user_input_response, &player_destructor);
@@ -58,6 +59,7 @@ new_player(EntitySet * others, Camera * cam, InputState * is, Level world)
 	player->is = is;
 	player->world = world;
 	player->health = 100;
+	player->halter = halter;
 
 	entity_set_speed(body, 2);
 	entity_set_direction(body, 0, 0);
@@ -243,7 +245,18 @@ alive(Player * me)
 void
 dead(Player * me)
 {
+
+	InputState * is;
+
+	is = me->is;
+
 	set_animation(me->body, (char *) "dead");
+
+	if (key_down(is, SDLK_RETURN))
+	{
+		stop(me->halter);
+	}
+
 }
 
 // This is the player's callback where all its actions take place

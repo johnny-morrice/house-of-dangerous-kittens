@@ -54,6 +54,18 @@ task :danger => [:build_danger] do
 	sh "work/danger"
 end
 
+desc "Build restarter test"
+task :build_restart => [:clean, "work"] do
+	debug "work/restart", "test/restart.c"
+end
+
+desc "Test restarter"
+task :restart => [:build_restart] do
+	sh "work/restart"
+end
+
+
+
 desc "Word count"
 task :words do
 	sh "wc `find -regex '.+\\.\\(c\\|\\h\\)' ` | sort -n"

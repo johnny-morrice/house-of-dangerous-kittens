@@ -1,4 +1,5 @@
 #include <SDL/SDL.h>
+#include <glib.h>
 
 #include "control.h"
 #include "zone.h"
@@ -6,26 +7,48 @@
 
 struct Control
 {
-	char running;
+	gboolean running;
+	gboolean playing;
 };
 
 Control * new_control()
 {
 	Control * halter = (Control *) zone(sizeof(Control));
-	halter->running = 1;
+	halter->running = TRUE;
+	halter->playing = TRUE;
 	return halter;
 }
 
-char running(Control * halter)
+gboolean
+running(Control * halter)
 {
 	return halter->running;
 }
 
-void check_exit(Control * halter, InputState * is)
+gboolean
+playing(Control * halter)
+{
+	return halter->playing;
+}
+
+void
+stop(Control * halter)
+{
+	halter->playing = FALSE;
+}
+
+void
+play(Control * halter)
+{
+	halter->playing = TRUE;
+}
+
+void
+check_exit(Control * halter, InputState * is)
 {
 	if (key_down(is, SDLK_ESCAPE) || quit_happened(is))
 	{
-		halter->running = 0;
+		halter->running = FALSE;
 	}
 }
 
