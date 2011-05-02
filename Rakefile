@@ -9,10 +9,10 @@ ENGINE = ["src/player.c", "src/screen.c",
 	"src/tiles.c", "src/kitten.c",
 	"src/look.c", "src/cursor.c",
 	"src/entity_set.c", "src/collide.c",
-	"src/hud.c"]
+	"src/hud.c", "src/audio.c"]
 
 def compile out, flags, *paths
-	sh "gcc -o #{out} #{flags} -Wall `pkg-config --cflags --libs gobject-2.0` `pkg-config --cflags --libs sdl` -lSDL_image -Iinclude #{ENGINE.join " "} #{paths.join " "}"
+	sh "gcc -o #{out} #{flags} -Wall `pkg-config --cflags --libs gobject-2.0` `pkg-config --cflags --libs sdl` -lSDL_image -lSDL_mixer -Iinclude #{ENGINE.join " "} #{paths.join " "}"
 end
 
 def debug out, *paths
@@ -64,7 +64,25 @@ task :restart => [:build_restart] do
 	sh "work/restart"
 end
 
+desc "Build a debug version of the game"
+task :build_debug_game => [:clean, "work"] do
+	debug "work/house", "src/main.c"
+end
 
+desc "Play a debug version of the game"
+task :debug_game => :build_debug_game do
+	sh "work/house"
+end
+
+desc "Build optimized version of the game"
+task :build_game do
+	compile "work/house", "-O2 -ffast-math", "src/main.c"
+end
+
+desc "Play optimized version of the game"
+task :game => :build_game do
+	sh "work/house"
+end
 
 desc "Word count"
 task :words do

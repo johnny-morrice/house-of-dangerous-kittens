@@ -6,6 +6,7 @@
 #include "draw.h"
 #include "tiles.h"
 #include "look.h"
+#include "fatal.h"
 
 #include <math.h>
 #include <glib.h>
@@ -65,13 +66,55 @@ level_set_square(Level world, TileManager * tiles, int x, int y, char type)
 	Square * pos = &world[x][y];
 	
 	pos->type = type;
-	
+
 	if (type == 'c')
 	{
 		sprite = tile_carpet(tiles);
 	}
+	else if (type == 'w')
+	{
+		sprite = tile_wood(tiles);
+	}
+	else if (type == 's')
+	{
+		sprite = tile_stone(tiles);
+	}
 
 	pos->sprite = sprite;
+
+}
+
+void
+load_level(Level world, TileManager * tiles, const char * path)
+{
+	FILE * fp;
+
+	unsigned int i;
+	unsigned int j;
+	char next;
+
+	fp = fopen(path, "r");
+
+	if (!fp)
+	{
+		fprintf(stderr, "Could not open level file '%s'\n", path);
+		die();
+	}
+
+	for (i = 0; i < level_height; i++)
+	{	
+		for (j = 0; j < level_width; j ++)
+		{
+			next = fgetc(fp);
+			if (next == '\n')
+			{
+				break;
+			}
+			level_set_square(world, tiles, j, i, next);
+		}
+	}
+
+	fclose(fp);
 
 }
 
@@ -112,11 +155,15 @@ level_draw(Level world, SDL_Surface * canvas, Camera * cam, GSList * seen)
 }
 
 gboolean
+walkable_type(char type)
+{
+	return type == 'c' || type == 'w' || type == 's';
+}
+
+gboolean
 point_in_bounds(Level world, float x, float y)
 {
 	int fx, fy;
-
-	gboolean walkable;
 
 	fx = floor(x);
 	fy = floor(y);
@@ -124,9 +171,7 @@ point_in_bounds(Level world, float x, float y)
 	if (fx >= 0 && fy >= 0 && fx < level_width - 1 && fy < level_height - 1)
 	{
 
-		walkable = world[fx][fy].type == 'c';
-
-		return walkable;
+		return walkable_type(world[fx][fy].type);
 	}
 	else
 	{

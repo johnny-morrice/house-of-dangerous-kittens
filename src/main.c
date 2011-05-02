@@ -18,8 +18,6 @@
 int
 main(int argc, char ** argv)
 {
-	unsigned int i;
-
 	SDL_Surface * screen; 
 	SDL_Surface * cursor;
 	InputState * is;
@@ -33,7 +31,6 @@ main(int argc, char ** argv)
 	Entity * body;
 	TileManager * tiles;
 	KittenManager * litter;
-	Entity * kitten;
 	GSList * seen;
 
 	float px, py;
@@ -57,30 +54,12 @@ main(int argc, char ** argv)
 		display = new_hud(player, time);
 		body = player_entity(player);
 
-		entity_set_position(body, 4, 3);
+		entity_set_position(body, 0, 0);
 
 		litter = load_kittens(body, world, time, entities);
 
-		kitten = clone_kitten(litter, 0, 3);
-		register_entity(entities, kitten);
 
-		for (i = 0; i < 4; i++)
-		{
-			level_set_square(world, tiles, 0, i, square_carpet);
-			level_set_square(world, tiles, 1, i, square_carpet);
-		}
-
-		for (i = 0; i < 6; i++)
-		{
-			level_set_square(world, tiles, i, 0, square_carpet);
-			level_set_square(world, tiles, i, 1, square_carpet);
-		}
-
-		for (i = 0; i < 4; i++)
-		{
-			level_set_square(world, tiles, 4, i, square_carpet);
-			level_set_square(world, tiles, 5, i, square_carpet);
-		}
+		load_level(world, tiles, "data/level.txt");
 
 		play(halter);
 

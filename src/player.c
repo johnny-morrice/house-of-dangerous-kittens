@@ -5,9 +5,14 @@
 #include "draw.h"
 #include "look.h"
 #include "kitten.h"
+#include "timetrack.h"
+#include "audio.h"
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 #include <glib.h>
+
+#define PLAYER_ATTACK_FREQUENCY 9
 
 struct Player
 {
@@ -19,6 +24,9 @@ struct Player
 	Control * halter;
 	unsigned int health;
 	unsigned int score;
+	Mix_Chunk * fire;
+	Expirer * attack_timer;
+
 };
 
 unsigned int
@@ -50,8 +58,11 @@ player_hurt(Player * me)
 void
 player_destructor(Entity * me, gpointer dat)
 {
+	Player * player = (Player *) dat;
 	free_entity(me);
-	free(dat);
+	free(player->attack_timer);
+	Mix_FreeChunk(player->fire);
+	free(player);
 }
 
 Player *
@@ -68,8 +79,10 @@ new_player(EntitySet * others, Camera * cam, InputState * is, Level world, Contr
 	player->health = 100;
 	player->halter = halter;
 	player->score = 0;
+	player->fire = Mix_LoadWAV("data/wav/fire.wav");
+	player->attack_timer = new_expirer(PLAYER_ATTACK_FREQUENCY);
 
-	entity_set_speed(body, 2);
+	entity_set_speed(body, 3);
 	entity_set_direction(body, 0, 0);
 	register_entity(others, body);
 
@@ -106,6 +119,7 @@ alive(Player * me)
 	float dy = 0;
 
 	gboolean shoot;
+	gboolean firing;
 
 	Entity * target;
 
@@ -114,7 +128,8 @@ alive(Player * me)
 	others = me->others;
 	world = me->world;
 
-	shoot = mouse_press(is); 
+	firing = mouse_press(is);
+	shoot = expired(me->attack_timer); 
 
 	// Get the mouse position
 	mouse_position(is, &mousex, &mousey);
@@ -148,18 +163,25 @@ alive(Player * me)
 	entity_set_direction(me->body, dx, dy);
 
 	// Try to shoot a KITTY!
-	if (shoot)
+	if (firing)
 	{
-		entity_position(me->body, &x, &y);
-		
-		if (can_see(world, x, y, lookx, looky))
+		if (shoot)
 		{
-			target = collision(me->body, lookx, looky, others);
+			play_wav(me->fire);
 
-			if (target)
+			entity_position(me->body, &x, &y);
+
+			if (can_see(world, x, y, lookx, looky))
 			{
-				entity_destroy(target);
-				me->score ++;
+				target = collision(me->body, lookx, looky, others);
+
+
+
+				if (target)
+				{
+					entity_destroy(target);
+					me->score ++;
+				}
 			}
 		}
 
@@ -251,7 +273,7 @@ alive(Player * me)
 }
 
 // The player is dead
-void
+	void
 dead(Player * me)
 {
 
@@ -269,7 +291,7 @@ dead(Player * me)
 }
 
 // This is the player's callback where all its actions take place
-void
+	void
 player_user_input_response(gpointer mep)
 {	
 	Player * me;

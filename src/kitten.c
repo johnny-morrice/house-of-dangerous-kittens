@@ -64,7 +64,7 @@ load_kittens(Entity * player, Level world, TimeTracker * time, EntitySet * other
 	litter->mother = mother;
 	litter->child = kitty;
 
-	entity_set_speed(mother, 4);
+	entity_set_speed(mother, 6);
 
 	return litter;
 }

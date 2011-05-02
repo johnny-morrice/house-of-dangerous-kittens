@@ -14,13 +14,16 @@ typedef struct Square Square;
 typedef Square ** Level; 
 
 
-#define level_width (screen_width / square_size)
-#define level_height (screen_height / square_size)
+#define level_width 30
+#define level_height 30
 
 #define square_carpet 'c'
 #define square_empty ' '
 
 Level new_level();
+
+// Load a level from a file
+void load_level(Level world, TileManager * tiles, const char * path);
 
 // Set the tile at this square
 void level_set_square(Level level, TileManager * tiles, int x, int y, char type);
