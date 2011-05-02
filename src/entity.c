@@ -82,7 +82,7 @@ entity_set_direction(Entity * thing, float dx, float dy)
 	else
 	{
 		adx = 0;
-		adx = 0;
+		ady = 0;
 	}
 
 	if (thing->dx != adx || thing->dy != ady)
@@ -294,6 +294,14 @@ gstrcmp(const void * s1, const void * s2)
 	return (gint) strcmp((char *) s1, (char *) s2);
 }
 
+void
+set_animation_raw(Entity * thing, char * name)
+{
+	strcpy(thing->current_animation, name);
+	thing->current_frame = 0;
+	thing->last_change = SDL_GetTicks();
+}
+
 Entity *
 allocate_entity(gpointer userdata,
 		void (*interact)(gpointer),
@@ -310,7 +318,7 @@ allocate_entity(gpointer userdata,
 	thing->x = 0;
 	thing->y = 0;
 	thing->set = NULL;
-	set_animation(thing, (char *) "default");
+	set_animation_raw(thing, (char *) "default");
 	return thing;
 
 }
@@ -356,6 +364,12 @@ free_cloned_entity(Entity * thing)
 }
 
 void
+entity_set_user_data(Entity * thing, gpointer userdata)
+{
+	thing->userdata = userdata;
+}
+
+void
 entity_destroy(Entity * thing)
 {
 	if (thing->set)
@@ -384,9 +398,7 @@ set_animation(Entity * thing, char * name)
 {
 	if (strcmp(thing->current_animation, name) != 0)
 	{
-		strcpy(thing->current_animation, name);
-		thing->current_frame = 0;
-		thing->last_change = SDL_GetTicks();
+		set_animation_raw(thing, name);
 	}
 }
 

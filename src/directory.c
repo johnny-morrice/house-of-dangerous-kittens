@@ -31,7 +31,7 @@ directory_entries(const char * path)
 
 	while (temp)
 	{
-		file = (char *) zone(sizeof(char) * strlen(temp));
+		file = (char *) zone(sizeof(char) * strlen(temp) + 1);
 		strcpy(file, temp);
 		g_array_append_val(files, file);
 		temp = g_dir_read_name(folder);

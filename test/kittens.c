@@ -32,11 +32,13 @@ main(int argc, char ** argv)
 	TileManager * tiles = load_tiles();
 	KittenManager * litter = load_kittens(body, world, time, entities);
 	Entity * kitten = clone_kitten(litter, 0, 3);
+	Entity * kitten2 = clone_kitten(litter, 1, 3);
 
 	// We're testing the AI, easier to see slowly
 	entity_set_speed(kitten, 0.1);
 
 	register_entity(entities, kitten);
+	register_entity(entities, kitten2);
 
 	for (i = 0; i < 4; i++)
 	{
@@ -84,12 +86,16 @@ main(int argc, char ** argv)
 	}
 
 	free_entity_set(entities);
+
+	free(time);
 	free(cam);
 	free(halter);
 	free_level(world);
 	free_input(is);
 	free_tiles(tiles);
 	free_kittens(litter);
+
+	SDL_FreeSurface(cursor);
 
 	SDL_Quit();
 

@@ -7,7 +7,7 @@
 SDL_Surface *
 init_sdl()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
 	return SDL_SetVideoMode(screen_width, screen_height, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 }
 

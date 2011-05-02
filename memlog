@@ -1,0 +1,260 @@
+==23532== Memcheck, a memory error detector
+==23532== Copyright (C) 2002-2010, and GNU GPL'd, by Julian Seward et al.
+==23532== Using Valgrind-3.6.1 and LibVEX; rerun with -h for copyright info
+==23532== Command: work/kitten
+==23532== 
+Loading sprite data/sprites/cursor.png
+Loading entity data/sprites/player/
+Loading animation data/sprites/player/default/
+Loading sprite data/sprites/player/default/0.png
+Loading sprite data/sprites/player/default/1.png
+Loading sprite data/sprites/player/default/2.png
+Loading sprite data/sprites/player/default/3.png
+Loading animation data/sprites/player/shoot_idle_up/
+Loading sprite data/sprites/player/shoot_idle_up/0.png
+Loading animation data/sprites/player/idle_up/
+Loading sprite data/sprites/player/idle_up/0.png
+Loading sprite data/sprites/player/idle_up/1.png
+Loading sprite data/sprites/player/idle_up/2.png
+Loading sprite data/sprites/player/idle_up/3.png
+Loading animation data/sprites/player/walk_right/
+Loading sprite data/sprites/player/walk_right/0.png
+Loading sprite data/sprites/player/walk_right/1.png
+Loading animation data/sprites/player/shoot_walk_up/
+Loading sprite data/sprites/player/shoot_walk_up/0 (copy).png
+Loading sprite data/sprites/player/shoot_walk_up/0.png
+Loading animation data/sprites/player/idle_left/
+Loading sprite data/sprites/player/idle_left/0.png
+Loading sprite data/sprites/player/idle_left/1.png
+Loading sprite data/sprites/player/idle_left/2.png
+Loading sprite data/sprites/player/idle_left/3.png
+Loading animation data/sprites/player/shoot_walk_left/
+Loading sprite data/sprites/player/shoot_walk_left/0.png
+Loading sprite data/sprites/player/shoot_walk_left/1.png
+Loading animation data/sprites/player/walk_left/
+Loading sprite data/sprites/player/walk_left/0.png
+Loading sprite data/sprites/player/walk_left/1.png
+Loading animation data/sprites/player/walk_up/
+Loading sprite data/sprites/player/walk_up/0.png
+Loading sprite data/sprites/player/walk_up/1.png
+Loading animation data/sprites/player/shoot_idle_right/
+Loading sprite data/sprites/player/shoot_idle_right/0.png
+Loading sprite data/sprites/player/shoot_idle_right/1.png
+Loading animation data/sprites/player/idle_right/
+Loading sprite data/sprites/player/idle_right/0.png
+Loading sprite data/sprites/player/idle_right/1.png
+Loading sprite data/sprites/player/idle_right/2.png
+Loading sprite data/sprites/player/idle_right/3.png
+Loading animation data/sprites/player/shoot_walk_right/
+Loading sprite data/sprites/player/shoot_walk_right/0.png
+Loading sprite data/sprites/player/shoot_walk_right/1.png
+Loading animation data/sprites/player/idle_down/
+Loading sprite data/sprites/player/idle_down/0.png
+Loading sprite data/sprites/player/idle_down/1.png
+Loading sprite data/sprites/player/idle_down/2.png
+Loading sprite data/sprites/player/idle_down/3.png
+Loading animation data/sprites/player/walk_down/
+Loading sprite data/sprites/player/walk_down/0.png
+Loading sprite data/sprites/player/walk_down/1.png
+Loading sprite data/sprites/player/walk_down/2.png
+Loading sprite data/sprites/player/walk_down/3.png
+Loading animation data/sprites/player/shoot_walk_down/
+Loading sprite data/sprites/player/shoot_walk_down/0.png
+Loading sprite data/sprites/player/shoot_walk_down/1.png
+Loading animation data/sprites/player/shoot_idle_left/
+Loading sprite data/sprites/player/shoot_idle_left/0.png
+Loading sprite data/sprites/player/shoot_idle_left/1.png
+Loading animation data/sprites/player/shoot_idle_down/
+Loading sprite data/sprites/player/shoot_idle_down/0.png
+Loading sprite data/sprites/player/shoot_idle_down/1.png
+Loading sprite data/sprites/level/carpet.png
+Loading entity data/sprites/kitten/
+Loading animation data/sprites/kitten/default/
+Loading sprite data/sprites/kitten/default/0.png
+Loading animation data/sprites/kitten/right/
+Loading sprite data/sprites/kitten/right/0.png
+Loading sprite data/sprites/kitten/right/1.png
+Loading animation data/sprites/kitten/up/
+Loading sprite data/sprites/kitten/up/0.png
+Loading sprite data/sprites/kitten/up/1.png
+Loading animation data/sprites/kitten/left/
+Loading sprite data/sprites/kitten/left/0.png
+Loading sprite data/sprites/kitten/left/1.png
+Loading animation data/sprites/kitten/down/
+Loading sprite data/sprites/kitten/down/0.png
+Loading sprite data/sprites/kitten/down/1.png
+we had 3 entities
+we now have 2 entities
+==23532== 
+==23532== HEAP SUMMARY:
+==23532==     in use at exit: 87,712 bytes in 1,000 blocks
+==23532==   total heap usage: 339,017 allocs, 338,017 frees, 10,415,038 bytes allocated
+==23532== 
+==23532== 14 bytes in 2 blocks are definitely lost in loss record 5 of 147
+==23532==    at 0x4C2684E: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x7644F36: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x76451EA: _XimSetICValueData (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x763FDD2: _XimLocalCreateIC (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x7624062: XCreateIC (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x57CCF1B: ??? (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57CDE7A: ??? (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57BECB4: SDL_VideoInit (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57954CA: SDL_InitSubSystem (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x579550E: SDL_Init (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x401BF9: init_sdl (screen.c:10)
+==23532==    by 0x403FCE: main (kittens.c:20)
+==23532== 
+==23532== 24 bytes in 1 blocks are definitely lost in loss record 11 of 147
+==23532==    at 0x4C2684E: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x7F4580D: ???
+==23532==    by 0x7F450E4: ???
+==23532==    by 0x7F454F6: ???
+==23532==    by 0x7F45A49: ???
+==23532==    by 0x7F40AE8: ???
+==23532==    by 0x57CDF80: ??? (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57BECB4: SDL_VideoInit (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57954CA: SDL_InitSubSystem (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x579550E: SDL_Init (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x401BF9: init_sdl (screen.c:10)
+==23532==    by 0x403FCE: main (kittens.c:20)
+==23532== 
+==23532== 40 bytes in 1 blocks are definitely lost in loss record 17 of 147
+==23532==    at 0x4C2684E: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x402077: zone (zone.c:9)
+==23532==    by 0x403587: clone_kitten (kitten.c:61)
+==23532==    by 0x4040AC: main (kittens.c:34)
+==23532== 
+==23532== 40 bytes in 1 blocks are definitely lost in loss record 18 of 147
+==23532==    at 0x4C2684E: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x402077: zone (zone.c:9)
+==23532==    by 0x403587: clone_kitten (kitten.c:61)
+==23532==    by 0x4040CC: main (kittens.c:35)
+==23532== 
+==23532== 124 bytes in 1 blocks are definitely lost in loss record 96 of 147
+==23532==    at 0x4C2684E: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x791BFC5: ??? (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x791C064: ??? (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x791BB00: xcb_connect_to_display_with_auth_info (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x76163E1: _XConnectXCB (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x7606036: XOpenDisplay (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x57CCA76: ??? (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57BED72: SDL_VideoInit (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57954CA: SDL_InitSubSystem (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x579550E: SDL_Init (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x401BF9: init_sdl (screen.c:10)
+==23532==    by 0x403FCE: main (kittens.c:20)
+==23532== 
+==23532== 124 bytes in 1 blocks are definitely lost in loss record 97 of 147
+==23532==    at 0x4C2684E: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x791BFC5: ??? (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x791C064: ??? (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x791BB00: xcb_connect_to_display_with_auth_info (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x76163E1: _XConnectXCB (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x7606036: XOpenDisplay (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x57CDC6E: ??? (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57BECB4: SDL_VideoInit (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57954CA: SDL_InitSubSystem (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x579550E: SDL_Init (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x401BF9: init_sdl (screen.c:10)
+==23532==    by 0x403FCE: main (kittens.c:20)
+==23532== 
+==23532== 124 bytes in 1 blocks are definitely lost in loss record 98 of 147
+==23532==    at 0x4C2684E: malloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x791BFC5: ??? (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x791C064: ??? (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x791BB00: xcb_connect_to_display_with_auth_info (in /usr/lib64/libxcb.so.1.1.0)
+==23532==    by 0x76163E1: _XConnectXCB (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x7606036: XOpenDisplay (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x57CDC8B: ??? (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57BECB4: SDL_VideoInit (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57954CA: SDL_InitSubSystem (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x579550E: SDL_Init (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x401BF9: init_sdl (screen.c:10)
+==23532==    by 0x403FCE: main (kittens.c:20)
+==23532== 
+==23532== 192 (16 direct, 176 indirect) bytes in 1 blocks are definitely lost in loss record 108 of 147
+==23532==    at 0x4C2697F: realloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x7629C11: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x762A599: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x762B892: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x762BFD7: _XlcCreateLC (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x764ADAF: _XlcDefaultLoader (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x7634245: _XOpenLC (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x763430A: _XrmInitParseInfo (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x761D85F: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x761F46D: XrmGetStringDatabase (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x75FA040: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x75FA21F: XGetDefault (in /usr/lib64/libX11.so.6.3.0)
+==23532== 
+==23532== 192 (16 direct, 176 indirect) bytes in 1 blocks are definitely lost in loss record 109 of 147
+==23532==    at 0x4C2697F: realloc (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x7629C11: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x762A599: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x762B892: ??? (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x762BFD7: _XlcCreateLC (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x764ADAF: _XlcDefaultLoader (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x7634245: _XOpenLC (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x763434A: _XlcCurrentLC (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x76347ED: XSetLocaleModifiers (in /usr/lib64/libX11.so.6.3.0)
+==23532==    by 0x57CD1D3: ??? (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57CDE7A: ??? (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532==    by 0x57BECB4: SDL_VideoInit (in /usr/lib64/libSDL-1.2.so.0.11.3)
+==23532== 
+==23532== 496 bytes in 1 blocks are possibly lost in loss record 119 of 147
+==23532==    at 0x4C2509C: memalign (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x4C2514F: posix_memalign (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x54E8D17: ??? (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x54E95A2: g_slice_alloc (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x54A2EDC: g_array_sized_new (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x40250B: directory_entries (directory.c:20)
+==23532==    by 0x403217: load_entity (entity.c:433)
+==23532==    by 0x40168E: new_player (player.c:34)
+==23532==    by 0x404041: main (kittens.c:28)
+==23532== 
+==23532== 992 bytes in 2 blocks are possibly lost in loss record 127 of 147
+==23532==    at 0x4C2509C: memalign (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x4C2514F: posix_memalign (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x54E8D17: ??? (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x54E95D7: g_slice_alloc (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x54F95C4: g_tree_new_full (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x402FA8: new_entity (entity.c:332)
+==23532==    by 0x4031EE: load_entity (entity.c:429)
+==23532==    by 0x40168E: new_player (player.c:34)
+==23532==    by 0x404041: main (kittens.c:28)
+==23532== 
+==23532== 1,488 bytes in 3 blocks are possibly lost in loss record 134 of 147
+==23532==    at 0x4C2509C: memalign (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x4C2514F: posix_memalign (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x54E8D17: ??? (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x54E95D7: g_slice_alloc (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x54A2EDC: g_array_sized_new (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x40250B: directory_entries (directory.c:20)
+==23532==    by 0x403217: load_entity (entity.c:433)
+==23532==    by 0x40168E: new_player (player.c:34)
+==23532==    by 0x404041: main (kittens.c:28)
+==23532== 
+==23532== 6,480 bytes in 27 blocks are possibly lost in loss record 144 of 147
+==23532==    at 0x4C2509C: memalign (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x4C2514F: posix_memalign (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==23532==    by 0x54E8D17: ??? (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x54E95D7: g_slice_alloc (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x54EABF5: g_slist_prepend (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532==    by 0x40393A: raytrace (look.c:73)
+==23532==    by 0x4039F9: line_of_sight (look.c:102)
+==23532==    by 0x403B14: can_see (look.c:138)
+==23532==    by 0x4036F9: kitten_move (kitten.c:113)
+==23532==    by 0x402655: entity_interact (entity.c:48)
+==23532==    by 0x403C5B: runnerf (entity_set.c:28)
+==23532==    by 0x54EA74B: g_slist_foreach (in /usr/lib64/libglib-2.0.so.0.2600.1)
+==23532== 
+==23532== LEAK SUMMARY:
+==23532==    definitely lost: 522 bytes in 10 blocks
+==23532==    indirectly lost: 352 bytes in 8 blocks
+==23532==      possibly lost: 9,456 bytes in 33 blocks
+==23532==    still reachable: 77,382 bytes in 949 blocks
+==23532==         suppressed: 0 bytes in 0 blocks
+==23532== Reachable blocks (those to which a pointer was found) are not shown.
+==23532== To see them, rerun with: --leak-check=full --show-reachable=yes
+==23532== 
+==23532== For counts of detected and suppressed errors, rerun with: -v
+==23532== ERROR SUMMARY: 13 errors from 13 contexts (suppressed: 260 from 8)

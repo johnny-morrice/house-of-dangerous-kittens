@@ -55,6 +55,8 @@ Entity * collision(Entity * thing, float x, float y, EntitySet * others);
 
 gpointer entity_user_data(Entity * thing);
 
+void entity_set_user_data(Entity * thing, gpointer userdata);
+
 // Entity set functions
 
 EntitySet * new_entity_set();

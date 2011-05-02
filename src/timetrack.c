@@ -3,7 +3,7 @@
 
 #include <SDL/SDL.h>
 
-#define TRACKING 100
+#define TRACKING 1000
 
 struct TimeTracker
 {
@@ -18,6 +18,7 @@ new_time_tracker()
 	TimeTracker * time = (TimeTracker *) zone(sizeof(TimeTracker));
 	time->frames = 0;
 	time->fps = 100;
+	time->first_time = SDL_GetTicks();
 
 	return time;
 }
@@ -28,7 +29,7 @@ frame_done(TimeTracker * time)
 {
 	unsigned int ticks = SDL_GetTicks();
 	time->frames ++;
-	if (ticks - time->first_time > 1000)
+	if (ticks - time->first_time > TRACKING)
 	{
 		time->first_time = ticks;
 		time->fps = time->frames;

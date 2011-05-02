@@ -22,6 +22,9 @@ new_input_state()
 	is = (InputState *) zone(sizeof(InputState));
 	is->down = NULL;
 	is->quit_event = 0;
+	is->mouse_press = FALSE;
+	is->mousex = 0;
+	is->mousey = 0;
 	return is;
 }
 

@@ -57,8 +57,17 @@ clone_kitten(KittenManager * litter, float x, float y)
 {
 	Entity * body = clone_entity(litter->mother);
 
-	Kitten * kitty = (Kitten *) entity_user_data(body);
+	Kitten * mam = (Kitten *) entity_user_data(body);
+	Kitten * kitty = (Kitten *) zone(sizeof(Kitten));
+
+	kitty->player = mam->player;
+	kitty->world = mam->world;
+	kitty->time = mam->time;
+	kitty->others = mam->others;
 	kitty->body = body;
+
+	entity_set_user_data(body, kitty);
+
 	entity_set_position(body, x, y);
 
 	return body;
@@ -103,6 +112,7 @@ kitten_move(gpointer kittyp)
 	entity_position(body, &x, &y);
 	entity_position(player, &px, &py);
 
+
 	if (can_see(world, x, y, px, py))
 	{
 		dir = look(x, y, px, py);
@@ -129,6 +139,7 @@ kitten_move(gpointer kittyp)
 
 		entity_set_direction(body, dx, dy);
 		entity_move(body, world, time, others);
+
 	}
 
 }

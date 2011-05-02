@@ -105,7 +105,7 @@ register_entity(EntitySet * entities, Entity * thing)
 void
 remove_entity(EntitySet * entities, Entity * thing)
 {
-	entities->members = g_slist_remove(entities->members, thing);
+	entities->members = g_slist_remove_all(entities->members, thing);
 }
 
 GSList *
