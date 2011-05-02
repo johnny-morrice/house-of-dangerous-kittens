@@ -4,12 +4,13 @@
 
 #include "player.h"
 #include "timetrack.h"
+#include "control.h"
 
 #include <SDL/SDL.h>
 
 typedef struct HUD HUD;
 
-HUD * new_hud(Player * player, TimeTracker * time);
+HUD * new_hud(Player * player, TimeTracker * time, Control * halter);
 
 void hud_draw(HUD * display, SDL_Surface * canvas);
 

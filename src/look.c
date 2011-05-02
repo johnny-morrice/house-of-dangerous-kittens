@@ -195,11 +195,24 @@ can_see(Level world, float x, float y, float px, float py)
 
 	line_of_sight(world, seen, x, y);
 
-	can = seen[i][j];
+	can = can_see_grid(seen, i, j);
 
 	free_seen_grid(seen);
 
 	return can;
+}
+
+gboolean
+can_see_grid(gboolean ** seen, unsigned int x, unsigned int y)
+{
+	if (x < level_width && y < level_height)
+	{
+		return seen[x][y];
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 

@@ -19,8 +19,12 @@ gboolean playing(Control * halter);
 // Stop the game (not the program)
 void stop(Control * halter);
 
+gboolean is_paused(Control * halter);
+
 // The game is on
 void play(Control * halter);
+
+void check_pause(Control * halter, InputState * is);
 
 void check_exit(Control * halter, InputState * is);
 

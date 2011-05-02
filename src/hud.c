@@ -4,6 +4,7 @@
 #include "screen.h"
 #include "player.h"
 #include "timetrack.h"
+#include "control.h"
 
 #include <SDL/SDL.h>
 #include <stdlib.h>
@@ -22,13 +23,17 @@ struct HUD
 	SDL_Surface * o;
 	SDL_Surface * r;
 	SDL_Surface * e;
+	SDL_Surface * a;
+	SDL_Surface * u;
+	SDL_Surface * d;
 	SDL_Surface * dead;
 	Player * player;
 	TimeTracker * time;
+	Control * halter;
 };
 
 HUD *
-new_hud(Player * player, TimeTracker * time)
+new_hud(Player * player, TimeTracker * time, Control * halter)
 {
 	HUD * display = (HUD *) zone(sizeof(HUD));
 	display->digits[0] = load_sprite("data/sprites/digits/0.png");
@@ -49,13 +54,17 @@ new_hud(Player * player, TimeTracker * time)
 	display->o = load_sprite("data/sprites/letters/o.png");
 	display->r = load_sprite("data/sprites/letters/r.png");
 	display->e = load_sprite("data/sprites/letters/e.png");
+	display->a = load_sprite("data/sprites/letters/a.png");
+	display->u = load_sprite("data/sprites/letters/u.png");
+	display->d = load_sprite("data/sprites/letters/d.png");
+
+	display->dead = load_sprite("data/sprites/dead.png");
+	display->heart = load_sprite("data/sprites/health.png");
 
 	display->time = time;
 
-	display->dead = load_sprite("data/sprites/dead.png");
-
-	display->heart = load_sprite("data/sprites/health.png");
 	display->player = player;
+	display->halter = halter;
 
 	return display;
 }
@@ -77,6 +86,8 @@ free_hud(HUD * display)
 	SDL_FreeSurface(display->o);
 	SDL_FreeSurface(display->r);
 	SDL_FreeSurface(display->e);
+	SDL_FreeSurface(display->u);
+	SDL_FreeSurface(display->d);
 	SDL_FreeSurface(display->dead);
 }
 
@@ -182,6 +193,25 @@ hud_draw(HUD * display, SDL_Surface * screen)
 		dst.x = 0;
 		dst.y = text_gap;
 		SDL_BlitSurface(display->dead, NULL, screen, &dst);
+	}
+
+	if (is_paused(display->halter))
+	{
+		dst.x = screen_width / 2;
+		dst.y = screen_height / 2;
+		SDL_BlitSurface(display->p, NULL, screen, &dst);
+		dst.x += text_gap;
+		SDL_BlitSurface(display->a, NULL, screen, &dst);
+		dst.x += text_gap;
+		SDL_BlitSurface(display->u, NULL, screen, &dst);
+		dst.x += text_gap;
+		SDL_BlitSurface(display->s, NULL, screen, &dst);
+		dst.x += text_gap;
+		SDL_BlitSurface(display->e, NULL, screen, &dst);
+		dst.x += text_gap;
+		SDL_BlitSurface(display->d, NULL, screen, &dst);
+		dst.x += text_gap;
+		
 	}
 
 	dst.x = 0;

@@ -53,7 +53,7 @@ main(int argc, char ** argv)
 		world = new_level();
 		entities = new_entity_set();
 		player = new_player(entities, cam, is, world, halter);
-		display = new_hud(player, time);
+		display = new_hud(player, time, halter);
 		body = player_entity(player);
 
 		entity_set_position(body, 0, 0);
@@ -73,9 +73,11 @@ main(int argc, char ** argv)
 
 			entity_centre(body, cam);
 
-			entities_interact(entities);
-
-			entities_move(entities, world, time);
+			if (!is_paused(halter))
+			{
+				entities_interact(entities);
+				entities_move(entities, world, time);
+			}
 
 			entity_position(body, &px, &py);
 
@@ -93,6 +95,7 @@ main(int argc, char ** argv)
 
 			SDL_Flip(screen);
 
+			check_pause(halter, is);
 			check_exit(halter, is);
 
 			frame_done(time);

@@ -26,4 +26,7 @@ void line_of_sight(Level world, gboolean ** seen, float x, float y);
 // Standing at (x,y), can you see (px, py)?
 gboolean can_see(Level world, float x, float y, float px, float py);
 
+// Given a grid, can we see this location?
+gboolean can_see_grid(gboolean ** seen, unsigned int x, unsigned int y);
+
 #endif

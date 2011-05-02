@@ -3,27 +3,27 @@ sccccccswwwwwwwwwwwwwsccccccs
 sccccccswwwwwwwwwwwwwsccccccs
 sccccccs      ww     sccccccs
 ssssssss      ww     ssssssss
-              ww             
-              ww             
-              wwwwwwwwwwwwwww
-              wwwwwwwwwwwwwww
-                        wwwww
-                        wwwww
+  ww          ww             
+  ww          ww             
+  wwwwwwwwwwwwwwwwwwwwwwwwwww
+  wwwwwwwwwwwwwwwwwwwwwwwwwww
+                    ww  wwwww
+                    ww  wwwww
 ccwwwwccwwwwwwwwwwwwwwwwwwwww
 ccwwwwccwwwwwwwwwwwwwwwwwwwww
 wwwwwwww        cc           
 wwwwwwww        cc           
 ccwwwwccsssssssssssssssssssss
 ccwwwwccsssssssssssssssssssss
-ww                         cc
-ww                         cc
-ww                         cc
-ww  ssssssss               cc
-ww  sccccccs               cc
-ww  sccccccs               cc
-ww  ssssssss               cc
-ww  ww                     cc
-ww  ww                     cc
-ww  ww                     cc
+ww           ss            cc
+ww           ss            cc
+ww           ss            cc
+ww  ssssssssssssssccccccccccc
+ww  sccccccsssssssccccccccccc
+ww  sccccccs      ww       cc
+ww  ssssssss      ww       cc
+ww  ww    ss      wwwwwwwwwcc
+ww  ww    sssss   wwwwwwwwwcc
+ww  ww    sssss   ww       cc
 sssssssssssssssssssssssssssss
 sssssssssssssssssssssssssssss
