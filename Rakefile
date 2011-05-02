@@ -53,3 +53,8 @@ desc "Test dangerous kittens"
 task :danger => [:build_danger] do
 	sh "work/danger"
 end
+
+desc "Word count"
+task :words do
+	sh "wc `find -regex '.+\\.\\(c\\|\\h\\)' ` | sort -n"
+end

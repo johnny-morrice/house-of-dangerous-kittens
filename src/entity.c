@@ -41,6 +41,14 @@ struct Entity
 	void (*destructor)(Entity *, gpointer);
 };
 
+// Write the direction into the pointers
+void
+entity_get_direction(Entity * thing, float * dx, float * dy)
+{
+	*dx = thing->dx;
+	*dy = thing->dy;
+}
+
 // Allow the callbacks to operate on the thing
 void
 entity_interact(Entity * thing)

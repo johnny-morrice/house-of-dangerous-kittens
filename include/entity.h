@@ -40,6 +40,10 @@ void entity_set_speed(Entity * thing, float d);
 
 void entity_position(Entity * thing, float * x, float * y);
 
+// Write the direction into the pointers
+void entity_get_direction(Entity * thing, float * dx, float * dy);
+
+
 // Clone an entity
 Entity * clone_entity(Entity * thing);
 // Free a cloned entity

@@ -28,7 +28,7 @@ main(int argc, char ** argv)
 	EntitySet * entities = new_entity_set();
 	Player * player = new_player(entities, cam, is, world);
 
-	HUD * display = new_hud(health_ptr(player));
+	HUD * display = new_hud(player);
 
 	Entity * body = player_entity(player);
 

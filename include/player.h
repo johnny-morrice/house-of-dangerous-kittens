@@ -24,8 +24,8 @@ Entity * player_entity(Player * player);
 void
 player_hurt(Player * me);
 
-// The player's health pointer
-int *
-health_ptr(Player * me);
+// The player's health
+unsigned int
+player_health(Player * me);
 
 #endif

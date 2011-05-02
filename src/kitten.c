@@ -127,10 +127,10 @@ kitten_move(gpointer kittyp)
 		entity_set_direction(body, dx, dy);
 		entity_move(body, world, time, others);
 
-		// NEED TO FIX THIS BIT!
-		if (collide(x + dx, y + dy, px, py))
+		entity_get_direction(body, &dx, &dy);
+
+		if (collision(body, x + dx, y + dy, others) == player)
 		{
-			printf("trying to hurt player\n");
 			dude = entity_user_data(player);
 			player_hurt(dude);
 		}

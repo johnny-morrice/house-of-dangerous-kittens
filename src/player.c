@@ -16,20 +16,27 @@ struct Player
 	InputState * is;
 	EntitySet * others;
 	Level world;
-	int health;
+	unsigned int health;
 };
 
-int *
-health_ptr(Player * me)
+unsigned int
+player_health(Player * me)
 {
-	return &(me->health);
+	return me->health;
 }
 
 
 void
 player_hurt(Player * me)
 {
-	me->health = me->health - 1;
+	int health;
+
+	health = me->health;
+
+	if (health > 0)
+	{
+		me->health = health - 1;
+	}
 }
 
 void
