@@ -100,20 +100,15 @@ draw_square(gpointer coordp, gpointer ldp)
 }
 // Draw parts of the level that can be seen on to the canvas
 void
-level_draw(Level world, float x, float y, SDL_Surface * canvas, Camera * cam)
+level_draw(Level world, SDL_Surface * canvas, Camera * cam, GSList * seen)
 {
-	GSList * seen;
 	struct LevelDraw leveldraw;
 
 	leveldraw.world = world;
 	leveldraw.canvas = canvas;
 	leveldraw.cam = cam;
 
-	seen = line_of_sight(world, x, y);
-
 	g_slist_foreach(seen, &draw_square, &leveldraw);
-
-	free_seen(seen);
 }
 
 gboolean

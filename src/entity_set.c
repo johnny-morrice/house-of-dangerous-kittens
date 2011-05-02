@@ -1,5 +1,6 @@
 #include "entity.h"
 #include "zone.h"
+#include "collide.h"
 
 #include <glib.h>
 #include <SDL/SDL.h>
@@ -76,22 +77,55 @@ struct DrawData
 {
 	SDL_Surface * canvas;
 	Camera * cam;
+	GSList * seen;
 };
+
+struct SeeCheck
+{
+	Entity * thing;
+	gboolean can;
+};
+
+void
+see_checkf(gpointer coordp, gpointer seep)
+{
+	struct SeeCheck * see_check = (struct SeeCheck *) seep;
+	float * coord = (float *) coordp;
+	float x, y;
+
+	entity_position(see_check->thing, &x, &y);
+
+	if (!see_check->can)
+	{
+		see_check->can = collide(coord[0], coord[1], x, y);
+	}
+}
 
 void
 entity_drawf(gpointer entityp, gpointer drawp)
 {
+	struct SeeCheck see_check;
 	struct DrawData * drawdat = (struct DrawData *) drawp;
 	Entity * thing = (Entity *) entityp;
-	entity_draw(thing, drawdat->canvas, drawdat->cam);
+
+	see_check.thing = thing;
+	see_check.can = FALSE;
+
+	g_slist_foreach(drawdat->seen, &see_checkf, &see_check);
+
+	if (see_check.can)
+	{
+		entity_draw(thing, drawdat->canvas, drawdat->cam);
+	}
 }
 
 void
-entities_draw(EntitySet * entities, SDL_Surface * canvas, Camera * cam)
+entities_draw(EntitySet * entities, SDL_Surface * canvas, Camera * cam, GSList * seen)
 {
 	struct DrawData drawdat;
 	drawdat.canvas = canvas;
 	drawdat.cam = cam;
+	drawdat.seen = seen;
 	g_slist_foreach(entities->members, &entity_drawf, &drawdat);
 }
 

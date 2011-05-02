@@ -28,7 +28,7 @@ void level_set_square(Level level, TileManager * tiles, int x, int y, char type)
 void free_level(Level level);
 
 // Draw parts of the level the entity can see onto the canvas
-void level_draw(Level level, float x, float y, SDL_Surface * canvas, Camera * cam);
+void level_draw(Level level, SDL_Surface * canvas, Camera * cam, GSList * seen);
 
 // Is a point at this position in bounds
 gboolean point_in_bounds(Level level, float x, float y);

@@ -12,6 +12,7 @@
 #include "kitten.h"
 #include "cursor.h"
 #include "hud.h"
+#include "look.h"
 
 int
 main(int argc, char ** argv)
@@ -32,6 +33,7 @@ main(int argc, char ** argv)
 	TileManager * tiles;
 	KittenManager * litter;
 	Entity * kitten;
+	GSList * seen;
 
 	float px, py;
 
@@ -94,9 +96,11 @@ main(int argc, char ** argv)
 
 			entity_position(body, &px, &py);
 
-			level_draw(world, px, py, screen, cam);
+			seen = line_of_sight(world, px, py);
 
-			entities_draw(entities, screen, cam);
+			level_draw(world, screen, cam, seen);
+
+			entities_draw(entities, screen, cam, seen);
 
 			draw_cursor(is, cursor, screen);
 
@@ -107,12 +111,15 @@ main(int argc, char ** argv)
 			check_exit(halter, is);
 
 			frame_done(time);
+
+			free_seen(seen);
 		}
 
 		free_entity_set(entities);
 
 		free_level(world);;
 		free_hud(display);
+
 
 		free_kittens(litter);
 	}

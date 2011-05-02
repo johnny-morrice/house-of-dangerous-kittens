@@ -71,7 +71,7 @@ void entities_interact(EntitySet * entities);
 
 void entities_move(EntitySet * entities, Level world, TimeTracker * time);
 
-void entities_draw(EntitySet * entities, SDL_Surface * canvas, Camera * cam);
+void entities_draw(EntitySet * entities, SDL_Surface * canvas, Camera * cam, GSList * seen);
 
 void register_entity(EntitySet * entities, Entity * thing);
 
