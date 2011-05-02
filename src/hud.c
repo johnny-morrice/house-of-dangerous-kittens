@@ -12,6 +12,14 @@
 
 #define text_gap 40
 
+#define DIGIT_FORE "data/sprites/digits/"
+#define LETTER_FORE "data/sprites/letters/"
+#define DEAD_PATH "data/sprites/dead.png"
+#define HEALTH_PATH "data/sprites/health.png"
+
+#define DIGIT_PATH(path) DIGIT_FORE path
+#define LETTER_PATH(path) LETTER_FORE path
+
 struct HUD
 {
 	SDL_Surface * digits[10];
@@ -36,30 +44,30 @@ HUD *
 new_hud(Player * player, TimeTracker * time, Control * halter)
 {
 	HUD * display = (HUD *) zone(sizeof(HUD));
-	display->digits[0] = load_sprite("data/sprites/digits/0.png");
-	display->digits[1] = load_sprite("data/sprites/digits/1.png");
-	display->digits[2] = load_sprite("data/sprites/digits/2.png");
-	display->digits[3] = load_sprite("data/sprites/digits/3.png");
-	display->digits[4] = load_sprite("data/sprites/digits/4.png");
-	display->digits[5] = load_sprite("data/sprites/digits/5.png");
-	display->digits[6] = load_sprite("data/sprites/digits/6.png");
-	display->digits[7] = load_sprite("data/sprites/digits/7.png");
-	display->digits[8] = load_sprite("data/sprites/digits/8.png");
-	display->digits[9] = load_sprite("data/sprites/digits/9.png");
+	display->digits[0] = load_sprite(DIGIT_PATH("0.png"));
+	display->digits[1] = load_sprite(DIGIT_PATH("1.png"));
+	display->digits[2] = load_sprite(DIGIT_PATH("2.png"));
+	display->digits[3] = load_sprite(DIGIT_PATH("3.png"));
+	display->digits[4] = load_sprite(DIGIT_PATH("4.png"));
+	display->digits[5] = load_sprite(DIGIT_PATH("5.png"));
+	display->digits[6] = load_sprite(DIGIT_PATH("6.png"));
+	display->digits[7] = load_sprite(DIGIT_PATH("7.png"));
+	display->digits[8] = load_sprite(DIGIT_PATH("8.png"));
+	display->digits[9] = load_sprite(DIGIT_PATH("9.png"));
 
-	display->f = load_sprite("data/sprites/letters/f.png");
-	display->p = load_sprite("data/sprites/letters/p.png");
-	display->s = load_sprite("data/sprites/letters/s.png");
-	display->c = load_sprite("data/sprites/letters/c.png");
-	display->o = load_sprite("data/sprites/letters/o.png");
-	display->r = load_sprite("data/sprites/letters/r.png");
-	display->e = load_sprite("data/sprites/letters/e.png");
-	display->a = load_sprite("data/sprites/letters/a.png");
-	display->u = load_sprite("data/sprites/letters/u.png");
-	display->d = load_sprite("data/sprites/letters/d.png");
+	display->f = load_sprite(LETTER_PATH("f.png"));
+	display->p = load_sprite(LETTER_PATH("p.png"));
+	display->s = load_sprite(LETTER_PATH("s.png"));
+	display->c = load_sprite(LETTER_PATH("c.png"));
+	display->o = load_sprite(LETTER_PATH("o.png"));
+	display->r = load_sprite(LETTER_PATH("r.png"));
+	display->e = load_sprite(LETTER_PATH("e.png"));
+	display->a = load_sprite(LETTER_PATH("a.png"));
+	display->u = load_sprite(LETTER_PATH("u.png"));
+	display->d = load_sprite(LETTER_PATH("d.png"));
 
-	display->dead = load_sprite("data/sprites/dead.png");
-	display->heart = load_sprite("data/sprites/health.png");
+	display->dead = load_sprite(DEAD_PATH);
+	display->heart = load_sprite(HEALTH_PATH);
 
 	display->time = time;
 

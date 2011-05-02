@@ -14,6 +14,9 @@
 
 #define PLAYER_ATTACK_FREQUENCY 9
 
+#define PLAYER_PATH "data/sprites/player/"
+#define FIRE_PATH "data/wav/fire.wav"
+
 struct Player
 {
 	Entity * body;
@@ -69,7 +72,7 @@ Player *
 new_player(EntitySet * others, Camera * cam, InputState * is, Level world, Control * halter)
 {
 	Player * player = (Player *) zone(sizeof(Player));
-	Entity * body = load_entity("data/sprites/player/", player, &player_user_input_response, &player_destructor);
+	Entity * body = load_entity(PLAYER_PATH, player, &player_user_input_response, &player_destructor);
 
 	player->body = body;
 	player->others = others;
@@ -79,7 +82,7 @@ new_player(EntitySet * others, Camera * cam, InputState * is, Level world, Contr
 	player->health = 100;
 	player->halter = halter;
 	player->score = 0;
-	player->fire = Mix_LoadWAV("data/wav/fire.wav");
+	player->fire = Mix_LoadWAV(FIRE_PATH);
 	player->attack_timer = new_expirer(PLAYER_ATTACK_FREQUENCY);
 
 	entity_set_speed(body, 3);

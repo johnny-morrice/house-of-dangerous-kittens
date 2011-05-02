@@ -17,6 +17,10 @@
 
 #define SPAWN_FREQUENCY 1
 
+#define KITTEN_PATH "data/sprites/kitten/"
+#define CLAW_PATH "data/wav/claw.wav"
+
+
 struct KittenManager
 {
 	Entity * mother;
@@ -134,7 +138,7 @@ spawn_more_kittens(KittenManager * litter, gboolean ** seen)
 {
 	unsigned int i;
 
-	if (litter->kitten_count < 30 && expired(litter->spawn_timer))
+	if (litter->kitten_count < 10 && expired(litter->spawn_timer))
 	{
 		for (i = 0; i < 10; i++)
 		{
@@ -171,7 +175,7 @@ load_kittens(Entity * player, Level world, TimeTracker * time, EntitySet * other
 
 	Kitten * kitty = (Kitten *) zone(sizeof(Kitten));
 
-	Entity * mother = load_entity("data/sprites/kitten/", kitty, &kitten_move, &kitten_destructor);
+	Entity * mother = load_entity(KITTEN_PATH, kitty, &kitten_move, &kitten_destructor);
 
 	kitty->body = mother;
 	kitty->player = player;
@@ -179,7 +183,7 @@ load_kittens(Entity * player, Level world, TimeTracker * time, EntitySet * other
 	kitty->time = time;
 	kitty->others = others;
 	kitty->count_ptr = &litter->kitten_count;
-	kitty->claw = Mix_LoadWAV("data/wav/claw.wav");
+	kitty->claw = Mix_LoadWAV(CLAW_PATH);
 
 	litter->mother = mother;
 	litter->child = kitty;

@@ -1,0 +1,2 @@
+cd windows
+gcc -o house -O2 -ffast-math -Wall `pkg-config --cflags gobject-2.0` -I/usr/include -I/usr/include/SDL -L. -lglib-2.0-0 -lmingw32 -lSDLmain -lSDL -lSDL_image -lSDL_mixer -I../include ../src/main.c ../src/player.c ../src/screen.c ../src/level.c ../src/timetrack.c ../src/control.c ../src/zone.c ../src/input.c ../src/sprite.c ../src/draw.c ../src/directory.c ../src/entity.c ../src/fatal.c ../src/tiles.c ../src/kitten.c ../src/look.c ../src/cursor.c ../src/entity_set.c ../src/collide.c ../src/hud.c ../src/audio.c 

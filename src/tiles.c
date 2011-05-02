@@ -4,6 +4,10 @@
 
 #include <SDL/SDL.h>
 
+#define CARPET_PATH "data/sprites/level/carpet.png"
+#define STONE_PATH "data/sprites/level/stone.png"
+#define WOOD_PATH "data/sprites/level/wood.png"
+
 struct TileManager
 {
 	SDL_Surface * carpet;
@@ -15,9 +19,9 @@ TileManager *
 load_tiles()
 {
 	TileManager * tiles = (TileManager *) zone(sizeof(TileManager));
-	tiles->carpet = load_sprite("data/sprites/level/carpet.png");
-	tiles->stone = load_sprite("data/sprites/level/stone.png");
-	tiles->wood = load_sprite("data/sprites/level/wood.png");
+	tiles->carpet = load_sprite(CARPET_PATH);
+	tiles->stone = load_sprite(STONE_PATH);
+	tiles->wood = load_sprite(WOOD_PATH);
 	return tiles;
 }
 

@@ -3,11 +3,17 @@
 
 #include <SDL/SDL.h>
 
+#ifdef __WINDOWS__
+#define CURSOR_PATH "data\\sprites\\cursor.png"
+#else
+#define CURSOR_PATH "data/sprites/cursor.png"
+#endif
+
 SDL_Surface *
 load_cursor()
 {
 	SDL_ShowCursor(0);
-	return load_sprite("data/sprites/cursor.png");
+	return load_sprite(CURSOR_PATH);
 }
 
 void
