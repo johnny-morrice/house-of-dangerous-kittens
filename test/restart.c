@@ -33,6 +33,8 @@ main(int argc, char ** argv)
 	KittenManager * litter;
 	Entity * kitten;
 
+	float px, py;
+
 	screen = init_sdl();
 	cursor = load_cursor();
 	is = new_input_state();
@@ -90,7 +92,9 @@ main(int argc, char ** argv)
 
 			entities_move(entities, world, time);
 
-			level_draw(world, screen, cam);
+			entity_position(body, &px, &py);
+
+			level_draw(world, px, py, screen, cam);
 
 			entities_draw(entities, screen, cam);
 

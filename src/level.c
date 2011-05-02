@@ -1,11 +1,11 @@
 #include "level.h"
 #include "zone.h"
 #include "sprite.h"
-#include "player.h"
 #include "control.h"
 #include "entity.h"
 #include "draw.h"
 #include "tiles.h"
+#include "look.h"
 
 #include <math.h>
 #include <glib.h>
@@ -75,20 +75,45 @@ level_set_square(Level world, TileManager * tiles, int x, int y, char type)
 
 }
 
-void
-level_draw(Level world, SDL_Surface * canvas, Camera * cam)
+struct LevelDraw
 {
-	int i, j;
-	Square sq;
+	Level world;
+	SDL_Surface * canvas;
+	Camera * cam;
+};
 
-	for (i = 0; i < level_width; i++)
-	{
-		for (j = 0; j < level_height; j++)
-		{
-			sq = world[i][j];
-			draw(sq.sprite, canvas, cam, i, j);
-		}
-	}
+void
+draw_square(gpointer coordp, gpointer ldp)
+{
+	struct LevelDraw * leveldraw = (struct LevelDraw *) ldp;
+	float * coord = (float *) coordp;
+	Level world = leveldraw->world;
+	SDL_Surface * canvas = leveldraw->canvas;
+	Camera * cam = leveldraw->cam;
+
+	unsigned int x, y;
+
+	x = floor(coord[0]);
+	y = floor(coord[1]);
+
+	draw(world[x][y].sprite, canvas, cam, x, y);
+}
+// Draw parts of the level that can be seen on to the canvas
+void
+level_draw(Level world, float x, float y, SDL_Surface * canvas, Camera * cam)
+{
+	GSList * seen;
+	struct LevelDraw leveldraw;
+
+	leveldraw.world = world;
+	leveldraw.canvas = canvas;
+	leveldraw.cam = cam;
+
+	seen = line_of_sight(world, x, y);
+
+	g_slist_foreach(seen, &draw_square, &leveldraw);
+
+	free_seen(seen);
 }
 
 gboolean
