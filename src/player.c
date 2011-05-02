@@ -72,10 +72,10 @@ player_entity(Player * me)
 	return me->body;
 }
 
+// The player is alive
 void
-player_user_input_response(gpointer mep)
-{	
-	Player * me;
+alive(Player * me)
+{
 	InputState * is;
 	Camera * cam;
 	EntitySet * others;
@@ -99,7 +99,6 @@ player_user_input_response(gpointer mep)
 
 	Entity * target;
 
-	me = (Player *) mep;
 	is = me->is;
 	cam = me->cam;
 	others = me->others;
@@ -239,3 +238,29 @@ player_user_input_response(gpointer mep)
 	}
 
 }
+
+// The player is dead
+void
+dead(Player * me)
+{
+	set_animation(me->body, (char *) "dead");
+}
+
+// This is the player's callback where all its actions take place
+void
+player_user_input_response(gpointer mep)
+{	
+	Player * me;
+
+	me = (Player *) mep;
+
+	if (me->health > 0)
+	{
+		alive(me);
+	}
+	else
+	{
+		dead(me);
+	}
+}
+
