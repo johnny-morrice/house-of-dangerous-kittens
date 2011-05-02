@@ -157,6 +157,23 @@ kitten_move(gpointer kittyp)
 			dude = entity_user_data(player);
 			player_hurt(dude);
 		}
+		if (dir == LEFT)
+		{
+			set_animation(body, "attack_left");
+		}
+		else if (dir == RIGHT)
+		{
+			set_animation(body, "attack_right");
+		}
+		else if (dir == UP)
+		{
+			set_animation(body, "attack_up");
+		}
+		else if (dir == DOWN)
+		{
+			set_animation(body, "attack_down");
+		}
+
 	}
 	else if (dir == LEFT)
 	{
