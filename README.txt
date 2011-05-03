@@ -6,6 +6,21 @@ House of Dangerous Kittens
 
 A survival horror game
 
+Written for Ludum Dare 20
+
+Requirements:
+SDL
+SDL_mixer
+SDL_image
+Glib
+gcc
+rake
+
+Build the game:
+rake build
+
+The game is placed in work/kittens
+
 Controls:
 
 Move the player using the directional keys or WASD
