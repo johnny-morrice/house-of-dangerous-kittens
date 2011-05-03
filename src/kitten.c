@@ -22,11 +22,11 @@
 #include "kitten.h"
 #include "entity.h"
 #include "zone.h"
-#include "look.h"
 #include "timetrack.h"
 #include "collide.h"
 #include "player.h"
 #include "audio.h"
+#include "look.h"
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
@@ -40,6 +40,8 @@
 
 #define KITTEN_PATH "data/sprites/kitten/"
 #define CLAW_PATH "data/wav/claw.wav"
+
+#define MAX_KITTENS 20
 
 
 struct KittenManager
@@ -159,9 +161,9 @@ spawn_more_kittens(KittenManager * litter, gboolean ** seen)
 {
 	unsigned int i;
 
-	if (litter->kitten_count < 10 && expired(litter->spawn_timer))
+	if (litter->kitten_count < MAX_KITTENS && expired(litter->spawn_timer) && SDL_GetTicks() > 5000)
 	{
-		for (i = 0; i < 10; i++)
+		for (i = 0; i < MAX_KITTENS - litter->kitten_count; i++)
 		{
 			spawn_kitten(litter, seen);
 		}
@@ -293,15 +295,11 @@ kitten_move(gpointer kittyp)
 
 	dir = look(x, y, px, py);
 
-	if (can_see(world, x, y, px, py))
-	{
-		
-		dx = px - x;
-		dy = py - y;
+	dx = px - x;
+	dy = py - y;
 
-		entity_set_direction(body, dx, dy);
-		entity_move(body, world, time, others);
-	}
+	entity_set_direction(body, dx, dy);
+	entity_move(body, world, time, others);
 
 	entity_get_direction(body, &dx, &dy);
 
