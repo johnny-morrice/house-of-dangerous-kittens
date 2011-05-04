@@ -16,8 +16,9 @@ Glib
 gcc
 rake
 
-Build the game:
-rake build
+Play the game:
+
+rake play
 
 The game is placed in work/kittens
 
