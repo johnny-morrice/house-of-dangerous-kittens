@@ -11,8 +11,8 @@ Contact: john@functorama.com
 ## Requirements
 
 * SDL
-* SDL_mixer
-* SDL_image
+* SDL\_mixer
+* SDL\_image
 * Glib
 * gcc
 * rake
