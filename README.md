@@ -19,7 +19,7 @@ Contact: john@functorama.com
 
 ## Play the game:
 
-rake play
+    $ rake play
 
 The after compilation, the binary is placed in work/kittens
 
