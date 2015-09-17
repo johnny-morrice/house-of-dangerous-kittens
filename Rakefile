@@ -12,7 +12,7 @@ ENGINE = ["src/player.c", "src/screen.c",
 	"src/hud.c", "src/audio.c"]
 
 def compile out, flags, *paths
-	sh "gcc -o #{out} #{flags} -Wall `pkg-config --cflags --libs gobject-2.0` `pkg-config --cflags --libs sdl` -lSDL_image -lSDL_mixer -Iinclude #{ENGINE.join " "} #{paths.join " "}"
+	sh "gcc -o #{out} #{flags} -Wall #{paths.join " "} #{ENGINE.join " "} `pkg-config --cflags --libs gobject-2.0` `pkg-config --cflags --libs sdl` -lSDL_image -lSDL_mixer -lm -Iinclude"
 end
 
 def debug out, *paths
