@@ -10,18 +10,22 @@ Contact: john@functorama.com
 
 ## Requirements
 
-* SDL
-* SDL\_mixer
-* SDL\_image
-* Glib
+* SDL 1.2
+* SDL\_mixer 1.2
+* SDL\_image 1.2
+* Glib (gobject)
 * gcc
 * rake
+
+I found that on a new Ubuntu 14.04 install, I could build the game after
+
+    $ sudo apt-get install libsdl-mixer1.2-dev libsdl-image1.2-dev
 
 ## Play the game:
 
     $ rake play
 
-The after compilation, the binary is placed in work/kittens
+After compilation, the binary is placed in work/kittens
 
 ## Controls:
 
