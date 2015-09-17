@@ -218,8 +218,6 @@ entity_move(Entity * thing, Level world, TimeTracker * time, EntitySet * others)
 void
 entity_draw(Entity * thing, SDL_Surface * canvas, Camera * cam)
 {
-	unsigned int ticks;
-
 	SDL_Surface * current;
 	Animation * movie = (Animation *) g_tree_lookup(thing->animations, thing->current_animation);
 	if (movie)
@@ -228,8 +226,6 @@ entity_draw(Entity * thing, SDL_Surface * canvas, Camera * cam)
 		{
 			current = movie->frames[thing->current_frame];
 			draw(current, canvas, cam, thing->x, thing->y);
-
-			ticks = SDL_GetTicks();
 
 			// Check to see if we should switch to next frame
 			if (expired(thing->animation_timer))
