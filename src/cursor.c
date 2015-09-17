@@ -31,7 +31,7 @@
 #endif
 
 SDL_Surface *
-load_cursor()
+load_cursor(void)
 {
 	SDL_ShowCursor(0);
 	return load_sprite(CURSOR_PATH);

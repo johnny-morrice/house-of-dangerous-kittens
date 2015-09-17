@@ -37,7 +37,7 @@
 // and are looking at (lx, ly)?
 unsigned int look(float x, float y, float lx, float ly);
 
-gboolean ** new_seen_grid();
+gboolean ** new_seen_grid(void);
 
 void free_seen_grid(gboolean ** seen);
 

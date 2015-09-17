@@ -34,7 +34,7 @@ struct Control
 	gboolean is_paused;
 };
 
-Control * new_control()
+Control * new_control(void)
 {
 	Control * halter = (Control *) zone(sizeof(Control));
 	halter->running = TRUE;

@@ -35,7 +35,7 @@ struct EntitySet
 typedef void (*iterfunc)(Entity *);
 
 EntitySet *
-new_entity_set()
+new_entity_set(void)
 {
 	EntitySet * entities;
 	entities = (EntitySet *) zone(sizeof(EntitySet));

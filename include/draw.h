@@ -31,7 +31,7 @@
 typedef struct Camera Camera;
 
 Camera *
-new_camera();
+new_camera(void);
 
 // Center the camera on this position
 void

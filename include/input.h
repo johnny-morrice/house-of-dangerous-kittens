@@ -30,7 +30,7 @@
 
 typedef struct InputState InputState;
 
-InputState * new_input_state();
+InputState * new_input_state(void);
 
 void update_input(InputState * is);
 

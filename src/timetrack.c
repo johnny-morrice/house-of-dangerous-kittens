@@ -64,7 +64,7 @@ expired(Expirer * timer)
 }
 
 TimeTracker *
-new_time_tracker()
+new_time_tracker(void)
 {
 	TimeTracker * time = (TimeTracker *) zone(sizeof(TimeTracker));
 	time->frames = 0;

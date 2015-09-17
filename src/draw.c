@@ -32,7 +32,7 @@ struct Camera
 };
 
 Camera *
-new_camera()
+new_camera(void)
 {
 	return (Camera *) zone(sizeof(Camera));
 }

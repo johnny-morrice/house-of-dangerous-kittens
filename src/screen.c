@@ -26,14 +26,14 @@
 // Setup SDL.
 // Return the screen.
 SDL_Surface *
-init_sdl()
+init_sdl(void)
 {
 	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 	return SDL_SetVideoMode(screen_width, screen_height, 32, SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF);
 }
 
 void
-shutdown_sdl()
+shutdown_sdl(void)
 {
 	SDL_Quit();
 }

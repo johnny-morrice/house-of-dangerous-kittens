@@ -24,7 +24,7 @@
 #include <SDL/SDL_mixer.h>
 
 void
-init_audio()
+init_audio(void)
 {
 	Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 1, 4096 );
 }
@@ -36,7 +36,7 @@ play_wav(Mix_Chunk * wav)
 }
 
 void
-close_audio()
+close_audio(void)
 {
 	Mix_CloseAudio();
 }

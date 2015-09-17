@@ -24,6 +24,6 @@
 #define __FATAL__
 
 // DIE DIE DIE DIE DIE
-void die(); 
+void die(void); 
 
 #endif

@@ -33,7 +33,7 @@ Expirer * new_expirer(unsigned int freq);
 
 gboolean expired(Expirer * timer);
 
-TimeTracker * new_time_tracker();
+TimeTracker * new_time_tracker(void);
 
 // We're done drawing that frame 
 void frame_done(TimeTracker * time);

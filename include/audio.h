@@ -25,10 +25,10 @@
 
 #include <SDL/SDL_mixer.h>
 
-void init_audio();
+void init_audio(void);
 
 void play_wav(Mix_Chunk * wav);
 
-void close_audio();
+void close_audio(void);
 
 #endif

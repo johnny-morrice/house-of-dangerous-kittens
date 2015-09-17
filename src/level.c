@@ -41,7 +41,7 @@ struct Square
 	char type;
 };
 
-Level new_level()
+Level new_level(void)
 {
 	int i, j;
 	Level rows;

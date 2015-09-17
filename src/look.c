@@ -102,7 +102,7 @@ raytrace(Level world, GSList * seen, float x, float y, float theta)
 }
 
 gboolean **
-new_seen_grid()
+new_seen_grid(void)
 {
 	unsigned int i;
 

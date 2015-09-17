@@ -25,7 +25,7 @@
 #include <stdlib.h>
 
 void
-die()
+die(void)
 {
 	fprintf(stderr, "Fatal error!\n");
 	exit(EXIT_FAILURE);

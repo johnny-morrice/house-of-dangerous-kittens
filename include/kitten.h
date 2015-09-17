@@ -27,6 +27,7 @@
 #include "player.h"
 #include "draw.h"
 #include "timetrack.h"
+#include "entity.h"
 
 #include <glib.h>
 #include <SDL/SDL.h>
@@ -44,7 +45,7 @@ clone_kitten(KittenManager * litter, float x, float y);
 
 // Load the kittens from the sprites
 KittenManager *
-load_kittens();
+load_kittens(Entity * player, Level world, TimeTracker * time, EntitySet * others);
 
 // Free the litter
 void

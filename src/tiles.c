@@ -37,7 +37,7 @@ struct TileManager
 };
 
 TileManager *
-load_tiles()
+load_tiles(void)
 {
 	TileManager * tiles = (TileManager *) zone(sizeof(TileManager));
 	tiles->carpet = load_sprite(CARPET_PATH);

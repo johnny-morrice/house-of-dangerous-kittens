@@ -27,7 +27,7 @@
 
 typedef struct TileManager TileManager;
 
-TileManager * load_tiles();
+TileManager * load_tiles(void);
 
 SDL_Surface * tile_carpet(TileManager * tiles);
 

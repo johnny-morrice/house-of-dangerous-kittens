@@ -41,7 +41,7 @@ typedef Square ** Level;
 #define square_carpet 'c'
 #define square_empty ' '
 
-Level new_level();
+Level new_level(void);
 
 // Load a level from a file
 void load_level(Level world, TileManager * tiles, const char * path);

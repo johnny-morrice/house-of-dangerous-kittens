@@ -28,7 +28,7 @@
 
 #include <SDL/SDL.h>
 
-SDL_Surface * load_cursor();
+SDL_Surface * load_cursor(void);
 
 void draw_cursor(InputState * is, SDL_Surface * cursor, SDL_Surface * screen);
 

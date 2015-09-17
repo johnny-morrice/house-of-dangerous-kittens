@@ -29,7 +29,7 @@
 
 typedef struct Control Control;
 
-Control * new_control();
+Control * new_control(void);
 
 // Should the app quit?
 gboolean running(Control * halter);

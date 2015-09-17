@@ -28,8 +28,8 @@
 #define screen_width 1024
 #define screen_height 768
 
-SDL_Surface * init_sdl();
+SDL_Surface * init_sdl(void);
 
-void shutdown_sdl();
+void shutdown_sdl(void);
 
 #endif
