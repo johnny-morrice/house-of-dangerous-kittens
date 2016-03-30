@@ -1,3 +1,4 @@
+![Death Screenshot](/house_of_dangerous_kittens.png)
 # House of Dangerous Kittens
 
 A topdown shooting game in C.  An entry for Ludum Dare 20.
